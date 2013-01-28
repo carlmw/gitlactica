@@ -1,0 +1,29 @@
+<!doctype html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+  </style>
+  <title>Gitlactica</title>
+</head>
+<body>
+  <script>
+  var require = {
+    baseUrl: 'lib',
+    paths: {
+      'vendor': '../vendor'
+    }
+  };
+  </script>
+  <script src="vendor/require.js" data-main="../index"></script>
+</body>
+</html>
