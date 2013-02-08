@@ -1,6 +1,5 @@
 // Tween.js - http://github.com/sole/tween.js
 define(function () {
-  
 /**
  * @author sole / http://soledadpenades.com
  * @author mrdoob / http://mrdoob.com
@@ -13,23 +12,13 @@ define(function () {
  * @author egraether / http://egraether.com/
  */
 
-if ( Date.now === undefined ) {
-
-  Date.now = function () {
-
-    return new Date().valueOf();
-
-  }
-
-}
-
 var TWEEN = TWEEN || ( function () {
 
   var _tweens = [];
 
   return {
 
-    REVISION: '8',
+    REVISION: '9',
 
     getAll: function () {
 
@@ -67,7 +56,7 @@ var TWEEN = TWEEN || ( function () {
 
       var i = 0, numTweens = _tweens.length;
 
-      time = time !== undefined ? time : Date.now();
+      time = time !== undefined ? time : ( window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now() );
 
       while ( i < numTweens ) {
 
@@ -88,7 +77,6 @@ var TWEEN = TWEEN || ( function () {
       return true;
 
     }
-
   };
 
 } )();
@@ -98,7 +86,9 @@ TWEEN.Tween = function ( object ) {
   var _object = object;
   var _valuesStart = {};
   var _valuesEnd = {};
+  var _valuesStartRepeat = {};
   var _duration = 1000;
+  var _repeat = 0;
   var _delayTime = 0;
   var _startTime = null;
   var _easingFunction = TWEEN.Easing.Linear.None;
@@ -129,13 +119,14 @@ TWEEN.Tween = function ( object ) {
 
     _onStartCallbackFired = false;
 
-    _startTime = time !== undefined ? time : Date.now();
+    _startTime = time !== undefined ? time : (window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now() );
     _startTime += _delayTime;
+
 
     for ( var property in _valuesEnd ) {
 
       // This prevents the interpolation of null values or of non-existing properties
-      if( _object[ property ] === null || !(property in _object) ) {
+      if( ( property in _object ) === false || _object[ property ] === null ) {
 
         continue;
 
@@ -157,6 +148,12 @@ TWEEN.Tween = function ( object ) {
 
       _valuesStart[ property ] = _object[ property ];
 
+      if( ( _valuesStart[ property ] instanceof Array ) == false ) {
+        _valuesStart[ property ] *= 1.0; // Ensures we're using numbers, not strings
+      }
+
+      _valuesStartRepeat[ property ] = _valuesStart[ property ];
+
     }
 
     return this;
@@ -173,6 +170,13 @@ TWEEN.Tween = function ( object ) {
   this.delay = function ( amount ) {
 
     _delayTime = amount;
+    return this;
+
+  };
+
+  this.repeat = function ( times ) {
+
+    _repeat = times;
     return this;
 
   };
@@ -269,19 +273,37 @@ TWEEN.Tween = function ( object ) {
 
     if ( elapsed == 1 ) {
 
-      if ( _onCompleteCallback !== null ) {
+      if ( _repeat > 0 ) {
 
-        _onCompleteCallback.call( _object );
+        if( isFinite( _repeat ) ) {
+          _repeat--;
+        }
+        
+        // reassign starting values, restart by making startTime = now
+        for( var property in _valuesStartRepeat ) {
+          _valuesStart[ property ] = _valuesStartRepeat[ property ];
+        }
+        _startTime = time + _delayTime;
+
+        return true;
+
+      } else {
+
+        if ( _onCompleteCallback !== null ) {
+
+          _onCompleteCallback.call( _object );
+
+        }
+
+        for ( var i = 0, numChainedTweens = _chainedTweens.length; i < numChainedTweens; i ++ ) {
+
+          _chainedTweens[ i ].start( time );
+
+        }
+
+        return false;
 
       }
-
-      for ( var i = 0, numChainedTweens = _chainedTweens.length; i < numChainedTweens; i ++ ) {
-
-        _chainedTweens[ i ].start( time );
-
-      }
-
-      return false;
 
     }
 
@@ -656,5 +678,6 @@ TWEEN.Interpolation = {
   }
 
 };
+
 return TWEEN;
 });
