@@ -7,5 +7,10 @@
     "raf-component": "*",
     "lodash": "*",
     "emitter": "https://github.com/component/emitter/tarball/master"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "browserify": "*"
   }
 }
