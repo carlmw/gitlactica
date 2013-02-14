@@ -1,0 +1,11 @@
+{
+  "name": "Gitlactica",
+  "version": "0.0.1",
+  "dependencies": {
+    "three": "*",
+    "tween": "*",
+    "raf-component": "*",
+    "lodash": "*",
+    "emitter": "https://github.com/component/emitter/tarball/master"
+  }
+}
