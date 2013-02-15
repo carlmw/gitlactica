@@ -1,6 +1,13 @@
 mockery.registerMock('../config', {
   orbitRadius: 2000
 });
+
+mockery.registerMock('seed-random', function () {
+  return function () {
+    return 0.5;
+  };
+});
+
 mockery.registerAllowable('../lib/orbit_allocator');
 
 describe('OrbitAllocator', function () {
@@ -19,19 +26,14 @@ describe('OrbitAllocator', function () {
     it('increments x', function () {
       var allocator = new OrbitAllocator();
 
-      allocator.next('some/repogfdg').x.should.equal(2000);
-      allocator.next('some/repodsfdsf').x.should.equal(4000);
+      allocator.next('some/repo').x.should.equal(2000);
+      allocator.next('some/repo').x.should.equal(4000);
     });
 
     it('seeds r with name', function () {
-      var tan = sinon.stub(Math, 'tan').returns(1.5),
-          allocator = new OrbitAllocator();
+      var allocator = new OrbitAllocator();
 
-      allocator.next('some/repo').r.should.equal(1.5);
-
-      tan.should.have.been.calledWith(921);
-
-      tan.restore();
+      allocator.next('some/repo').r.should.equal(Math.PI);
     });
   });
 

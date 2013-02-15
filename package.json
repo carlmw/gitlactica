@@ -6,7 +6,8 @@
     "tween": "*",
     "raf-component": "*",
     "lodash": "*",
-    "emitter": "https://github.com/component/emitter/tarball/master"
+    "emitter": "https://github.com/component/emitter/tarball/master",
+    "seed-random": "*"
   },
   "devDependencies": {
     "mocha": "*",
