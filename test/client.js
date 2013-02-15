@@ -37,7 +37,7 @@ describe("Client", function () {
       
       sendMock.withArgs(JSON.stringify({
         event: 'ping',
-        message: 'pong'
+        data: 'pong'
       }));
 
       WebSocketStub.returns({
@@ -59,25 +59,43 @@ describe("Client", function () {
     });
   });
 
-  describe("receiving a message", function () {
-    it("emits the event's message", function () {
-      WebSocketStub.returns(socketStub);
+  describe('socket handlers', function () {
+    var spy,
+        socketStub,
+        client;
 
-      var spy = sinon.spy(),
-          socketStub = sinon.stub(),
-          client;
+    beforeEach(function () {
+      spy = sinon.spy();
+      socketStub = sinon.stub();
 
       WebSocketStub.returns(socketStub);
 
       client = new Client();
-      client.on('ping', spy);
+    });
 
-      socketStub.onmessage(JSON.stringify({
-        event: 'ping',
-        message: 'pong'
-      }));
+    describe("when connection is established", function () {
+      it("emits an 'open' event", function () {
+        client.on('open', spy);
 
-      spy.should.have.been.calledWith('pong');
+        socketStub.onopen();
+
+        spy.should.have.been.calledOnce;
+      });
+    });
+
+    describe("receiving a message", function () {
+      it("emits the event's message", function () {
+        client.on('ping', spy);
+
+        socketStub.onmessage({
+          data: JSON.stringify({
+            event: 'ping',
+            data: 'pong'
+          })
+        });
+
+        spy.should.have.been.calledWith('pong');
+      });
     });
   });
 });
