@@ -1,7 +1,7 @@
 
 test:
 	@./node_modules/.bin/mocha \
-		--require should \
+		--require ./test/setup \
 		--reporter spec
 browserify:
 	@./node_modules/.bin/browserify \

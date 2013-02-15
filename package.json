@@ -10,7 +10,10 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "*",
-    "browserify": "*"
+    "chai": "*",
+    "browserify": "*",
+    "mockery": "*",
+    "sinon": "*",
+    "sinon-chai": "*"
   }
 }
