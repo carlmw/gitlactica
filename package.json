@@ -16,6 +16,9 @@
     "browserify": "*",
     "mockery": "*",
     "sinon": "*",
-    "sinon-chai": "*"
+    "sinon-chai": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-shell": "*",
+    "grunt": "~0.4.0"
   }
 }
