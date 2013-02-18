@@ -1,13 +1,12 @@
-var packStub = sinon.stub();
+var packStub = sinon.stub(),
+    randomStub = sinon.stub().returns(0);
 
 mockery.registerMock('../config', {
   orbitRadius: 2000
 });
 
 mockery.registerMock('seed-random', function () {
-  return function () {
-    return 0.5;
-  };
+  return randomStub;
 });
 
 mockery.registerMock('d3', {
@@ -23,7 +22,8 @@ describe('OrbitAllocator', function () {
     this.mesh = {
       position: {
         x: x,
-        y: y
+        y: y,
+        z: 0
       }
     };
   }
@@ -65,10 +65,10 @@ describe('OrbitAllocator', function () {
 
       nodesMock
         .withArgs({ children: [
-          { value: 1, label: 'herp', comparitor: 0.5 },
-          { value: 1, label: 'derp', comparitor: 0.5 }
+          { value: 1, label: 'herp', entropy: 0, z: 0 },
+          { value: 1, label: 'derp', entropy: 0, z: 0 }
         ]})
-        .returns([{}, { x: 100, y: 100 }, { x: 100, y: 100 }]);
+        .returns([{}, { x: 100, y: 100, z: 0 }, { x: 100, y: 100, z: 0 }]);
 
       new OrbitAllocator(['herp', 'derp'])
         .allocate([new Planet(100, 100), new Planet(200, 200)]);
@@ -81,7 +81,7 @@ describe('OrbitAllocator', function () {
 
       packStub.returnValue.nodes.returns([
         {},
-        { x: 1000, y: 1000 }
+        { x: 1000, y: 1000, entropy: 0 }
       ]);
 
       var points = new OrbitAllocator(['herp'])
@@ -89,6 +89,27 @@ describe('OrbitAllocator', function () {
 
       planet.mesh.position.x.should.equal(-1000);
       planet.mesh.position.y.should.equal(-1000);
+    });
+
+    it("adds a little entropy to each point's x, y, z", function () {
+      var planet = new Planet(0, 0);
+
+      packStub.returnValue.nodes = function (data) {
+        data.children.unshift({});
+        data.children[1].x = 4000;
+        data.children[1].y = 4000;
+
+        return data.children;
+      };
+
+      randomStub.returns(0.5);
+
+      var points = new OrbitAllocator(['herp', 'derp'])
+        .allocate([planet]);
+
+      planet.mesh.position.x.should.equal(-(4000 * 0.5));
+      planet.mesh.position.y.should.equal(-(4000 * 0.5));
+      planet.mesh.position.z.should.equal(-(4000 * 0.5));
     });
   });
 });
