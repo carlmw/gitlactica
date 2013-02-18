@@ -7,7 +7,8 @@
     "raf-component": "*",
     "lodash": "*",
     "emitter": "https://github.com/component/emitter/tarball/master",
-    "seed-random": "*"
+    "seed-random": "*",
+    "d3": "*"
   },
   "devDependencies": {
     "mocha": "*",
