@@ -51,7 +51,7 @@ describe('OrbitAllocator', function () {
     var sizeMock = packStub.returnValue.size = sinon.mock();
 
     sizeMock
-      .withArgs([(2000 * 4) * 2, (2000 * 4) * 2]);
+      .withArgs([2000 * 4, 2000 * 4]);
 
     new OrbitAllocator(['herp', 'derp', 'foo', 'bar']);
 
@@ -96,20 +96,20 @@ describe('OrbitAllocator', function () {
 
       packStub.returnValue.nodes = function (data) {
         data.children.unshift({});
-        data.children[1].x = 4000;
-        data.children[1].y = 4000;
+        data.children[1].x = 0;
+        data.children[1].y = 0;
 
         return data.children;
       };
 
-      randomStub.returns(0.5);
+      randomStub.returns(0.7);
 
-      var points = new OrbitAllocator(['herp', 'derp'])
+      var points = new OrbitAllocator(['derp'])
         .allocate([planet]);
 
-      planet.mesh.position.x.should.equal(-(4000 * 0.5));
-      planet.mesh.position.y.should.equal(-(4000 * 0.5));
-      planet.mesh.position.z.should.equal(-(4000 * 0.5));
+      planet.mesh.position.x.should.equal(-600);
+      planet.mesh.position.y.should.equal(-600);
+      planet.mesh.position.z.should.equal(400);
     });
   });
 });
