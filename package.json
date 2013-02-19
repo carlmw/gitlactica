@@ -8,7 +8,8 @@
     "lodash": "*",
     "emitter": "https://github.com/component/emitter/tarball/master",
     "seed-random": "*",
-    "d3": "*"
+    "d3": "*",
+    "queue-async": "*"
   },
   "devDependencies": {
     "mocha": "*",
