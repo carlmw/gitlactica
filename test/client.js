@@ -1,26 +1,28 @@
-var WebSocketStub = sinon.stub(),
-    globalStub = {
-      WebSocket: WebSocketStub
-    };
-    utilStub = {
-      global: function () {
-        return globalStub;
-      }
-    };
-
-mockery.registerMock('./util', utilStub);
-mockery.registerAllowables(['../lib/client', 'emitter']);
-
 describe("Client", function () {
-  var Client;
+  var Client,
+      WebSocketStub = sinon.stub(),
+      globalStub = {
+        WebSocket: WebSocketStub
+      };
+      utilStub = {
+        global: function () {
+          return globalStub;
+        }
+      };
 
-  beforeEach(function () {
+  before(function () {
     mockery.enable();
+    mockery.registerMock('./util', utilStub);
+    mockery.registerAllowables(['../lib/client', 'emitter']);
+
     Client = require('../lib/client');
   });
 
+  after(function () {
+    mockery.deregisterAll();
+  });
+
   afterEach(function () {
-    mockery.disable();
     WebSocketStub.reset();
   });
 

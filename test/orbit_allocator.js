@@ -1,23 +1,11 @@
-var packStub = sinon.stub(),
-    randomStub = sinon.stub().returns(0);
-
-mockery.registerMock('../config', {
-  orbitRadius: 2000
-});
-
-mockery.registerMock('seed-random', function () {
-  return randomStub;
-});
-
-mockery.registerMock('d3', {
-  layout: {
-    pack: packStub
-  }
-});
-
-mockery.registerAllowable('../lib/orbit_allocator');
-
 describe('OrbitAllocator', function () {
+  var packStub = sinon.stub(),
+      layoutStub = {
+        size: sinon.stub(),
+        nodes: sinon.stub().returns([])
+      },
+      randomStub = sinon.stub().returns(0);
+
   function Planet (x, y) {
     this.mesh = {
       position: {
@@ -30,28 +18,42 @@ describe('OrbitAllocator', function () {
 
   var OrbitAllocator;
 
-  beforeEach(function () {
-    var layoutStub = {
-      size: sinon.stub(),
-      nodes: sinon.stub().returns([])
-    };
-    layoutStub.size.returns(layoutStub);
+  before(function () {
+    mockery.registerMock('../config', {
+      orbitRadius: 2000
+    });
 
-    packStub.returns(layoutStub);
+    mockery.registerMock('seed-random', function () {
+      return randomStub;
+    });
+
+    mockery.registerMock('d3', {
+      layout: {
+        pack: packStub
+      }
+    });
+
+    mockery.registerAllowable('../lib/orbit_allocator');
 
     mockery.enable();
     OrbitAllocator = require('../lib/orbit_allocator');
   });
 
-  afterEach(function () {
-    mockery.disable();
+  after(function () {
+    mockery.deregisterAll();
   });
 
   it("creates a circle pack layout with the correct dimensions", function () {
-    var sizeMock = packStub.returnValue.size = sinon.mock();
+    var sizeMock = sinon.mock();
+
+    packStub.returns({
+      size: sizeMock,
+      nodes: sinon.stub.returns([])
+    });
 
     sizeMock
-      .withArgs([2000 * 2 * 4, 2000 * 2 * 4]);
+      .withArgs([2000 * 2 * 4, 2000 * 2 * 4])
+      .returns(layoutStub);
 
     new OrbitAllocator(['herp', 'derp', 'foo', 'bar']);
 
@@ -61,7 +63,11 @@ describe('OrbitAllocator', function () {
   describe("#allocate", function () {
 
     it("adds nodes to the layout", function () {
-      var nodesMock = packStub.returnValue.nodes = sinon.mock();
+      var nodesMock = sinon.mock();
+
+      packStub.returns({
+        size: sinon.stub().returns({ nodes: nodesMock })
+      });
 
       nodesMock
         .withArgs({ children: [
@@ -77,12 +83,15 @@ describe('OrbitAllocator', function () {
     });
 
     it("subtracts r from each point's x and y", function () {
-      var planet = new Planet(1000, 1000);
+      var planet = new Planet(1000, 1000),
+          nodesStub = sinon.stub().returns([
+            {},
+            { x: 1000, y: 1000, entropy: 0 }
+          ]);
 
-      packStub.returnValue.nodes.returns([
-        {},
-        { x: 1000, y: 1000, entropy: 0 }
-      ]);
+      packStub.returns({
+        size: sinon.stub().returns({ nodes: nodesStub })
+      });
 
       var points = new OrbitAllocator(['herp'])
         .allocate([planet]);
@@ -94,13 +103,17 @@ describe('OrbitAllocator', function () {
     it("adds a little entropy to each point's x, y", function () {
       var planet = new Planet(0, 0);
 
-      packStub.returnValue.nodes = function (data) {
-        data.children.unshift({});
-        data.children[1].x = 0;
-        data.children[1].y = 0;
+      packStub.returns({
+        size: sinon.stub().returns({
+          nodes: function (data) {
+            data.children.unshift({});
+            data.children[1].x = 0;
+            data.children[1].y = 0;
 
-        return data.children;
-      };
+            return data.children;
+          }
+        })
+      });
 
       randomStub.returns(0.7);
 

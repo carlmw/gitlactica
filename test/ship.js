@@ -16,24 +16,29 @@ var threeStub = {
     queueStub = sinon.stub(),
     sceneStub = sinon.stub({ add: function () {} });
 
-mockery.registerMock('three', threeStub);
-mockery.registerMock('queue-async', queueStub);
-mockery.registerMock('./weapon', weaponStub);
-mockery.registerMock('./jump_drive', jumpDriveStub);
-mockery.registerMock('./shaders', { ship: {} });
-
-mockery.registerAllowable('../lib/ship');
-
 describe("Ship", function () {
   var Ship;
 
-  beforeEach(function () {
+  before(function () {
     mockery.enable();
+
+    mockery.registerMock('three', threeStub);
+    mockery.registerMock('queue-async', queueStub);
+    mockery.registerMock('./weapon', weaponStub);
+    mockery.registerMock('./jump_drive', jumpDriveStub);
+    mockery.registerMock('./shaders', { ship: {} });
+
+    mockery.registerAllowable('../lib/ship');
+
     Ship = require('../lib/ship');
   });
 
   afterEach(function () {
-    mockery.disable();
+    queueStub.reset();
+  });
+
+  after(function () {
+    mockery.deregisterAll();
   });
 
   describe("constructor", function () {

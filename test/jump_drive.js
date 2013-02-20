@@ -7,29 +7,30 @@ var courseStub = sinon.stub().returns({ line: sinon.stub(), angle: Math.PI }),
     planetStub = sinon.stub(),
     exitStub = sinon.stub();
 
-orbitStub.displayName = "Orbit";
 shipStub.location = sinon.stub();
-
-mockery.registerMock('./animation/follow_course', followStub);
-mockery.registerMock('./animation/orbit', orbitStub);
-mockery.registerMock('./course', courseStub);
-
-mockery.registerAllowable('../lib/jump_drive');
 
 describe('jumpDrive', function () {
   var jumpTo;
 
-  beforeEach(function () {
-    mockery.enable();
+  before(function () {
+    mockery.registerMock('./animation/follow_course', followStub);
+    mockery.registerMock('./animation/orbit', orbitStub);
+    mockery.registerMock('./course', courseStub);
 
+    mockery.registerAllowable('../lib/jump_drive');
+
+    mockery.enable();
     jumpTo = require('../lib/jump_drive');
   });
 
   afterEach(function () {
-    mockery.disable();
     followStub.reset();
     courseStub.reset();
     orbitStub.reset();
+  });
+
+  after(function () {
+    mockery.deregisterAll();
   });
 
   it("plots a course", function () {
