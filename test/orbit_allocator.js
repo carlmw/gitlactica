@@ -1,10 +1,15 @@
-describe('OrbitAllocator', function () {
+describe('orbitAllocator', function () {
   var packStub = sinon.stub(),
       layoutStub = {
         size: sinon.stub(),
-        nodes: sinon.stub().returns([])
+        nodes: sinon.stub().returns([
+          {},
+          { value: 1, label: 'herp', entropy: 0, z: 0 },
+          { value: 1, label: 'derp', entropy: 0, z: 0 }
+        ])
       },
-      randomStub = sinon.stub().returns(0);
+      randomStub = sinon.stub().returns(0),
+      orbitAllocator;
 
   function Planet (x, y) {
     this.mesh = {
@@ -15,8 +20,6 @@ describe('OrbitAllocator', function () {
       }
     };
   }
-
-  var OrbitAllocator;
 
   before(function () {
     mockery.registerMock('../config', {
@@ -36,7 +39,7 @@ describe('OrbitAllocator', function () {
     mockery.registerAllowable('../lib/orbit_allocator');
 
     mockery.enable();
-    OrbitAllocator = require('../lib/orbit_allocator');
+    orbitAllocator = require('../lib/orbit_allocator');
   });
 
   after(function () {
@@ -48,14 +51,14 @@ describe('OrbitAllocator', function () {
 
     packStub.returns({
       size: sizeMock,
-      nodes: sinon.stub.returns([])
+      nodes: layoutStub.nodes
     });
 
     sizeMock
-      .withArgs([2000 * 2 * 4, 2000 * 2 * 4])
+      .withArgs([2000 * 2 * 2, 2000 * 2 * 2])
       .returns(layoutStub);
 
-    new OrbitAllocator(['herp', 'derp', 'foo', 'bar']);
+    orbitAllocator(['herp', 'derp'], [new Planet(100, 100), new Planet(200, 200)]);
 
     sizeMock.verify();
   });
@@ -76,8 +79,7 @@ describe('OrbitAllocator', function () {
         ]})
         .returns([{}, { x: 100, y: 100, z: 0 }, { x: 100, y: 100, z: 0 }]);
 
-      new OrbitAllocator(['herp', 'derp'])
-        .allocate([new Planet(100, 100), new Planet(200, 200)]);
+      orbitAllocator(['herp', 'derp'], [new Planet(100, 100), new Planet(200, 200)]);
 
       nodesMock.verify();
     });
@@ -93,8 +95,7 @@ describe('OrbitAllocator', function () {
         size: sinon.stub().returns({ nodes: nodesStub })
       });
 
-      var points = new OrbitAllocator(['herp'])
-        .allocate([planet]);
+      orbitAllocator(['herp'], [planet]);
 
       planet.mesh.position.x.should.equal(-1000);
       planet.mesh.position.y.should.equal(-1000);
@@ -117,8 +118,7 @@ describe('OrbitAllocator', function () {
 
       randomStub.returns(0.7);
 
-      var points = new OrbitAllocator(['derp'])
-        .allocate([planet]);
+      orbitAllocator(['derp'], [planet]);
 
       planet.mesh.position.x.should.equal(-600);
       planet.mesh.position.y.should.equal(-600);
