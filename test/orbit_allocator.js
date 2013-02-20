@@ -91,7 +91,7 @@ describe('OrbitAllocator', function () {
       planet.mesh.position.y.should.equal(-1000);
     });
 
-    it("adds a little entropy to each point's x, y, z", function () {
+    it("adds a little entropy to each point's x, y", function () {
       var planet = new Planet(0, 0);
 
       packStub.returnValue.nodes = function (data) {
@@ -109,7 +109,8 @@ describe('OrbitAllocator', function () {
 
       planet.mesh.position.x.should.equal(-600);
       planet.mesh.position.y.should.equal(-600);
-      planet.mesh.position.z.should.equal(400);
     });
+
+    it("adds a little entropy to each point's z");
   });
 });
