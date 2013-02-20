@@ -51,7 +51,7 @@ describe('OrbitAllocator', function () {
     var sizeMock = packStub.returnValue.size = sinon.mock();
 
     sizeMock
-      .withArgs([2000 * 4, 2000 * 4]);
+      .withArgs([2000 * 2 * 4, 2000 * 2 * 4]);
 
     new OrbitAllocator(['herp', 'derp', 'foo', 'bar']);
 
