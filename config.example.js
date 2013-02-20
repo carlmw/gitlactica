@@ -5,6 +5,9 @@ module.exports = {
     username: 'carlmw'
   },
   languages: {
+    Unknown: {
+      texture: 'textures/unknown.jpg'
+    },
     JavaScript: {
       texture: 'textures/javascript.jpg'
     },
@@ -13,6 +16,9 @@ module.exports = {
     },
     Ruby: {
       texture: 'textures/ruby.jpg'
+    },
+    PHP: {
+      texture: 'textures/php.jpg'
     }
   }
 };
