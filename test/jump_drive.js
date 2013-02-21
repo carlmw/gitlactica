@@ -5,9 +5,11 @@ var courseStub = sinon.stub().returns({ line: sinon.stub(), angle: Math.PI }),
     orbitStub = sinon.stub(),
     shipStub = sinon.stub(),
     planetStub = sinon.stub(),
+    vectorStub = sinon.stub(),
+    threeStub = {
+      Vector3: sinon.stub().returns(vectorStub)
+    },
     exitStub = sinon.stub();
-
-shipStub.location = sinon.stub();
 
 describe('jumpDrive', function () {
   var jumpTo;
@@ -16,6 +18,7 @@ describe('jumpDrive', function () {
     mockery.registerMock('./animation/follow_course', followStub);
     mockery.registerMock('./animation/orbit', orbitStub);
     mockery.registerMock('./course', courseStub);
+    mockery.registerMock('three', threeStub);
 
     mockery.registerAllowable('../lib/jump_drive');
 
@@ -36,7 +39,7 @@ describe('jumpDrive', function () {
   it("plots a course", function () {
     jumpTo(shipStub, sceneStub)(planetStub);
 
-    courseStub.should.have.been.calledWith(sceneStub, shipStub.location, planetStub);
+    courseStub.should.have.been.calledWith(sceneStub, { mesh: { position: vectorStub } }, planetStub);
   });
 
   it("follows the course", function () {
@@ -51,15 +54,6 @@ describe('jumpDrive', function () {
     jumpTo(shipStub, sceneStub)(planetStub, nextStub);
 
     orbitStub.should.have.been.calledWith(shipStub, planetStub, Math.PI);
-  });
-
-  it("sets the ship's location when it enters orbit", function () {
-    followStub.callsArg(2);
-    orbitStub.callsArgWith(3, exitStub);
-
-    jumpTo(shipStub, sceneStub)(planetStub, nextStub);
-
-    shipStub.location.should.equal(planetStub);
   });
 
   it("calls next when it enters orbit", function () {
@@ -87,5 +81,15 @@ describe('jumpDrive', function () {
     exitStub.should.have.been.calledWith(Math.PI);
 
     followStub.should.have.been.calledTwice;
+  });
+
+  it("plots the course from the current location", function () {
+    var drive = jumpTo(shipStub, sceneStub);
+
+    drive(planetStub, nextStub);
+    drive(planetStub, nextStub);
+
+    courseStub.should.have.been.calledTwice;
+    courseStub.should.have.been.calledWith(sceneStub, planetStub, planetStub);
   });
 });
