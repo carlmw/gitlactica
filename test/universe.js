@@ -185,5 +185,18 @@ describe('Universe', function () {
 
       layoutStub.should.have.been.called;
     });
+
+    it("calls reform when client receives a complexity message", function () {
+      var reformMock = sinon.mock();
+
+      systemStub.returns({
+        reform: reformMock
+      });
+
+      new Universe(sceneStub);
+
+      reformMock
+        .withArgs('terry/repo', 2000);
+    });
   });
 });
