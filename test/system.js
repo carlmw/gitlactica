@@ -24,9 +24,9 @@ describe('System', function () {
         on: function () {}
       });
 
-      system.form({ full_name: 'bob/repo' });
+      system.form({ full_name: 'bob/repo', language: 'JavaScript' });
 
-      planetStub.should.have.been.calledWith(sceneStub, { full_name: 'bob/repo' });
+      planetStub.should.have.been.calledWith(sceneStub, 'bob/repo', 'JavaScript');
     });
   });
 
@@ -37,7 +37,7 @@ describe('System', function () {
             on: function () {}
           });
 
-      planetStub.withArgs(sceneStub, { full_name: 'terry/repo' }).returns(repoPlanetStub);
+      planetStub.returns(repoPlanetStub);
       system.form({ full_name: 'terry/repo' });
       system.layout();
 
@@ -52,7 +52,7 @@ describe('System', function () {
           repoPlanetStub = sinon.stub(),
           system = new System(sceneStub, subspace);
 
-      planetStub.withArgs(sceneStub, { full_name: 'bob/repo' }).returns(repoPlanetStub);
+      planetStub.returns(repoPlanetStub);
 
       subspace.on('hail:ship', hailStub);
       system.form({ full_name: 'bob/repo' });
