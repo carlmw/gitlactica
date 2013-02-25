@@ -45,6 +45,38 @@ describe('System', function () {
     });
   });
 
+  describe('#reform', function () {
+    it("scales planet correctly", function () {
+      var repoPlanetStub = {
+            scale: sinon.stub()
+          },
+          system = new System(sceneStub, {
+            on: function () {}
+          });
+
+      planetStub.returns(repoPlanetStub);
+      system.form({ full_name: 'some/repo' });
+      system.reform('some/repo', 1000);
+
+      repoPlanetStub.scale.should.have.been.calledWith(1);
+    });
+
+    it("applies a minimum scale of 0.2", function () {
+      var repoPlanetStub = {
+            scale: sinon.stub()
+          },
+          system = new System(sceneStub, {
+            on: function () {}
+          });
+
+      planetStub.returns(repoPlanetStub);
+      system.form({ full_name: 'some/repo' });
+      system.reform('some/repo', 0);
+
+      repoPlanetStub.scale.should.have.been.calledWith(0.2);
+    });
+  });
+
   describe("responding to a ship", function () {
     it("sends a reference to itself", function () {
       var subspace = new SubspaceChannel(),
