@@ -2,24 +2,23 @@
   "name": "Gitlactica",
   "version": "0.0.1",
   "dependencies": {
-    "three": "*",
-    "tween": "*",
-    "raf-component": "*",
-    "lodash": "*",
+    "three": "~0.56.4",
+    "tween": "~0.8.0",
+    "raf-component": "0.0.1",
     "emitter": "https://github.com/component/emitter/tarball/master",
-    "seed-random": "*",
-    "d3": "*",
-    "queue-async": "*"
+    "seed-random": "~1.0.1",
+    "d3": "~3.0.6",
+    "queue-async": "~1.0.1"
   },
   "devDependencies": {
-    "mocha": "*",
-    "chai": "*",
-    "browserify": "*",
-    "mockery": "*",
-    "sinon": "*",
-    "sinon-chai": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-shell": "*",
+    "mocha": "~1.8.1",
+    "chai": "~1.5.0",
+    "browserify": "~2.2.5",
+    "mockery": "~1.4.0",
+    "sinon": "~1.6.0",
+    "sinon-chai": "~2.3.1",
+    "grunt-contrib-watch": "~0.2.0",
+    "grunt-shell": "~0.2.1",
     "grunt": "~0.4.0"
   }
 }
