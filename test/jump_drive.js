@@ -92,4 +92,14 @@ describe('jumpDrive', function () {
     courseStub.should.have.been.calledTwice;
     courseStub.should.have.been.calledWith(sceneStub, planetStub, planetStub);
   });
+
+  describe('#location', function () {
+    it("returns the current location of the ship", function () {
+      var drive = jumpTo(shipStub, sceneStub);
+
+      drive(planetStub, nextStub);
+
+      drive.location().should.equal(planetStub);
+    });
+  });
 });
