@@ -71,27 +71,26 @@ describe("Ship", function () {
   });
 
   describe('#fire', function () {
-    it("fires the ships weapons", function () {
+    it("adds weapon animations to the queue", function () {
       var planetStub = sinon.stub(),
-          fireMock = sinon.mock();
-
-      fireMock.withArgs(100, 50, planetStub);
+          deferMock = sinon.mock(),
+          fireStub = sinon.stub();
 
       weaponStub.returns({
-        fire: fireMock
+        fire: fireStub
       });
 
-      jumpDriveStub.returns({
-        location: function () {
-          return planetStub;
-        }
+      queueStub.returns({
+        defer: deferMock
       });
+
+      deferMock.withArgs(fireStub, 100, 50, planetStub);
 
       var ship = new Ship(sceneStub);
 
-      ship.fire(100, 50);
+      ship.fire(100, 50, planetStub);
 
-      fireMock.verify();
+      deferMock.verify();
     });
   });
 });
