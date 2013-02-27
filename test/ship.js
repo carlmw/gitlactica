@@ -7,10 +7,7 @@ var threeStub = {
       },
       Vector3: function () {}
     },
-    weaponStub = function () {
-      this.fire = function () {};
-      this.tractor = function () {};
-    },
+    weaponStub = sinon.stub(),
     jumpDriveInstanceStub = sinon.stub(),
     jumpDriveStub = sinon.stub().returns(jumpDriveInstanceStub),
     queueStub = sinon.stub(),
@@ -31,6 +28,12 @@ describe("Ship", function () {
     mockery.registerAllowable('../lib/ship');
 
     Ship = require('../lib/ship');
+  });
+
+  beforeEach(function () {
+    weaponStub.returns({
+      fire: function () {}
+    });
   });
 
   afterEach(function () {
@@ -64,6 +67,31 @@ describe("Ship", function () {
       ship.orbit(planetStub);
 
       deferStub.should.have.been.calledWith(jumpDriveInstanceStub, planetStub);
+    });
+  });
+
+  describe('#fire', function () {
+    it("fires the ships weapons", function () {
+      var planetStub = sinon.stub(),
+          fireMock = sinon.mock();
+
+      fireMock.withArgs(100, 50, planetStub);
+
+      weaponStub.returns({
+        fire: fireMock
+      });
+
+      jumpDriveStub.returns({
+        location: function () {
+          return planetStub;
+        }
+      });
+
+      var ship = new Ship(sceneStub);
+
+      ship.fire(100, 50);
+
+      fireMock.verify();
     });
   });
 });
