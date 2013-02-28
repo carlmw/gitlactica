@@ -15,14 +15,17 @@ describe('Planet', function () {
       },
       threeMock = {
         SphereGeometry: function () {},
-        Object3D: sinon.stub().returns({
-          add: function () {}
-        }),
+        Object3D: function () {
+          return {
+            add: function () {}
+          };
+        },
         Mesh: function () {},
         ImageUtils: {
           loadTexture: function () {}
         },
-        ShaderMaterial: function () {}
+        ShaderMaterial: function () {},
+        PlaneGeometry: function () {}
       },
       configMock = {
         languages: {
@@ -49,6 +52,15 @@ describe('Planet', function () {
 
   after(function () {
     mockery.deregisterAll();
+  });
+
+  describe("initialisation", function () {
+    it("has a text label", function () {
+      var planeMock = sinon.mock(threeMock);
+
+      planeMock.expects('PlaneGeometry')
+        .withArgs(300, 50);
+    });
   });
 
   describe('#scale', function () {
