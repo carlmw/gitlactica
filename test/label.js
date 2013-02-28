@@ -12,7 +12,7 @@ describe('label', function () {
         fillText: function () {},
         measureText: function () {
           return {
-            width: 0
+            width: 100
           };
         },
         clearRect: function () {},
@@ -37,7 +37,10 @@ describe('label', function () {
       },
       threeMock = {
         DataTexture: function () {},
-        RGBFormat: sinon.stub()
+        PlaneGeometry: function () {},
+        RGBFormat: sinon.stub(),
+        MeshLambertMaterial: function () {},
+        Mesh: function () {}
       };
 
   before(function () {
@@ -131,9 +134,8 @@ describe('label', function () {
       measureStub.restore();
     });
 
-    it("returns a data texture", function () {
+    it("creates a data texture", function () {
       var pixelStub = sinon.stub(),
-          textureStub = sinon.stub(),
           textureMock = sinon.mock(threeMock);
 
       sinon.stub(contextStub, 'getImageData')
@@ -141,13 +143,64 @@ describe('label', function () {
 
       textureMock
         .expects('DataTexture')
-        .withArgs(pixelStub, 300, 50, threeMock.RGBFormat)
-        .returns(textureStub);
+        .withArgs(pixelStub, 300, 50, threeMock.RGBFormat);
 
-      label('test').should.equal(textureStub);
+      label('test');
 
       textureMock.verify();
       contextStub.getImageData.restore();
+    });
+  });
+
+  describe("generating the mesh", function () {
+    it("creates a plane", function () {
+      var planeMock = sinon.mock(threeMock);
+
+      planeMock
+        .expects('PlaneGeometry')
+        .withArgs(100, 50, 1, 1);
+
+      label('test');
+
+      planeMock.verify();
+    });
+
+    it("generates a material", function () {
+      var texture = sinon.stub(),
+          textureStub = sinon.stub(threeMock, 'DataTexture').returns(texture),
+          materialMock = sinon.mock(threeMock);
+
+      materialMock
+        .expects('MeshLambertMaterial')
+        .withArgs({
+          map: texture
+        });
+
+      label('test');
+
+      materialMock.verify();
+      textureStub.restore();
+    });
+
+    it("returns a mesh", function () {
+      var material = sinon.stub(),
+          geo = sinon.stub(),
+          materialStub = sinon.stub(threeMock, 'MeshLambertMaterial').returns(material),
+          geoStub = sinon.stub(threeMock, 'PlaneGeometry').returns(geo),
+          meshMock = sinon.mock(threeMock),
+          mesh = sinon.stub();
+
+      meshMock
+        .expects('Mesh')
+        .withArgs(geo, material)
+        .returns(mesh);
+
+      label('test').should.equal(mesh);
+
+      meshMock.verify();
+
+      materialStub.restore();
+      geoStub.restore();
     });
   });
 });
