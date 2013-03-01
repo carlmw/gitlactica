@@ -43,6 +43,7 @@ describe('Planet', function () {
     mockery.registerAllowable('./shaders');
     mockery.registerMock('three', threeMock);
     mockery.registerMock('tween', tweenMock);
+    mockery.registerMock('./label', function () {});
     mockery.registerMock('../config', configMock);
 
     mockery.enable();

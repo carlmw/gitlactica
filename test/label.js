@@ -16,7 +16,13 @@ describe('label', function () {
           };
         },
         clearRect: function () {},
-        getImageData: function () {}
+        getImageData: function () {
+          return {
+            data: {
+              buffer: [255, 0, 0, 0]
+            }
+          };
+        }
       },
       canvasStub = {
         getContext: sinon.stub()
@@ -38,9 +44,15 @@ describe('label', function () {
       threeMock = {
         DataTexture: function () {},
         PlaneGeometry: function () {},
-        RGBFormat: sinon.stub(),
-        MeshLambertMaterial: function () {},
-        Mesh: function () {}
+        RGBAFormat: sinon.stub(),
+        MeshBasicMaterial: function () {},
+        Mesh: function () {
+          return {
+            position: {
+              set: function () {}
+            }
+          };
+        }
       };
 
   before(function () {
@@ -126,7 +138,12 @@ describe('label', function () {
 
       pixelMock
         .expects('getImageData')
-        .withArgs(0, 0, 200, 50);
+        .withArgs(0, 0, 200, 50)
+        .returns({
+          data: {
+            buffer: [255, 0, 0, 0]
+          }
+        });
 
       label('text');
 
@@ -138,17 +155,13 @@ describe('label', function () {
       var pixelStub = sinon.stub(),
           textureMock = sinon.mock(threeMock);
 
-      sinon.stub(contextStub, 'getImageData')
-        .returns(pixelStub);
-
       textureMock
         .expects('DataTexture')
-        .withArgs(pixelStub, 300, 50, threeMock.RGBFormat);
+        .withArgs(new Uint8Array([255, 0, 0, 0]), 100, 50, threeMock.RGBAFormat);
 
       label('test');
 
       textureMock.verify();
-      contextStub.getImageData.restore();
     });
   });
 
@@ -158,7 +171,7 @@ describe('label', function () {
 
       planeMock
         .expects('PlaneGeometry')
-        .withArgs(100, 50, 1, 1);
+        .withArgs(400, 200, 1, 1);
 
       label('test');
 
@@ -171,9 +184,10 @@ describe('label', function () {
           materialMock = sinon.mock(threeMock);
 
       materialMock
-        .expects('MeshLambertMaterial')
+        .expects('MeshBasicMaterial')
         .withArgs({
-          map: texture
+          map: texture,
+          transparent: true
         });
 
       label('test');
@@ -182,13 +196,31 @@ describe('label', function () {
       textureStub.restore();
     });
 
+    it("sets the position of the mesh", function () {
+      var setMock = sinon.mock();
+
+      sinon.stub(threeMock, 'Mesh').returns({
+        position: {
+          set: setMock
+        }
+      });
+
+      setMock
+        .withArgs(0, -1000, 0);
+
+      label('test');
+
+      setMock.verify();
+      threeMock.Mesh.restore();
+    });
+
     it("returns a mesh", function () {
       var material = sinon.stub(),
           geo = sinon.stub(),
-          materialStub = sinon.stub(threeMock, 'MeshLambertMaterial').returns(material),
+          materialStub = sinon.stub(threeMock, 'MeshBasicMaterial').returns(material),
           geoStub = sinon.stub(threeMock, 'PlaneGeometry').returns(geo),
           meshMock = sinon.mock(threeMock),
-          mesh = sinon.stub();
+          mesh = { position: { set: function () {} } };
 
       meshMock
         .expects('Mesh')
