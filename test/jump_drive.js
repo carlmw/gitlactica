@@ -39,7 +39,7 @@ describe('jumpDrive', function () {
   it("plots a course", function () {
     jumpTo(shipStub, sceneStub)(planetStub);
 
-    courseStub.should.have.been.calledWith(sceneStub, { mesh: { position: vectorStub } }, planetStub);
+    courseStub.should.have.been.calledWith(sceneStub, { pivot: { position: vectorStub } }, planetStub);
   });
 
   it("follows the course", function () {

@@ -12,7 +12,7 @@ describe('orbitAllocator', function () {
       orbitAllocator;
 
   function Planet (x, y) {
-    this.mesh = {
+    this.pivot = {
       position: {
         x: x,
         y: y,
@@ -97,8 +97,8 @@ describe('orbitAllocator', function () {
 
       orbitAllocator(['herp'], [planet]);
 
-      planet.mesh.position.x.should.equal(-1000);
-      planet.mesh.position.y.should.equal(-1000);
+      planet.pivot.position.x.should.equal(-1000);
+      planet.pivot.position.y.should.equal(-1000);
     });
 
     it("adds a little entropy to each point's x, y", function () {
@@ -120,8 +120,8 @@ describe('orbitAllocator', function () {
 
       orbitAllocator(['derp'], [planet]);
 
-      planet.mesh.position.x.should.equal(-600);
-      planet.mesh.position.y.should.equal(-600);
+      planet.pivot.position.x.should.equal(-600);
+      planet.pivot.position.y.should.equal(-600);
     });
 
     it("adds a little entropy to each point's z");
