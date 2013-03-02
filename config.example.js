@@ -20,5 +20,12 @@ module.exports = {
     PHP: {
       texture: 'textures/php.jpg'
     }
+  },
+  sky_box: 'textures/stars.jpg',
+  label: {
+    width: 300,
+    height: 50,
+    font: '20pt arial',
+    fillStyle: '#ffffff'
   }
 };
