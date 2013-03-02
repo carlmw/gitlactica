@@ -27,6 +27,7 @@ describe('Planet', function () {
         ShaderMaterial: function () {},
         PlaneGeometry: function () {}
       },
+      labelMock = sinon.stub(),
       configMock = {
         languages: {
           Unknown: {
@@ -43,7 +44,7 @@ describe('Planet', function () {
     mockery.registerAllowable('./shaders');
     mockery.registerMock('three', threeMock);
     mockery.registerMock('tween', tweenMock);
-    mockery.registerMock('./label', function () {});
+    mockery.registerMock('./label', labelMock);
     mockery.registerMock('../config', configMock);
 
     mockery.enable();
@@ -56,11 +57,25 @@ describe('Planet', function () {
   });
 
   describe("initialisation", function () {
-    it("has a text label", function () {
-      var planeMock = sinon.mock(threeMock);
+    it("creates a text label", function () {
+      labelMock.reset();
+      
+      new Planet(sceneStub, 'bob/repo', 'JavaScript');
 
-      planeMock.expects('PlaneGeometry')
-        .withArgs(300, 50);
+      labelMock.should.have.been.calledWith('repo');
+    });
+
+    it("add's the test label to the planet", function () {
+      var label = sinon.stub(),
+          addStub = sinon.stub(),
+          object3DStub = sinon.stub(threeMock, 'Object3D').returns({ add: addStub });
+      
+      labelMock.returns(label);
+
+      new Planet(sceneStub, 'bob/repo', 'JavaScript');
+
+      object3DStub.restore();
+      addStub.should.have.been.calledWith(label);
     });
   });
 
@@ -77,7 +92,7 @@ describe('Planet', function () {
         }
       });
 
-      var planet = new Planet(sceneStub, { repo: 'bob/repo', language: 'JavaScript' });
+      var planet = new Planet(sceneStub, 'bob/repo', 'JavaScript');
 
       planet.scale(3);
 

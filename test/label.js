@@ -119,7 +119,7 @@ describe('label', function () {
 
       fillMock
         .expects('fillText')
-        .withArgs('text', 0, 25, 300);
+        .withArgs('TEXT', 0, 25, 300);
 
       label('text');
 
@@ -128,12 +128,12 @@ describe('label', function () {
   });
 
   describe("generating the texture", function () {
-    it("extracts the pixel data from the canavs", function () {
+    it("extracts the pixel data from the canvas", function () {
       var pixelMock = sinon.mock(contextStub),
           measureStub = sinon.stub(contextStub, 'measureText');
 
       measureStub
-        .withArgs('text')
+        .withArgs('TEXT')
         .returns({ width: 200 });
 
       pixelMock
@@ -147,8 +147,8 @@ describe('label', function () {
 
       label('text');
 
-      pixelMock.verify();
       measureStub.restore();
+      pixelMock.verify();
     });
 
     it("creates a data texture", function () {
