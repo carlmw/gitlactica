@@ -24,8 +24,8 @@ module.exports = {
   sky_box: 'textures/stars.jpg',
   label: {
     width: 300,
-    height: 50,
-    font: '20pt arial',
+    height: 100,
+    font: '40pt ostrich',
     fillStyle: '#ffffff'
   }
 };
