@@ -27,5 +27,8 @@ module.exports = {
     height: 100,
     font: '40pt ostrich',
     fillStyle: '#ffffff'
+  },
+  ship: {
+    model: 'assets/freighter/models/freighter.dae'
   }
 };

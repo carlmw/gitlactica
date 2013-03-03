@@ -7,10 +7,16 @@ var threeStub = {
       },
       Vector3: function () {}
     },
+    colladaStub = sinon.stub(),
+    configStub = {
+      ship: { model: 'model.dae' }
+    },
     weaponStub = sinon.stub(),
     jumpDriveInstanceStub = sinon.stub(),
     jumpDriveStub = sinon.stub().returns(jumpDriveInstanceStub),
-    queueStub = sinon.stub(),
+    queueStub = sinon.stub().returns({
+      defer: function () {}
+    }),
     sceneStub = sinon.stub({ add: function () {} });
 
 describe("Ship", function () {
@@ -23,6 +29,8 @@ describe("Ship", function () {
     mockery.registerMock('queue-async', queueStub);
     mockery.registerMock('./weapon', weaponStub);
     mockery.registerMock('./jump_drive', jumpDriveStub);
+    mockery.registerMock('../vendor/collada_loader', colladaStub);
+    mockery.registerMock('../config', configStub);
     mockery.registerMock('./shaders', { ship: {} });
 
     mockery.registerAllowable('../lib/ship');
