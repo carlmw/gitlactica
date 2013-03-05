@@ -80,9 +80,7 @@ describe('Universe', function () {
 
       client.emit('repos', {
         login: 'bob',
-        repos: [{
-          full_name: 'bob/repo'
-        }]
+        repos: [{ full_name: 'bob/repo' }]
       });
 
       sendMock.verify();
@@ -111,9 +109,7 @@ describe('Universe', function () {
 
       client.emit('committers', {
         repo: 'bob/repo',
-        committers: [
-          { login: 'bob' }
-        ]
+        committers: [{ login: 'bob' }]
       });
 
       commisionMock.verify();
@@ -131,9 +127,7 @@ describe('Universe', function () {
 
       client.emit('committers', {
         repo: 'bob/repo',
-        committers: [
-          { login: 'bob' }
-        ]
+        committers: [{ login: 'bob' }]
       });
 
       dispatchStub.should.have.been.calledWith('bob', 'bob/repo');
@@ -158,14 +152,10 @@ describe('Universe', function () {
       new Universe(sceneStub);
 
       client.emit('repos', {
-        repos: [{
-          full_name: 'bob/repo'
-        }]
+        repos: [{ full_name: 'bob/repo' }]
       });
 
-      formStub.should.have.been.calledWith({
-        full_name: 'bob/repo'
-      });
+      formStub.should.have.been.calledWith({ full_name: 'bob/repo' });
     });
 
     it("performs a layout after it is notified of new repos", function () {
@@ -179,9 +169,7 @@ describe('Universe', function () {
       new Universe(sceneStub, cameraStub);
 
       client.emit('repos', {
-        repos: [{
-          full_name: 'bob/repo'
-        }]
+        repos: [{ full_name: 'bob/repo' }]
       });
 
       layoutStub.should.have.been.called;
@@ -190,9 +178,7 @@ describe('Universe', function () {
     it("calls reform when client receives a complexity message", function () {
       var reformMock = sinon.mock();
 
-      systemStub.returns({
-        reform: reformMock
-      });
+      systemStub.returns({ reform: reformMock });
 
       new Universe(sceneStub, cameraStub);
 
