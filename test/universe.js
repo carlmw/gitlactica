@@ -3,6 +3,7 @@ var emitter = require('emitter');
 describe('Universe', function () {
   var Universe,
       sceneStub = sinon.stub(),
+      cameraStub = sinon.stub(),
       configStub = {
         host: 'sockethost:80',
         github: {
@@ -55,7 +56,7 @@ describe('Universe', function () {
   });
 
   it("creates a websocket client", function () {
-    new Universe(sceneStub);
+    new Universe(sceneStub, cameraStub);
 
     clientCallStub.should.have.been.calledWith('sockethost:80');
   });
@@ -63,7 +64,7 @@ describe('Universe', function () {
   describe("client messages", function () {
 
     it("sends a login message to the client when it connects", function () {
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       client.emit('open');
       
@@ -71,7 +72,7 @@ describe('Universe', function () {
     });
 
     it("subscribes to repos", function () {
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       var sendMock = client.send = sinon.mock();
 
@@ -91,7 +92,7 @@ describe('Universe', function () {
   describe("ship yard", function () {
 
     it("passes a subspace channel", function () {
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       shipYardStub.should.have.been.calledWith(sceneStub, subspaceStub.returnValue);
     });
@@ -106,7 +107,7 @@ describe('Universe', function () {
 
       commisionMock.withArgs(['bob']);
 
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       client.emit('committers', {
         repo: 'bob/repo',
@@ -126,7 +127,7 @@ describe('Universe', function () {
         dispatch: dispatchStub
       });
 
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       client.emit('committers', {
         repo: 'bob/repo',
@@ -141,7 +142,7 @@ describe('Universe', function () {
 
   describe("system", function () {
     it("passes the subspace channel", function () {
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       systemStub.should.have.been.calledWith(sceneStub, subspaceStub.returnValue);
     });
@@ -175,7 +176,7 @@ describe('Universe', function () {
         layout: layoutStub
       });
 
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       client.emit('repos', {
         repos: [{
@@ -193,7 +194,7 @@ describe('Universe', function () {
         reform: reformMock
       });
 
-      new Universe(sceneStub);
+      new Universe(sceneStub, cameraStub);
 
       reformMock
         .withArgs('terry/repo', 2000);
