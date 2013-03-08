@@ -23,7 +23,7 @@ describe('orbitAllocator', function () {
 
   before(function () {
     mockery.registerMock('../config', {
-      orbitRadius: 2000
+      orbit: { radius: 2000 }
     });
 
     mockery.registerMock('seed-random', function () {
