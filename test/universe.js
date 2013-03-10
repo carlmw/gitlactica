@@ -22,7 +22,8 @@ describe('Universe', function () {
         this.send = sinon.stub();
         emitter(this);
         client = this;
-      };
+      },
+      keyboardNavStub = sinon.stub();
 
   before(function () {
     mockery.registerAllowable('../lib/universe');
@@ -33,6 +34,7 @@ describe('Universe', function () {
     mockery.registerMock('../config', configStub);
     mockery.registerMock('./orbit_allocator', orbitAllocatorStub);
     mockery.registerMock('./system', systemStub);
+    mockery.registerMock('./keyboard_navigation', keyboardNavStub);
 
     Universe = require('../lib/universe');
 
@@ -59,6 +61,14 @@ describe('Universe', function () {
     new Universe(sceneStub, cameraStub);
 
     clientCallStub.should.have.been.calledWith('sockethost:80');
+  });
+
+  it("creates a keyboard navigator", function () {
+    keyboardNavStub.reset();
+
+    new Universe(sceneStub, cameraStub);
+
+    keyboardNavStub.should.have.been.calledWith(subspaceStub.returnValue);
   });
 
   describe("client messages", function () {
