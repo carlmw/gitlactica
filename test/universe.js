@@ -14,7 +14,7 @@ describe('Universe', function () {
       orbitAllocatorStub = sinon.stub(),
       shipYardStub = sinon.stub(),
       systemStub = sinon.stub(),
-      subspaceStub = sinon.stub().returns(sinon.stub()),
+      subspaceStub = sinon.stub(),
       clientCallStub = sinon.stub(),
       client,
       clientStub = function (host) {
@@ -23,6 +23,7 @@ describe('Universe', function () {
         emitter(this);
         client = this;
       },
+      cameraControllerStub = sinon.stub(),
       keyboardNavStub = sinon.stub();
 
   before(function () {
@@ -35,6 +36,7 @@ describe('Universe', function () {
     mockery.registerMock('./orbit_allocator', orbitAllocatorStub);
     mockery.registerMock('./system', systemStub);
     mockery.registerMock('./keyboard_navigation', keyboardNavStub);
+    mockery.registerMock('./camera_controller', cameraControllerStub);
 
     Universe = require('../lib/universe');
 
@@ -46,6 +48,8 @@ describe('Universe', function () {
   });
 
   beforeEach(function () {
+    subspaceStub.returns(function () {});
+
     shipYardStub.returns({
       commision: function () {},
       dispatch: function () {}
@@ -69,6 +73,16 @@ describe('Universe', function () {
     new Universe(sceneStub, cameraStub);
 
     keyboardNavStub.should.have.been.calledWith(subspaceStub.returnValue);
+  });
+
+  it("creates a camera controller with the camera and broker", function () {
+    var subspace = sinon.stub();
+    subspaceStub.returns(subspace);
+    cameraControllerStub.reset();
+
+    new Universe(sceneStub, cameraStub);
+
+    cameraControllerStub.should.have.been.calledWith(cameraStub, subspace);
   });
 
   describe("client messages", function () {
