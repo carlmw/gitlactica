@@ -5,7 +5,7 @@
     "three": "~0.56.4",
     "tween": "~0.8.0",
     "raf-component": "0.0.1",
-    "emitter": "https://github.com/component/emitter/tarball/master",
+    "emitter": "https://github.com/component/emitter/tarball/caf91cfc02e41d36297487f6cd1a6af77a43f92a",
     "seed-random": "~1.0.1",
     "d3": "~3.0.6",
     "queue-async": "~1.0.1",
