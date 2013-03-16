@@ -9,7 +9,8 @@
     "seed-random": "~1.0.1",
     "d3": "~3.0.6",
     "queue-async": "~1.0.1",
-    "lodash": "~1.0.1"
+    "lodash": "~1.0.1",
+    "handlebars": "~1.0.10"
   },
   "devDependencies": {
     "mocha": "~1.8.1",

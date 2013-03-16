@@ -23,6 +23,7 @@ describe('Universe', function () {
         emitter(this);
         client = this;
       },
+      hud = sinon.stub(),
       cameraControllerStub = sinon.stub(),
       keyboardNavStub = sinon.stub();
 
@@ -37,6 +38,7 @@ describe('Universe', function () {
     mockery.registerMock('./system', systemStub);
     mockery.registerMock('./keyboard_navigation', keyboardNavStub);
     mockery.registerMock('./camera_controller', cameraControllerStub);
+    mockery.registerMock('./hud', hud);
 
     Universe = require('../lib/universe');
 
@@ -85,8 +87,17 @@ describe('Universe', function () {
     cameraControllerStub.should.have.been.calledWith(cameraStub, subspace);
   });
 
-  describe("client messages", function () {
+  it("creates a hud", function () {
+    var subspace = sinon.stub();
+    subspaceStub.returns(subspace);
+    hud.reset();
 
+    new Universe(sceneStub, cameraStub);
+
+    hud.should.have.been.calledWith(subspace);
+  });
+
+  describe("client messages", function () {
     it("sends a login message to the client when it connects", function () {
       new Universe(sceneStub, cameraStub);
 
@@ -112,7 +123,6 @@ describe('Universe', function () {
   });
 
   describe("ship yard", function () {
-
     it("passes a subspace channel", function () {
       new Universe(sceneStub, cameraStub);
 
