@@ -12,7 +12,7 @@ describe("HUD", function () {
       HUD;
 
   mockery.registerMock('handlebars', handlebars);
-  mockery.registerMock('./utils', { global: function() { return global; } });
+  mockery.registerMock('./util', { global: function() { return global; } });
   mockery.registerAllowable('../lib/hud.js');
   mockery.enable();
 
