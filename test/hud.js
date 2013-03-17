@@ -1,7 +1,7 @@
 describe("HUD", function () {
   var global = {
         document: {
-          createElement: function () {}
+          createElement: function () { return {}; }
         }
       },
       handlebars = {
@@ -24,11 +24,21 @@ describe("HUD", function () {
     it("is a div", function () {
       var documentMock = sinon.mock(global.document);
       documentMock.expects('createElement')
-        .withArgs('div');
+        .withArgs('div')
+        .returns({});
 
       new HUD();
 
       documentMock.verify();
+    });
+
+    it("has a class of 'hud'", function () {
+      var el = {};
+      sinon.stub(global.document, 'createElement').returns(el);
+
+      new HUD();
+      el.className.should.equal('hud');
+      global.document.createElement.restore();
     });
 
     it("is accessible", function () {
