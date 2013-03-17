@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'ostrich';
+  src: url(../../assets/ostrich-black-webfont.woff);
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+body {
+  background: #333;
+  background-size: 100% auto;
+  font-family: ostrich;
+}
+.hud {
+  font: 6rem ostrich;
+  color: #fff;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
