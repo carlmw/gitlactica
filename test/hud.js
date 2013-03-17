@@ -1,9 +1,11 @@
 describe("HUD", function () {
   var global = {
         document: {
-          createElement: function () { return {}; }
+          createElement: function () { return {}; },
+          body: { appendChild: function () {} }
         }
       },
+      subspace = { on: function () {} },
       handlebars = {
         compile: function () { return function () {}; }
       },
@@ -33,7 +35,7 @@ describe("HUD", function () {
     });
 
     it("has a class of 'hud'", function () {
-      var el = {};
+      var el = { className: '' };
       sinon.stub(global.document, 'createElement').returns(el);
 
       new HUD();
@@ -46,6 +48,19 @@ describe("HUD", function () {
       sinon.stub(global.document, 'createElement').returns(el);
 
       new HUD().el.should.equal(el);
+      global.document.createElement.restore();
+    });
+
+    it("appends the element to the body", function () {
+      var bodyMock = sinon.mock(global.document.body),
+          el = sinon.stub();
+      sinon.stub(global.document, 'createElement').returns(el);
+      bodyMock.expects('appendChild')
+        .withArgs(el);
+
+      new HUD();
+
+      bodyMock.verify();
       global.document.createElement.restore();
     });
   });
