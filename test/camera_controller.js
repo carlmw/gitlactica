@@ -22,7 +22,7 @@ describe('CameraController', function () {
 
   describe("when a show:planet event is received", function () {
     var controller,
-        planetStub = { pivot: { position: sinon.stub() } },
+        planetStub = { planet: { pivot: { position: sinon.stub() } } },
         subspace;
 
     beforeEach(function () {
@@ -33,7 +33,7 @@ describe('CameraController', function () {
     it("starts a planet reveal animation", function () {
       subspace.emit('show:planet', planetStub);
       
-      revealPlanet.should.have.been.calledWith(cameraStub, planetStub.pivot.position);
+      revealPlanet.should.have.been.calledWith(cameraStub, planetStub.planet.pivot.position);
     });
 
     it("terminates any running animation", function () {

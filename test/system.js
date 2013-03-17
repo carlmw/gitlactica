@@ -129,9 +129,9 @@ describe('System', function () {
         subspace.emit('next:planet');
         subspace.emit('previous:planet');
 
-        onSpy.args[0][0].should.equal(rimmerWorld);
-        onSpy.args[1][0].should.equal(klendathu);
-        onSpy.args[2][0].should.equal(rimmerWorld);
+        onSpy.args[0][0].planet.should.equal(rimmerWorld);
+        onSpy.args[1][0].planet.should.equal(klendathu);
+        onSpy.args[2][0].planet.should.equal(rimmerWorld);
       });
     });
 
