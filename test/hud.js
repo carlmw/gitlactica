@@ -29,7 +29,7 @@ describe("HUD", function () {
         .withArgs('div')
         .returns({});
 
-      new HUD();
+      new HUD(subspace);
 
       documentMock.verify();
     });
@@ -38,7 +38,7 @@ describe("HUD", function () {
       var el = { className: '' };
       sinon.stub(global.document, 'createElement').returns(el);
 
-      new HUD();
+      new HUD(subspace);
       el.className.should.equal('hud');
       global.document.createElement.restore();
     });
@@ -47,7 +47,7 @@ describe("HUD", function () {
       var el = sinon.stub();
       sinon.stub(global.document, 'createElement').returns(el);
 
-      new HUD().el.should.equal(el);
+      new HUD(subspace).el.should.equal(el);
       global.document.createElement.restore();
     });
 
@@ -58,7 +58,7 @@ describe("HUD", function () {
       bodyMock.expects('appendChild')
         .withArgs(el);
 
-      new HUD();
+      new HUD(subspace);
 
       bodyMock.verify();
       global.document.createElement.restore();
@@ -87,7 +87,7 @@ describe("HUD", function () {
         .withArgs(HUD.template)
         .returns(function () {});
 
-      new HUD().render();
+      new HUD(subspace).render();
 
       handlebarsMock.verify();
       handlebarsMock.restore();
@@ -98,7 +98,7 @@ describe("HUD", function () {
       sinon.stub(handlebars, 'compile').returns(templateMock);
       templateMock.withArgs({ derp: 'herp'});
 
-      new HUD().render({ derp: 'herp' });
+      new HUD(subspace).render({ derp: 'herp' });
 
       templateMock.verify();
       handlebars.compile.restore();
@@ -108,9 +108,27 @@ describe("HUD", function () {
       sinon.stub(handlebars, 'compile').returns(function () {
         return 'rendered';
       });
-      new HUD().render();
+      new HUD(subspace).render();
       element.innerHTML.should.equal('rendered');
       handlebars.compile.restore();
+    });
+  });
+
+  describe("when a planet is shown", function () {
+    it("updates the hud", function () {
+      var el = { innerHTML: '', className: '' },
+          templateStub = sinon.stub();
+      sinon.stub(global.document, 'createElement').returns(el);
+      sinon.stub(handlebars, 'compile').returns(templateStub);
+      sinon.stub(subspace, 'on').callsArgWith(1, { name: 'gitlactica' });
+
+      templateStub.withArgs({ name: 'gitlactica' }).returns('gitlactica');
+
+      new HUD(subspace);
+      el.innerHTML.should.equal('gitlactica');
+
+      global.document.createElement.restore();
+      subspace.on.restore();
     });
   });
 });
