@@ -102,7 +102,7 @@ describe('Universe', function () {
       new Universe(sceneStub, cameraStub);
 
       client.emit('open');
-      
+
       client.send.should.have.been.calledWith('login', { login: 'terry' });
     });
 
@@ -165,6 +165,62 @@ describe('Universe', function () {
       });
 
       dispatchStub.should.have.been.calledWith('bob', 'bob/repo');
+    });
+
+    it("dispatches ships to a planet after a commit", function () {
+      var dispatchMock = sinon.mock();
+
+      dispatchMock.withArgs('bob', 'bob/repo');
+
+      shipYardStub.returns({
+        commision: function () {},
+        attack: function () {},
+        dispatch: dispatchMock
+      });
+
+      new Universe(sceneStub, cameraStub);
+
+      client.emit('commits', {
+        repo: 'bob/repo',
+        commits: [
+          {
+            committer: 'bob',
+            added: {},
+            modified: {},
+            removed: {}
+          }
+        ]
+      });
+
+      dispatchMock.verify();
+    });
+
+    it("orders the ship to fire it's weapons on arrival", function () {
+      var attackMock = sinon.mock();
+
+      attackMock.withArgs('bob', 3, 2);
+
+      shipYardStub.returns({
+        commision: function () {},
+        dispatch: function () {},
+        attack: attackMock
+      });
+
+      new Universe(sceneStub, cameraStub);
+
+      client.emit('commits', {
+        repo: 'bob/repo',
+        commits: [
+          {
+            committer: 'bob',
+            added: { JavaScript: ["foo.js", "bar.js"] },
+            modified: { JavaScript: ["baz.js"] },
+            removed: { JavaScript: ["bin.js"] }
+          }
+        ]
+      });
+
+      attackMock.verify();
     });
   });
 
