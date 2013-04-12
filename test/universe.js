@@ -50,7 +50,9 @@ describe('Universe', function () {
   });
 
   beforeEach(function () {
-    subspaceStub.returns(function () {});
+    subspaceStub.returns({
+      emit: function () {}
+    });
 
     shipYardStub.returns({
       commision: function () {},
@@ -166,8 +168,63 @@ describe('Universe', function () {
 
       dispatchStub.should.have.been.calledWith('bob', 'bob/repo');
     });
+  });
 
-    it("dispatches ships to a planet after a commit", function () {
+  describe("system", function () {
+    it("passes the subspace channel", function () {
+      new Universe(sceneStub, cameraStub);
+
+      systemStub.should.have.been.calledWith(sceneStub, subspaceStub.returnValue);
+    });
+
+    it("notified of new repos", function () {
+      var formStub = sinon.stub();
+
+      systemStub.returns({
+        form: formStub,
+        layout: function () {}
+      });
+
+      new Universe(sceneStub);
+
+      client.emit('repos', {
+        repos: [{ full_name: 'bob/repo' }]
+      });
+
+      formStub.should.have.been.calledWith({ full_name: 'bob/repo' });
+    });
+
+    it("performs a layout after it is notified of new repos", function () {
+      var layoutStub = sinon.stub();
+
+      systemStub.returns({
+        form: function () {},
+        layout: layoutStub
+      });
+
+      new Universe(sceneStub, cameraStub);
+
+      client.emit('repos', {
+        repos: [{ full_name: 'bob/repo' }]
+      });
+
+      layoutStub.should.have.been.called;
+    });
+
+    it("calls reform when client receives a complexity message", function () {
+      var reformMock = sinon.mock();
+
+      systemStub.returns({ reform: reformMock });
+
+      new Universe(sceneStub, cameraStub);
+
+      reformMock
+        .withArgs('terry/repo', 2000);
+    });
+  });
+
+  describe("when a set of commits is received", function () {
+    it("dispatches ships to the repo's planet", function () {
       var dispatchMock = sinon.mock();
 
       dispatchMock.withArgs('bob', 'bob/repo');
@@ -221,59 +278,6 @@ describe('Universe', function () {
       });
 
       attackMock.verify();
-    });
-  });
-
-  describe("system", function () {
-    it("passes the subspace channel", function () {
-      new Universe(sceneStub, cameraStub);
-
-      systemStub.should.have.been.calledWith(sceneStub, subspaceStub.returnValue);
-    });
-
-    it("notified of new repos", function () {
-      var formStub = sinon.stub();
-
-      systemStub.returns({
-        form: formStub,
-        layout: function () {}
-      });
-
-      new Universe(sceneStub);
-
-      client.emit('repos', {
-        repos: [{ full_name: 'bob/repo' }]
-      });
-
-      formStub.should.have.been.calledWith({ full_name: 'bob/repo' });
-    });
-
-    it("performs a layout after it is notified of new repos", function () {
-      var layoutStub = sinon.stub();
-
-      systemStub.returns({
-        form: function () {},
-        layout: layoutStub
-      });
-
-      new Universe(sceneStub, cameraStub);
-
-      client.emit('repos', {
-        repos: [{ full_name: 'bob/repo' }]
-      });
-
-      layoutStub.should.have.been.called;
-    });
-
-    it("calls reform when client receives a complexity message", function () {
-      var reformMock = sinon.mock();
-
-      systemStub.returns({ reform: reformMock });
-
-      new Universe(sceneStub, cameraStub);
-
-      reformMock
-        .withArgs('terry/repo', 2000);
     });
   });
 });

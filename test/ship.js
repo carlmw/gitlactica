@@ -1,4 +1,4 @@
-var threeStub = {
+var three = {
       ShaderMaterial: function () {},
       CubeGeometry: function () {},
       Mesh: function () {},
@@ -7,17 +7,20 @@ var threeStub = {
       },
       Vector3: function () {}
     },
-    colladaStub = sinon.stub(),
-    configStub = {
+    collada = sinon.stub(),
+    config = {
       ship: { model: 'model.dae' }
     },
-    weaponStub = sinon.stub(),
-    jumpDriveInstanceStub = sinon.stub(),
-    jumpDriveStub = sinon.stub().returns(jumpDriveInstanceStub),
-    queueStub = sinon.stub().returns({
+    weapon = sinon.stub(),
+    location = sinon.stub(),
+    jumpDriveInstance = sinon.stub(),
+    jumpDrive = sinon.stub().returns(jumpDriveInstance),
+    queue = sinon.stub().returns({
       defer: function () {}
     }),
-    sceneStub = sinon.stub({ add: function () {} });
+    scene = sinon.stub({ add: function () {} });
+
+jumpDriveInstance.location = function () { return location; };
 
 describe("Ship", function () {
   var Ship;
@@ -25,12 +28,12 @@ describe("Ship", function () {
   before(function () {
     mockery.enable();
 
-    mockery.registerMock('three', threeStub);
-    mockery.registerMock('queue-async', queueStub);
-    mockery.registerMock('./weapon', weaponStub);
-    mockery.registerMock('./jump_drive', jumpDriveStub);
-    mockery.registerMock('../vendor/collada_loader', colladaStub);
-    mockery.registerMock('../config', configStub);
+    mockery.registerMock('three', three);
+    mockery.registerMock('queue-async', queue);
+    mockery.registerMock('./weapon', weapon);
+    mockery.registerMock('./jump_drive', jumpDrive);
+    mockery.registerMock('../vendor/collada_loader', collada);
+    mockery.registerMock('../config', config);
     mockery.registerMock('./shaders', { ship: {} });
 
     mockery.registerAllowable('../lib/ship');
@@ -39,13 +42,13 @@ describe("Ship", function () {
   });
 
   beforeEach(function () {
-    weaponStub.returns({
+    weapon.returns({
       fire: function () {}
     });
   });
 
   afterEach(function () {
-    queueStub.reset();
+    queue.reset();
   });
 
   after(function () {
@@ -54,10 +57,10 @@ describe("Ship", function () {
 
   describe("constructor", function () {
     it("creates a queue to run tasks in series", function () {
-      new Ship(sceneStub);
+      new Ship(scene);
 
-      queueStub.should.have.been.calledWith(1);
-      queueStub.reset();
+      queue.should.have.been.calledWith(1);
+      queue.reset();
     });
   });
 
@@ -66,39 +69,15 @@ describe("Ship", function () {
       var planetStub = sinon.stub(),
           deferStub = sinon.stub();
 
-        queueStub.returns({
+        queue.returns({
           defer: deferStub
         });
 
-      var ship = new Ship(sceneStub);
+      var ship = new Ship(scene);
 
       ship.orbit(planetStub);
 
-      deferStub.should.have.been.calledWith(jumpDriveInstanceStub, planetStub);
-    });
-  });
-
-  describe('#fire', function () {
-    it("adds weapon animations to the queue", function () {
-      var planetStub = sinon.stub(),
-          deferMock = sinon.mock(),
-          fireStub = sinon.stub();
-
-      weaponStub.returns({
-        fire: fireStub
-      });
-
-      queueStub.returns({
-        defer: deferMock
-      });
-
-      deferMock.withArgs(fireStub, 100, 50, planetStub);
-
-      var ship = new Ship(sceneStub);
-
-      ship.fire(100, 50, planetStub);
-
-      deferMock.verify();
+      deferStub.should.have.been.calledWith(jumpDriveInstance, planetStub);
     });
   });
 });
