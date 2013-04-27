@@ -1,5 +1,5 @@
-var global = require('./lib/util').global();
+var window = require('./lib/util').global();
 
 global.addEventListener('load', function () {
-  require('./lib/gitlactica')(global.document.body);
+  require('./lib/gitlactica')(window.document.body);
 });

@@ -5,11 +5,13 @@
 ### Get and run the server
 [http://github.com/leocassarani/gitlactica-server](http://github.com/leocassarani/gitlactica-server)
 
-### Install the client
+### Run the client
     npm install
-    make browserify
+    grunt
     python -m SimpleHTTPServer
 
-## Run the tests
+## Development
+    grunt watch
 
-    make test
+## Run the tests
+    grunt simplemocha

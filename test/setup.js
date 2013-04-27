@@ -6,6 +6,7 @@ global.should = require('chai').should();
 global.expect = require('chai').expect;
 global.AssertionError = require('chai').AssertionError;
 global.mockery = mockery = require('mockery');
+require('sinon-mocha').enhance(global.sinon);
 
 global.swallow = function (thrower) {
     try {
@@ -14,3 +15,7 @@ global.swallow = function (thrower) {
 };
 
 global.chai.use(sinonChai);
+
+global.mockery.enable({
+  warnOnUnregistered: false
+});

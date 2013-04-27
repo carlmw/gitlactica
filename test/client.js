@@ -3,7 +3,7 @@ describe("Client", function () {
       WebSocketStub = sinon.stub(),
       globalStub = {
         WebSocket: WebSocketStub
-      };
+      },
       utilStub = {
         global: function () {
           return globalStub;
@@ -36,7 +36,7 @@ describe("Client", function () {
     it("sends a message to the socket", function () {
       var sendMock = sinon.mock(),
           client;
-      
+
       sendMock.withArgs(JSON.stringify({
         event: 'ping',
         data: 'pong'

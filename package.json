@@ -10,18 +10,22 @@
     "d3": "~3.0.6",
     "queue-async": "~1.0.1",
     "lodash": "~1.0.1",
-    "handlebars": "~1.0.10"
+    "handlebars": "~1.0.10",
+    "mousetrap": "0.0.1"
   },
   "devDependencies": {
-    "mocha": "~1.8.1",
+    "mocha": "~1.8.2",
     "chai": "~1.5.0",
-    "browserify": "~2.2.5",
+    "grunt": "~0.4.1",
     "mockery": "~1.4.0",
     "sinon": "~1.6.0",
+    "sinon-mocha": "0.0.3",
     "sinon-chai": "~2.3.1",
-    "grunt-contrib-watch": "~0.2.0",
-    "grunt-shell": "~0.2.1",
-    "grunt": "~0.4.0",
-    "mousetrap": "0.0.1"
+    "brfs": "0.0.2",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-jshint": "~0.3.0",
+    "grunt-browserify2": "~0.1.6",
+    "grunt-simple-mocha": "~0.4.0"
   }
 }
