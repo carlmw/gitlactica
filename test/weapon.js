@@ -4,8 +4,8 @@ describe('Weapon', function () {
       scene = sinon.stub(),
       planet = sinon.stub(),
       torpedo = sinon.stub(),
-      torpedoMock = sinon.stub().returns(torpedo),
-      bombardMock = sinon.stub(),
+      torpedoConstructor = sinon.stub().returns(torpedo),
+      bombard = sinon.stub(),
       queueMock = sinon.stub().returns({
         defer: function () {
           var args = Array.prototype.slice.call(arguments, 0);
@@ -16,51 +16,58 @@ describe('Weapon', function () {
         },
         await: sinon.stub().callsArg(0)
       }),
-      tractorMock = sinon.stub();
+      tractor = sinon.stub();
 
   before(function () {
-    mockery.registerMock('./torpedo', torpedoMock);
-    mockery.registerMock('./animation/bombard', bombardMock);
-    mockery.registerMock('./animation/tractor', tractorMock);
+    mockery.registerMock('./torpedo', torpedoConstructor);
+    mockery.registerMock('./animation/bombard', bombard);
+    mockery.registerMock('./animation/tractor', tractor);
     mockery.registerMock('queue-async', queueMock);
     Weapon = require('../lib/weapon');
   });
 
+  after(function () {
+    mockery.deregisterMock('./torpedo');
+    mockery.deregisterMock('./animation/bombard');
+    mockery.deregisterMock('./animation/tractor');
+    mockery.deregisterMock('queue-async');
+  });
+
   describe('#fire', function () {
     var weapon,
-        nextStub;
+        next;
 
     beforeEach(function () {
       weapon = new Weapon(ship, scene);
-      nextStub = sinon.stub();
+      next = sinon.stub();
       queueMock.reset();
     });
 
     it("creates a queue with 2 workers", function () {
-      weapon.fire(1, 1, planet, nextStub);
+      weapon.fire(1, 1, planet, next);
 
       queueMock.should.have.been.calledWith(2);
     });
 
     it("queues animation for input", function () {
-      bombardMock.reset();
-      weapon.fire(1, 1, planet, nextStub);
+      bombard.reset();
+      weapon.fire(1, 1, planet, next);
 
-      bombardMock.should.have.been.calledWith(scene, ship, planet, [torpedo]);
+      bombard.should.have.been.calledWith(scene, ship, planet, [torpedo]);
     });
 
     it("queues animation for output", function () {
-      tractorMock.reset();
-      weapon.fire(1, 1, planet, nextStub);
+      tractor.reset();
+      weapon.fire(1, 1, planet, next);
 
-      tractorMock.should.have.been.calledWith(ship, planet, [torpedo]);
+      tractor.should.have.been.calledWith(ship, planet, [torpedo]);
     });
 
     it("calls next when complete", function () {
-      nextStub.reset();
-      weapon.fire(1, 1, planet, nextStub);
+      next.reset();
+      weapon.fire(1, 1, planet, next);
 
-      nextStub.should.have.been.calledOnce;
+      next.should.have.been.calledOnce;
     });
   });
 

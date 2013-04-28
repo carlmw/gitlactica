@@ -1,6 +1,7 @@
 describe('CameraController', function () {
-  var revealPlanet = sinon.stub(),
-      cameraStub = sinon.stub(),
+  var revealPlanetInterface = { stop: function () {} },
+      revealPlanet = sinon.stub().returns(revealPlanetInterface),
+      camera = 'camera',
       SubspaceChannel = require('../lib/subspace_channel'),
       CameraController;
 
@@ -9,37 +10,33 @@ describe('CameraController', function () {
     CameraController = require('../lib/camera_controller');
   });
 
-  beforeEach(function () {
-    revealPlanet.reset();
+  after(function () {
+    mockery.deregisterMock('./animation/reveal_planet');
   });
 
   describe("when a show:planet event is received", function () {
     var controller,
-        planetStub = { planet: { pivot: { position: sinon.stub() } } },
+        planet = { planet: { pivot: { position: sinon.stub() } } },
         subspace;
 
     beforeEach(function () {
       subspace = new SubspaceChannel();
-      controller = new CameraController(cameraStub, subspace);
+      controller = new CameraController(camera, subspace);
     });
 
     it("starts a planet reveal animation", function () {
-      subspace.emit('show:planet', planetStub);
+      subspace.emit('show:planet', planet);
 
-      revealPlanet.should.have.been.calledWith(cameraStub, planetStub.planet.pivot.position);
+      revealPlanet.should.have.been.calledWith(camera, planet.planet.pivot.position);
     });
 
     it("terminates any running animation", function () {
-      var stopMock = sinon.mock();
+      var revealMock = sinon.mock(revealPlanetInterface);
+      revealMock.expects('stop');
+      subspace.emit('show:planet', planet);
+      subspace.emit('show:planet', planet);
 
-      revealPlanet.returns({
-        stop: stopMock
-      });
-
-      subspace.emit('show:planet', planetStub);
-      subspace.emit('show:planet', planetStub);
-
-      stopMock.verify();
+      revealMock.verify();
     });
   });
 });

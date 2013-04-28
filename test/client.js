@@ -1,28 +1,31 @@
 describe("Client", function () {
   var Client,
-      WebSocketStub = sinon.stub(),
-      globalStub = {
-        WebSocket: WebSocketStub
+      WebSocket = sinon.stub(),
+      global = {
+        WebSocket: WebSocket
       },
-      utilStub = {
+      util = {
         global: function () {
-          return globalStub;
+          return global;
         }
       };
 
   before(function () {
-    mockery.registerMock('./util', utilStub);
+    mockery.registerMock('./util', util);
     Client = require('../lib/client');
   });
 
+  after(function () {
+    mockery.deregisterMock('./util');
+  });
+
   afterEach(function () {
-    WebSocketStub.reset();
+    WebSocket.reset();
   });
 
   it("creates a socket", function () {
     new Client('host:port');
-
-    WebSocketStub.should.have.been.calledWith('host:port');
+    WebSocket.should.have.been.calledWith('host:port');
   });
 
   describe("#send", function () {
@@ -33,7 +36,7 @@ describe("Client", function () {
         event: 'ping',
         data: 'pong'
       }));
-      WebSocketStub.returns({
+      WebSocket.returns({
         send: sendMock
       });
       new Client()
@@ -43,7 +46,7 @@ describe("Client", function () {
     });
 
     it("returns the instance", function () {
-      WebSocketStub.returns({ send: function () {} });
+      WebSocket.returns({ send: function () {} });
       var client = new Client();
 
       client.send().should.equal(client);
@@ -58,7 +61,7 @@ describe("Client", function () {
     beforeEach(function () {
       spy = sinon.spy();
       socketStub = sinon.stub();
-      WebSocketStub.returns(socketStub);
+      WebSocket.returns(socketStub);
       client = new Client();
     });
 

@@ -1,83 +1,87 @@
 describe('System', function () {
   var System,
       SubspaceChannel = require('../lib/subspace_channel'),
-      sceneStub = sinon.stub(),
-      orbitAllocatorStub = sinon.stub(),
-      planetStub = sinon.stub();
+      scene = sinon.stub(),
+      orbitAllocator = sinon.stub(),
+      planet = sinon.stub();
 
   before(function () {
-    mockery.registerMock('./planet', planetStub);
-    mockery.registerMock('./orbit_allocator', orbitAllocatorStub);
+    mockery.registerMock('./planet', planet);
+    mockery.registerMock('./orbit_allocator', orbitAllocator);
     System = require('../lib/system');
+  });
+
+  afterEach(function () {
+    planet.reset();
+    orbitAllocator.reset();
+  });
+
+  after(function () {
+    mockery.deregisterMock('./planet');
+    mockery.deregisterMock('./orbit_allocator');
   });
 
   describe('#form', function () {
     it("generates a planet", function () {
-      var system = new System(sceneStub, {
+      var system = new System(scene, {
         on: function () {}
       });
       system.form({ full_name: 'bob/repo', language: 'JavaScript' });
 
-      planetStub.should.have.been.calledWith(sceneStub, 'bob/repo', 'JavaScript');
+      planet.should.have.been.calledWith(scene, 'bob/repo', 'JavaScript');
     });
   });
 
   describe('#layout', function () {
     it("reallocates orbits", function () {
-      var repoPlanetStub = sinon.stub(),
-          system = new System(sceneStub, {
+      var repoPlanet = sinon.stub(),
+          system = new System(scene, {
             on: function () {}
           });
-      planetStub.returns(repoPlanetStub);
+      planet.returns(repoPlanet);
       system.form({ full_name: 'terry/repo' });
       system.layout();
 
-      orbitAllocatorStub.should.have.been.calledWith(['terry/repo'], [repoPlanetStub]);
+      orbitAllocator.should.have.been.calledWith(['terry/repo'], [repoPlanet]);
     });
   });
 
   describe('#reform', function () {
+    var repoPlanet, system;
+    beforeEach(function () {
+      repoPlanet = { scale: sinon.stub() };
+      system = new System(scene, { on: function () {} });
+    });
+
     it("scales planet correctly", function () {
-      var repoPlanetStub = {
-            scale: sinon.stub()
-          },
-          system = new System(sceneStub, {
-            on: function () {}
-          });
-      planetStub.returns(repoPlanetStub);
+      planet.returns(repoPlanet);
       system.form({ full_name: 'some/repo' });
       system.reform('some/repo', 1000);
 
-      repoPlanetStub.scale.should.have.been.calledWith(1);
+      repoPlanet.scale.should.have.been.calledWith(1);
     });
 
     it("applies a minimum scale of 0.2", function () {
-      var repoPlanetStub = {
-            scale: sinon.stub()
-          },
-          system = new System(sceneStub, {
-            on: function () {}
-          });
-      planetStub.returns(repoPlanetStub);
+      planet.returns(repoPlanet);
       system.form({ full_name: 'some/repo' });
       system.reform('some/repo', 0);
 
-      repoPlanetStub.scale.should.have.been.calledWith(0.2);
+      repoPlanet.scale.should.have.been.calledWith(0.2);
     });
   });
 
   describe("responding to a ship", function () {
     it("sends a reference to itself", function () {
       var subspace = new SubspaceChannel(),
-          hailStub = sinon.stub(),
-          repoPlanetStub = sinon.stub(),
-          system = new System(sceneStub, subspace);
-      planetStub.returns(repoPlanetStub);
-      subspace.on('hail:ship', hailStub);
+          hail = sinon.stub(),
+          repoPlanet = sinon.stub(),
+          system = new System(scene, subspace);
+      planet.returns(repoPlanet);
+      subspace.on('hail:ship', hail);
       system.form({ full_name: 'bob/repo' });
       subspace.emit('hail:planet', 'bob/repo', 'bob');
 
-      hailStub.should.have.been.calledWith('bob', repoPlanetStub);
+      hail.should.have.been.calledWith('bob', repoPlanet);
     });
   });
 
@@ -87,17 +91,17 @@ describe('System', function () {
         rimmerWorld = sinon.stub(),
         klendathu = sinon.stub();
     before(function () {
-      planetStub
-        .withArgs(sceneStub, 'rimmer/world')
+      planet
+        .withArgs(scene, 'rimmer/world')
         .returns(rimmerWorld);
-      planetStub
-        .withArgs(sceneStub, 'bugs/klendathu')
+      planet
+        .withArgs(scene, 'bugs/klendathu')
         .returns(klendathu);
     });
 
     beforeEach(function () {
       subspace = new SubspaceChannel();
-      system = new System(sceneStub, subspace);
+      system = new System(scene, subspace);
     });
 
     describe("when next or previous is triggered", function () {
@@ -121,12 +125,12 @@ describe('System', function () {
 
     describe("when there are no planets", function () {
       it("should not trigger the show event", function () {
-        var onStub = sinon.stub();
-        subspace.on('show:planet', onStub);
+        var on = sinon.stub();
+        subspace.on('show:planet', on);
         subspace.emit('next:planet');
         subspace.emit('previous:planet');
 
-        onStub.should.not.have.been.called;
+        on.should.not.have.been.called;
       });
     });
   });

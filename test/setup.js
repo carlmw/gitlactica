@@ -10,6 +10,9 @@ require('sinon-mocha').enhance(global.sinon);
 global.chai.use(sinonChai);
 global.mockery.enable({
   warnOnUnregistered: false,
-  warnOnReplace: false
+  useCleanCache: true
 });
 }(global));
+
+mockery.registerSubstitute('three', __dirname + '/standins/three');
+mockery.registerSubstitute('tween', __dirname + '/standins/tween');

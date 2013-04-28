@@ -1,8 +1,8 @@
 describe('ShipYard', function () {
   var ShipYard,
-      shipStub = sinon.stub(),
-      sceneStub = sinon.stub(),
-      subspaceStub = {
+      ship = sinon.stub(),
+      scene = sinon.stub(),
+      subspace = {
         emit: sinon.stub(),
         on: sinon.stub()
       },
@@ -10,36 +10,36 @@ describe('ShipYard', function () {
       committer = { login: 'intrepid', last_commit: '2012-09-23T17:50:51Z' };
 
   before(function () {
-    mockery.registerMock('./ship', shipStub);
+    mockery.registerMock('./ship', ship);
     mockery.registerAllowable('../lib/ship_yard');
     ShipYard = require('../lib/ship_yard');
   });
 
   afterEach(function () {
-    shipStub.reset();
+    ship.reset();
   });
 
   describe('#commision', function () {
     it("builds Ships for commiters", function () {
-      var yard = new ShipYard(sceneStub, subspaceStub);
+      var yard = new ShipYard(scene, subspace);
       yard.commision([committer]);
 
-      shipStub.should.have.been.calledWith(sceneStub, committer);
+      ship.should.have.been.calledWith(scene, committer);
     });
 
     it("does not build a ship for an existing commiter", function () {
-      var yard = new ShipYard(sceneStub, subspaceStub);
+      var yard = new ShipYard(scene, subspace);
       yard.commision([committer]);
       yard.commision([committer]);
 
-      shipStub.should.have.been.calledOnce;
+      ship.should.have.been.calledOnce;
     });
   });
 
   describe('#dispatch', function () {
     it("opens a channel to the planet", function () {
       var emitMock = sinon.mock(),
-          yard = new ShipYard(sceneStub, {
+          yard = new ShipYard(scene, {
             emit: emitMock,
             on: function () {}
           });
@@ -55,14 +55,14 @@ describe('ShipYard', function () {
     it("sends the ship to the planet", function () {
       var subspace = new SubspaceChannel(),
           terrysShip = sinon.stub(),
-          planetStub = sinon.stub(),
-          yard = new ShipYard(sceneStub, subspace);
+          planet = sinon.stub(),
+          yard = new ShipYard(scene, subspace);
       terrysShip.orbit = sinon.stub();
-      shipStub.withArgs(sceneStub, 'terry').returns(terrysShip);
+      ship.withArgs(scene, 'terry').returns(terrysShip);
       yard.commision(['terry']);
-      subspace.emit('hail:ship', 'terry', planetStub);
+      subspace.emit('hail:ship', 'terry', planet);
 
-      terrysShip.orbit.should.have.been.calledWith(planetStub);
+      terrysShip.orbit.should.have.been.calledWith(planet);
     });
   });
 });

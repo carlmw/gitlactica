@@ -1,22 +1,14 @@
 describe('animation/revealPlanet', function () {
-  var tween = require('../../helpers/tween_stub')(),
+  var tween = require('tween'),
       planetPosition = { x: 100, y: 100 },
       camera = { position: { x: 200, y: 200 } },
-      revealPlanet;
-
-  before(function () {
-    mockery.registerMock('tween', tween);
-    revealPlanet = require('../../lib/animation/reveal_planet');
-  });
+      revealPlanet = require('../../lib/animation/reveal_planet');
 
   it("starts from the cameras current position", function () {
-    var tweenMock = sinon.mock(tween);
-    tweenMock.expects('Tween')
-      .withArgs({ x: 200, y: 200 }, 1e3)
-      .returns(tween.methods);
+    sinon.spy(tween, 'Tween');
     revealPlanet(camera, planetPosition);
 
-    tweenMock.verify();
+    tween.Tween.should.have.been.calledWith(camera.position, 1e3);
   });
 
   it("tweens to the planet's x + y", function () {

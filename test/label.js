@@ -41,26 +41,17 @@ describe('label', function () {
           return globalStub;
         }
       },
-      threeMock = {
-        DataTexture: function () {},
-        PlaneGeometry: function () {},
-        RGBAFormat: sinon.stub(),
-        MeshBasicMaterial: function () {},
-        Mesh: function () {
-          return {
-            position: {
-              set: function () {}
-            }
-          };
-        }
-      };
+      three = require('three');
 
   before(function () {
     mockery.registerMock('../config', configMock);
     mockery.registerMock('./util', utilMock);
-    mockery.registerMock('three', threeMock);
-
     label = require('../lib/label');
+  });
+
+  after(function () {
+    mockery.deregisterMock('../config');
+    mockery.deregisterMock('./util');
   });
 
   describe('initialising the canvas', function () {
@@ -133,10 +124,10 @@ describe('label', function () {
 
     it("creates a data texture", function () {
       var pixelStub = sinon.stub(),
-          textureMock = sinon.mock(threeMock);
+          textureMock = sinon.mock(three);
       textureMock
         .expects('DataTexture')
-        .withArgs(new Uint8Array([255, 0, 0, 0]), 100, 50, threeMock.RGBAFormat);
+        .withArgs(new Uint8Array([255, 0, 0, 0]), 100, 50, three.RGBAFormat);
       label('test');
 
       textureMock.verify();
@@ -145,7 +136,7 @@ describe('label', function () {
 
   describe("generating the mesh", function () {
     it("creates a plane", function () {
-      var planeMock = sinon.mock(threeMock);
+      var planeMock = sinon.mock(three);
       planeMock
         .expects('PlaneGeometry')
         .withArgs(400, 200, 1, 1);
@@ -156,8 +147,8 @@ describe('label', function () {
 
     it("generates a material", function () {
       var texture = sinon.stub(),
-          textureStub = sinon.stub(threeMock, 'DataTexture').returns(texture),
-          materialMock = sinon.mock(threeMock);
+          textureStub = sinon.stub(three, 'DataTexture').returns(texture),
+          materialMock = sinon.mock(three);
       materialMock
         .expects('MeshBasicMaterial')
         .withArgs({
@@ -171,7 +162,7 @@ describe('label', function () {
 
     it("sets the position of the mesh", function () {
       var setMock = sinon.mock();
-      sinon.stub(threeMock, 'Mesh').returns({
+      sinon.stub(three, 'Mesh').returns({
         position: {
           set: setMock
         }
@@ -186,9 +177,9 @@ describe('label', function () {
     it("returns a mesh", function () {
       var material = sinon.stub(),
           geo = sinon.stub(),
-          materialStub = sinon.stub(threeMock, 'MeshBasicMaterial').returns(material),
-          geoStub = sinon.stub(threeMock, 'PlaneGeometry').returns(geo),
-          meshMock = sinon.mock(threeMock),
+          materialStub = sinon.stub(three, 'MeshBasicMaterial').returns(material),
+          geoStub = sinon.stub(three, 'PlaneGeometry').returns(geo),
+          meshMock = sinon.mock(three),
           mesh = { position: { set: function () {} } };
       meshMock
         .expects('Mesh')

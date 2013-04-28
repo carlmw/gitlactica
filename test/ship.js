@@ -1,23 +1,11 @@
-var three = {
-      ShaderMaterial: function () {},
-      CubeGeometry: function () {},
-      Mesh: function () {},
-      Object3D: function () {
-        this.add = function () {};
-      },
-      Vector3: function () {}
-    },
+var three = require('three'),
     collada = sinon.stub(),
-    config = {
-      ship: { model: 'model.dae' }
-    },
+    config = { ship: { model: 'model.dae' } },
     weapon = sinon.stub(),
     location = sinon.stub(),
     jumpDriveInstance = sinon.stub(),
     jumpDrive = sinon.stub().returns(jumpDriveInstance),
-    queue = sinon.stub().returns({
-      defer: function () {}
-    }),
+    queue = sinon.stub().returns({ defer: function () {} }),
     scene = sinon.stub({ add: function () {} });
 
 jumpDriveInstance.location = function () { return location; };
@@ -26,7 +14,6 @@ describe("Ship", function () {
   var Ship;
 
   before(function () {
-    mockery.registerMock('three', three);
     mockery.registerMock('queue-async', queue);
     mockery.registerMock('./weapon', weapon);
     mockery.registerMock('./jump_drive', jumpDrive);
@@ -36,10 +23,17 @@ describe("Ship", function () {
     Ship = require('../lib/ship');
   });
 
+  after(function () {
+    mockery.deregisterMock('queue-async');
+    mockery.deregisterMock('./weapon');
+    mockery.deregisterMock('./jump_drive');
+    mockery.deregisterMock('../vendor/collada_loader');
+    mockery.deregisterMock('../config');
+    mockery.deregisterMock('./shaders');
+  });
+
   beforeEach(function () {
-    weapon.returns({
-      fire: function () {}
-    });
+    weapon.returns({ fire: function () {} });
   });
 
   afterEach(function () {

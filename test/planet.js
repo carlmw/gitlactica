@@ -3,30 +3,7 @@ describe('Planet', function () {
       sceneStub = {
         add: sinon.stub()
       },
-      tweenInstanceStub = {
-        to: function () { return tweenInstanceStub; },
-        onComplete: function () { return tweenInstanceStub; },
-        start: function () { return tweenInstanceStub; }
-      },
-      tweenMock = {
-        Tween: function () {
-          return tweenInstanceStub;
-        }
-      },
-      threeMock = {
-        SphereGeometry: function () {},
-        Object3D: function () {
-          return {
-            add: function () {}
-          };
-        },
-        Mesh: function () {},
-        ImageUtils: {
-          loadTexture: function () {}
-        },
-        ShaderMaterial: function () {},
-        PlaneGeometry: function () {}
-      },
+      three = require('three'),
       configMock = {
         languages: {
           Unknown: {
@@ -39,15 +16,17 @@ describe('Planet', function () {
       };
 
   before(function () {
-    mockery.registerMock('three', threeMock);
-    mockery.registerMock('tween', tweenMock);
     mockery.registerMock('../config', configMock);
     Planet = require('../lib/planet');
   });
 
+  after(function () {
+    mockery.deregisterMock('../config');
+  });
+
   describe('#scale', function () {
     it("transforms the mesh", function () {
-      var meshStub = sinon.stub(threeMock, 'Mesh'),
+      var meshStub = sinon.stub(three, 'Mesh'),
           scaleMock = sinon.mock();
       scaleMock.withArgs(3, 3, 3);
       meshStub.returns({
@@ -55,8 +34,7 @@ describe('Planet', function () {
           set: scaleMock
         }
       });
-      var planet = new Planet(sceneStub, 'bob/repo', 'JavaScript');
-      planet.scale(3);
+      new Planet(sceneStub, 'bob/repo', 'JavaScript').scale(3);
 
       scaleMock.verify();
     });

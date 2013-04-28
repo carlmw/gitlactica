@@ -1,91 +1,93 @@
-var courseStub = sinon.stub().returns({ line: sinon.stub(), angle: Math.PI }),
-    followStub = sinon.stub(),
-    nextStub = sinon.stub(),
-    sceneStub = sinon.stub(),
-    orbitStub = sinon.stub(),
-    shipStub = sinon.stub(),
-    planetStub = sinon.stub(),
-    vectorStub = sinon.stub(),
-    threeStub = {
-      Vector3: sinon.stub().returns(vectorStub)
-    },
-    exitStub = sinon.stub();
+var course = sinon.stub().returns({
+      line: sinon.stub(),
+      angle: Math.PI
+    }),
+    follow = sinon.stub(),
+    next = sinon.stub(),
+    scene = sinon.stub(),
+    orbit = sinon.stub(),
+    ship = sinon.stub(),
+    planet = sinon.stub(),
+    vector = sinon.stub(),
+    three = require('three'),
+    exit = sinon.stub();
 
 describe('jumpDrive', function () {
   var jumpTo;
 
   before(function () {
-    mockery.registerMock('./animation/follow_course', followStub);
-    mockery.registerMock('./animation/orbit', orbitStub);
-    mockery.registerMock('./course', courseStub);
-    mockery.registerMock('three', threeStub);
+    mockery.registerMock('./animation/follow_course', follow);
+    mockery.registerMock('./animation/orbit', orbit);
+    mockery.registerMock('./course', course);
     jumpTo = require('../lib/jump_drive');
   });
 
   afterEach(function () {
-    followStub.reset();
-    courseStub.reset();
-    orbitStub.reset();
+    follow.reset();
+    course.reset();
+    orbit.reset();
   });
 
   it("plots a course", function () {
-    jumpTo(shipStub, sceneStub)(planetStub);
+    var vector = { x: 1, y: 2, z: 3 };
+    sinon.stub(three, 'Vector3').returns(vector);
+    jumpTo(ship, scene)(planet);
 
-    courseStub.should.have.been.calledWith(sceneStub, { pivot: { position: vectorStub } }, planetStub);
+    course.should.have.been.calledWith(scene, { pivot: { position: vector } }, planet);
   });
 
   it("follows the course", function () {
-    jumpTo(shipStub, sceneStub)(planetStub, nextStub);
+    jumpTo(ship, scene)(planet, next);
 
-    followStub.should.have.been.calledWith(shipStub, courseStub.returnValue.line);
+    follow.should.have.been.calledWith(ship, course.returnValue.line);
   });
 
   it("orbits the destination after following the course", function () {
-    followStub.callsArg(2);
-    jumpTo(shipStub, sceneStub)(planetStub, nextStub);
+    follow.callsArg(2);
+    jumpTo(ship, scene)(planet, next);
 
-    orbitStub.should.have.been.calledWith(shipStub, planetStub, Math.PI);
+    orbit.should.have.been.calledWith(ship, planet, Math.PI);
   });
 
   it("calls next when it enters orbit", function () {
-    followStub.callsArg(2);
-    orbitStub.callsArgWith(3, exitStub);
-    jumpTo(shipStub, sceneStub)(planetStub, nextStub);
+    follow.callsArg(2);
+    orbit.callsArgWith(3, exit);
+    jumpTo(ship, scene)(planet, next);
 
-    nextStub.should.have.been.called;
+    next.should.have.been.called;
   });
 
   it("calls the exit orbit callback before leaving orbit", function () {
-    var drive = jumpTo(shipStub, sceneStub);
-    followStub.callsArg(2);
-    orbitStub.callsArgWith(3, exitStub);
-    exitStub.callsArg(1);
-    drive(planetStub, nextStub);
+    var drive = jumpTo(ship, scene);
+    follow.callsArg(2);
+    orbit.callsArgWith(3, exit);
+    exit.callsArg(1);
+    drive(planet, next);
 
-    exitStub.should.not.have.been.called;
+    exit.should.not.have.been.called;
 
-    drive(planetStub, nextStub);
+    drive(planet, next);
 
-    exitStub.should.have.been.calledWith(Math.PI);
+    exit.should.have.been.calledWith(Math.PI);
 
-    followStub.should.have.been.calledTwice;
+    follow.should.have.been.calledTwice;
   });
 
   it("plots the course from the current location", function () {
-    var drive = jumpTo(shipStub, sceneStub);
-    drive(planetStub, nextStub);
-    drive(planetStub, nextStub);
+    var drive = jumpTo(ship, scene);
+    drive(planet, next);
+    drive(planet, next);
 
-    courseStub.should.have.been.calledTwice;
-    courseStub.should.have.been.calledWith(sceneStub, planetStub, planetStub);
+    course.should.have.been.calledTwice;
+    course.should.have.been.calledWith(scene, planet, planet);
   });
 
   describe('#location', function () {
     it("returns the current location of the ship", function () {
-      var drive = jumpTo(shipStub, sceneStub);
-      drive(planetStub, nextStub);
+      var drive = jumpTo(ship, scene);
+      drive(planet, next);
 
-      drive.location().should.equal(planetStub);
+      drive.location().should.equal(planet);
     });
   });
 });

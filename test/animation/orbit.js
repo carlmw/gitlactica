@@ -1,22 +1,19 @@
 describe('animation/orbit', function () {
-  var tweenStub = chainableTweenStub(),
-      tweenMock = {
-        Tween: sinon.stub().returns(tweenStub)
+  var tween = require('tween'),
+      config = {
+        orbit: { duration: 5e3, radius: 2000 }
       },
-      configStub = {
-        orbit: {
-          duration: 5e3,
-          radius: 2000
-        }
-      },
-      shipStub = sinon.stub(),
-      planetStub = sinon.stub(),
+      ship = 'ship',
+      planet = 'planet',
       orbit;
 
   before(function () {
-    mockery.registerMock('tween', tweenMock);
-    mockery.registerMock('../../config', configStub);
+    mockery.registerMock('../../config', config);
     orbit = require('../../lib/animation/orbit');
+  });
+
+  after(function () {
+    mockery.deregisterMock('../../config');
   });
 
   describe("the exit callback", function () {
@@ -24,37 +21,33 @@ describe('animation/orbit', function () {
         tweenMock;
 
     beforeEach(function () {
-      sinon.stub(tweenStub, 'onComplete')
+      sinon.stub(tween.methods, 'onComplete')
         .callsArgOn(0, {})
-        .returns(tweenStub);
-      orbit(shipStub, planetStub, Math.PI, function (cb) { exit = cb; });
-
-      tweenMock = sinon.mock(tweenStub);
+        .returns(tween.methods);
+      orbit(ship, planet, Math.PI, function (cb) { exit = cb; });
+      tweenMock = sinon.mock(tween.methods);
     });
 
     it("changes the animation's target value", function () {
-      tweenMock
-        .expects('to')
+      tweenMock.expects('to')
         .withArgs({ angle: Math.PI * 1.5 }, 1250)
-        .returns(tweenStub);
+        .returns(tween.methods);
       exit(Math.PI * 1.5, function () {});
 
       tweenMock.verify();
     });
 
     it("always travels in the correct direction", function () {
-      tweenMock
-        .expects('to')
+      tweenMock.expects('to')
         .withArgs({ angle: Math.PI * 0.5 }, 1250)
-        .returns(tweenStub);
+        .returns(tween.methods);
       exit(-Math.PI * 1.5, function () {});
 
       tweenMock.verify();
     });
 
     it("restarts the animation", function () {
-      tweenMock
-        .expects('start');
+      tweenMock.expects('start');
       exit(Math.PI, function () {});
 
       tweenMock.verify();
@@ -62,8 +55,7 @@ describe('animation/orbit', function () {
 
     describe('when complete', function () {
       it("calls stop on the tween", function () {
-        tweenMock
-          .expects('stop');
+        tweenMock.expects('stop');
         exit(Math.PI, function () {});
 
         tweenMock.verify();
@@ -78,14 +70,3 @@ describe('animation/orbit', function () {
     });
   });
 });
-
-function chainableTweenStub () {
-  var api = {},
-      methods = ['to', 'onStart', 'onUpdate', 'onComplete', 'start', 'stop'];
-
-  methods.forEach(function (k) {
-    this[k] = function () { return api; };
-  }, api);
-
-  return api;
-}

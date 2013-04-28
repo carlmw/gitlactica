@@ -1,15 +1,11 @@
-module.exports = TweenStandin;
+var methods = tweenStub();
 
-function TweenStandin () {
-  var api = {};
-  
-  api.methods = tweenStub();
-  api.Tween = function () {
-    return api.methods;
-  };
-
-  return api;
-}
+module.exports = {
+  Tween: function () {
+    return methods;
+  },
+  methods: methods
+};
 
 function tweenStub () {
   var api = {},

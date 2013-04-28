@@ -11,9 +11,16 @@ describe("HUD", function () {
       },
       HUD;
 
-  mockery.registerMock('handlebars', handlebars);
-  mockery.registerMock('./util', { global: function() { return global; } });
-  HUD = require('../lib/hud.js');
+  before(function () {
+    mockery.registerMock('handlebars', handlebars);
+    mockery.registerMock('./util', { global: function() { return global; } });
+    HUD = require('../lib/hud.js');
+  });
+
+  after(function () {
+    mockery.deregisterMock('handlebars');
+    mockery.deregisterMock('./util');
+  });
 
   describe("it's DOM element", function () {
     it("is a div", function () {
