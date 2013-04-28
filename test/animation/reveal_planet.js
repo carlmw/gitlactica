@@ -14,7 +14,7 @@ describe('animation/revealPlanet', function () {
   it("tweens to the planet's x + y", function () {
     var tweenMock = sinon.mock(tween.methods);
     tweenMock.expects('to')
-      .withArgs({ x: 100, y: 100, c: 2 }, 6e3)
+      .withArgs({ x: 100, y: 100, c: 2 }, 5e3)
       .returns(tween.methods);
     revealPlanet(camera, planetPosition);
 
