@@ -56,31 +56,19 @@ describe('label', function () {
       };
 
   before(function () {
-    mockery.registerAllowable('../lib/label');
     mockery.registerMock('../config', configMock);
     mockery.registerMock('./util', utilMock);
     mockery.registerMock('three', threeMock);
 
-    mockery.enable();
-
     label = require('../lib/label');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   describe('initialising the canvas', function () {
     var createElementStub;
 
-    before(function () {
+    beforeEach(function () {
       createElementStub = sinon.spy(globalStub.document, 'createElement');
-
       label('text');
-    });
-
-    after(function () {
-      createElementStub.restore();
     });
 
     it("creates a canvas", function () {
@@ -104,11 +92,9 @@ describe('label', function () {
   describe("drawing the text", function () {
     it("clears the canvas", function () {
       var clearMock = sinon.mock(contextStub);
-
       clearMock
         .expects('clearRect')
         .withArgs(0, 0, 300, 50);
-
       label('text');
 
       clearMock.verify();
@@ -116,11 +102,9 @@ describe('label', function () {
 
     it("fills the canvas with our label", function () {
       var fillMock = sinon.mock(contextStub);
-
       fillMock
         .expects('fillText')
         .withArgs('TEXT', 0, 25, 300);
-
       label('text');
 
       fillMock.verify();
@@ -131,11 +115,9 @@ describe('label', function () {
     it("extracts the pixel data from the canvas", function () {
       var pixelMock = sinon.mock(contextStub),
           measureStub = sinon.stub(contextStub, 'measureText');
-
       measureStub
         .withArgs('TEXT')
         .returns({ width: 200 });
-
       pixelMock
         .expects('getImageData')
         .withArgs(0, 0, 200, 50)
@@ -144,21 +126,17 @@ describe('label', function () {
             buffer: [255, 0, 0, 0]
           }
         });
-
       label('text');
 
-      measureStub.restore();
       pixelMock.verify();
     });
 
     it("creates a data texture", function () {
       var pixelStub = sinon.stub(),
           textureMock = sinon.mock(threeMock);
-
       textureMock
         .expects('DataTexture')
         .withArgs(new Uint8Array([255, 0, 0, 0]), 100, 50, threeMock.RGBAFormat);
-
       label('test');
 
       textureMock.verify();
@@ -168,11 +146,9 @@ describe('label', function () {
   describe("generating the mesh", function () {
     it("creates a plane", function () {
       var planeMock = sinon.mock(threeMock);
-
       planeMock
         .expects('PlaneGeometry')
         .withArgs(400, 200, 1, 1);
-
       label('test');
 
       planeMock.verify();
@@ -182,36 +158,29 @@ describe('label', function () {
       var texture = sinon.stub(),
           textureStub = sinon.stub(threeMock, 'DataTexture').returns(texture),
           materialMock = sinon.mock(threeMock);
-
       materialMock
         .expects('MeshBasicMaterial')
         .withArgs({
           map: texture,
           transparent: true
         });
-
       label('test');
 
       materialMock.verify();
-      textureStub.restore();
     });
 
     it("sets the position of the mesh", function () {
       var setMock = sinon.mock();
-
       sinon.stub(threeMock, 'Mesh').returns({
         position: {
           set: setMock
         }
       });
-
       setMock
         .withArgs(0, -1000, 0);
-
       label('test');
 
       setMock.verify();
-      threeMock.Mesh.restore();
     });
 
     it("returns a mesh", function () {
@@ -221,18 +190,13 @@ describe('label', function () {
           geoStub = sinon.stub(threeMock, 'PlaneGeometry').returns(geo),
           meshMock = sinon.mock(threeMock),
           mesh = { position: { set: function () {} } };
-
       meshMock
         .expects('Mesh')
         .withArgs(geo, material)
         .returns(mesh);
-
       label('test').should.equal(mesh);
 
       meshMock.verify();
-
-      materialStub.restore();
-      geoStub.restore();
     });
   });
 });

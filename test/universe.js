@@ -28,7 +28,6 @@ describe('Universe', function () {
       keyboardNavStub = sinon.stub();
 
   before(function () {
-    mockery.registerAllowable('../lib/universe');
     mockery.registerMock('./client', clientStub);
     mockery.registerMock('./planet', planetStub);
     mockery.registerMock('./ship_yard', shipYardStub);
@@ -39,26 +38,17 @@ describe('Universe', function () {
     mockery.registerMock('./keyboard_navigation', keyboardNavStub);
     mockery.registerMock('./camera_controller', cameraControllerStub);
     mockery.registerMock('./hud', hud);
-
     Universe = require('../lib/universe');
-
-    mockery.enable();
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   beforeEach(function () {
     subspaceStub.returns({
       emit: function () {}
     });
-
     shipYardStub.returns({
       commision: function () {},
       dispatch: function () {}
     });
-
     systemStub.returns({
       form: function () {},
       layout: function () {}
@@ -73,7 +63,6 @@ describe('Universe', function () {
 
   it("creates a keyboard navigator", function () {
     keyboardNavStub.reset();
-
     new Universe(sceneStub, cameraStub);
 
     keyboardNavStub.should.have.been.calledWith(subspaceStub.returnValue);
@@ -83,7 +72,6 @@ describe('Universe', function () {
     var subspace = sinon.stub();
     subspaceStub.returns(subspace);
     cameraControllerStub.reset();
-
     new Universe(sceneStub, cameraStub);
 
     cameraControllerStub.should.have.been.calledWith(cameraStub, subspace);
@@ -93,7 +81,6 @@ describe('Universe', function () {
     var subspace = sinon.stub();
     subspaceStub.returns(subspace);
     hud.reset();
-
     new Universe(sceneStub, cameraStub);
 
     hud.should.have.been.calledWith(subspace);
@@ -102,7 +89,6 @@ describe('Universe', function () {
   describe("client messages", function () {
     it("sends a login message to the client when it connects", function () {
       new Universe(sceneStub, cameraStub);
-
       client.emit('open');
 
       client.send.should.have.been.calledWith('login', { login: 'terry' });
@@ -110,11 +96,8 @@ describe('Universe', function () {
 
     it("subscribes to repos", function () {
       new Universe(sceneStub, cameraStub);
-
       var sendMock = client.send = sinon.mock();
-
       sendMock.withArgs('subscribe', { repos: ['bob/repo'] });
-
       client.emit('repos', {
         login: 'bob',
         repos: [{ full_name: 'bob/repo' }]
@@ -133,16 +116,12 @@ describe('Universe', function () {
 
     it("notified of new committers", function () {
       var commisionMock = sinon.mock();
-
       shipYardStub.returns({
         commision: commisionMock,
         dispatch: function () {}
       });
-
       commisionMock.withArgs(['bob']);
-
       new Universe(sceneStub, cameraStub);
-
       client.emit('committers', {
         repo: 'bob/repo',
         committers: [{ login: 'bob' }]
@@ -153,14 +132,11 @@ describe('Universe', function () {
 
     it("dispatches ships to a planet after notification", function () {
       var dispatchStub = sinon.stub();
-
       shipYardStub.returns({
         commision: function () {},
         dispatch: dispatchStub
       });
-
       new Universe(sceneStub, cameraStub);
-
       client.emit('committers', {
         repo: 'bob/repo',
         committers: [{ login: 'bob' }]
@@ -179,14 +155,11 @@ describe('Universe', function () {
 
     it("notified of new repos", function () {
       var formStub = sinon.stub();
-
       systemStub.returns({
         form: formStub,
         layout: function () {}
       });
-
       new Universe(sceneStub);
-
       client.emit('repos', {
         repos: [{ full_name: 'bob/repo' }]
       });
@@ -196,14 +169,11 @@ describe('Universe', function () {
 
     it("performs a layout after it is notified of new repos", function () {
       var layoutStub = sinon.stub();
-
       systemStub.returns({
         form: function () {},
         layout: layoutStub
       });
-
       new Universe(sceneStub, cameraStub);
-
       client.emit('repos', {
         repos: [{ full_name: 'bob/repo' }]
       });
@@ -213,30 +183,26 @@ describe('Universe', function () {
 
     it("calls reform when client receives a complexity message", function () {
       var reformMock = sinon.mock();
-
       systemStub.returns({ reform: reformMock });
-
       new Universe(sceneStub, cameraStub);
-
       reformMock
         .withArgs('terry/repo', 2000);
+      client.emit('complexity', { repo: 'terry/repo', complexity: 2000 });
+
+      reformMock.verify();
     });
   });
 
   describe("when a set of commits is received", function () {
     it("dispatches ships to the repo's planet", function () {
       var dispatchMock = sinon.mock();
-
       dispatchMock.withArgs('bob', 'bob/repo');
-
       shipYardStub.returns({
         commision: function () {},
         attack: function () {},
         dispatch: dispatchMock
       });
-
       new Universe(sceneStub, cameraStub);
-
       client.emit('commits', {
         repo: 'bob/repo',
         commits: [
@@ -254,17 +220,13 @@ describe('Universe', function () {
 
     it("orders the ship to fire it's weapons on arrival", function () {
       var attackMock = sinon.mock();
-
       attackMock.withArgs('bob', 3, 2);
-
       shipYardStub.returns({
         commision: function () {},
         dispatch: function () {},
         attack: attackMock
       });
-
       new Universe(sceneStub, cameraStub);
-
       client.emit('commits', {
         repo: 'bob/repo',
         commits: [

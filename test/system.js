@@ -6,16 +6,9 @@ describe('System', function () {
       planetStub = sinon.stub();
 
   before(function () {
-    mockery.registerAllowable('../lib/system');
     mockery.registerMock('./planet', planetStub);
     mockery.registerMock('./orbit_allocator', orbitAllocatorStub);
-    mockery.enable();
-
     System = require('../lib/system');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   describe('#form', function () {
@@ -23,7 +16,6 @@ describe('System', function () {
       var system = new System(sceneStub, {
         on: function () {}
       });
-
       system.form({ full_name: 'bob/repo', language: 'JavaScript' });
 
       planetStub.should.have.been.calledWith(sceneStub, 'bob/repo', 'JavaScript');
@@ -36,7 +28,6 @@ describe('System', function () {
           system = new System(sceneStub, {
             on: function () {}
           });
-
       planetStub.returns(repoPlanetStub);
       system.form({ full_name: 'terry/repo' });
       system.layout();
@@ -53,7 +44,6 @@ describe('System', function () {
           system = new System(sceneStub, {
             on: function () {}
           });
-
       planetStub.returns(repoPlanetStub);
       system.form({ full_name: 'some/repo' });
       system.reform('some/repo', 1000);
@@ -68,7 +58,6 @@ describe('System', function () {
           system = new System(sceneStub, {
             on: function () {}
           });
-
       planetStub.returns(repoPlanetStub);
       system.form({ full_name: 'some/repo' });
       system.reform('some/repo', 0);
@@ -83,9 +72,7 @@ describe('System', function () {
           hailStub = sinon.stub(),
           repoPlanetStub = sinon.stub(),
           system = new System(sceneStub, subspace);
-
       planetStub.returns(repoPlanetStub);
-
       subspace.on('hail:ship', hailStub);
       system.form({ full_name: 'bob/repo' });
       subspace.emit('hail:planet', 'bob/repo', 'bob');
@@ -99,12 +86,10 @@ describe('System', function () {
         system,
         rimmerWorld = sinon.stub(),
         klendathu = sinon.stub();
-
     before(function () {
       planetStub
         .withArgs(sceneStub, 'rimmer/world')
         .returns(rimmerWorld);
-
       planetStub
         .withArgs(sceneStub, 'bugs/klendathu')
         .returns(klendathu);
@@ -123,7 +108,6 @@ describe('System', function () {
 
       it("triggers a show event with the correct planet", function () {
         var onSpy = sinon.spy();
-
         subspace.on('show:planet', onSpy);
         subspace.emit('next:planet');
         subspace.emit('next:planet');
@@ -138,9 +122,7 @@ describe('System', function () {
     describe("when there are no planets", function () {
       it("should not trigger the show event", function () {
         var onStub = sinon.stub();
-
         subspace.on('show:planet', onStub);
-
         subspace.emit('next:planet');
         subspace.emit('previous:planet');
 

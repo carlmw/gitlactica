@@ -26,8 +26,6 @@ describe("Ship", function () {
   var Ship;
 
   before(function () {
-    mockery.enable();
-
     mockery.registerMock('three', three);
     mockery.registerMock('queue-async', queue);
     mockery.registerMock('./weapon', weapon);
@@ -35,9 +33,6 @@ describe("Ship", function () {
     mockery.registerMock('../vendor/collada_loader', collada);
     mockery.registerMock('../config', config);
     mockery.registerMock('./shaders', { ship: {} });
-
-    mockery.registerAllowable('../lib/ship');
-
     Ship = require('../lib/ship');
   });
 
@@ -51,16 +46,11 @@ describe("Ship", function () {
     queue.reset();
   });
 
-  after(function () {
-    mockery.deregisterAll();
-  });
-
   describe("constructor", function () {
     it("creates a queue to run tasks in series", function () {
       new Ship(scene);
 
       queue.should.have.been.calledWith(1);
-      queue.reset();
     });
   });
 
@@ -68,13 +58,10 @@ describe("Ship", function () {
     it("adds a jump animation to the queue", function () {
       var planetStub = sinon.stub(),
           deferStub = sinon.stub();
-
-        queue.returns({
-          defer: deferStub
-        });
-
+      queue.returns({
+        defer: deferStub
+      });
       var ship = new Ship(scene);
-
       ship.orbit(planetStub);
 
       deferStub.should.have.been.calledWith(jumpDriveInstance, planetStub);

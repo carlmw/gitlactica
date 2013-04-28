@@ -12,12 +12,7 @@ describe('ShipYard', function () {
   before(function () {
     mockery.registerMock('./ship', shipStub);
     mockery.registerAllowable('../lib/ship_yard');
-
     ShipYard = require('../lib/ship_yard');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   afterEach(function () {
@@ -34,7 +29,6 @@ describe('ShipYard', function () {
 
     it("does not build a ship for an existing commiter", function () {
       var yard = new ShipYard(sceneStub, subspaceStub);
-
       yard.commision([committer]);
       yard.commision([committer]);
 
@@ -49,9 +43,7 @@ describe('ShipYard', function () {
             emit: emitMock,
             on: function () {}
           });
-
       emitMock.withArgs('hail:planet', 'bob/repo', 'bob');
-
       yard.commision(['bob']);
       yard.dispatch('bob', 'bob/repo');
 
@@ -65,10 +57,8 @@ describe('ShipYard', function () {
           terrysShip = sinon.stub(),
           planetStub = sinon.stub(),
           yard = new ShipYard(sceneStub, subspace);
-
       terrysShip.orbit = sinon.stub();
       shipStub.withArgs(sceneStub, 'terry').returns(terrysShip);
-
       yard.commision(['terry']);
       subspace.emit('hail:ship', 'terry', planetStub);
 

@@ -19,10 +19,6 @@ describe('jumpDrive', function () {
     mockery.registerMock('./animation/orbit', orbitStub);
     mockery.registerMock('./course', courseStub);
     mockery.registerMock('three', threeStub);
-
-    mockery.registerAllowable('../lib/jump_drive');
-
-    mockery.enable();
     jumpTo = require('../lib/jump_drive');
   });
 
@@ -30,10 +26,6 @@ describe('jumpDrive', function () {
     followStub.reset();
     courseStub.reset();
     orbitStub.reset();
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   it("plots a course", function () {
@@ -50,7 +42,6 @@ describe('jumpDrive', function () {
 
   it("orbits the destination after following the course", function () {
     followStub.callsArg(2);
-
     jumpTo(shipStub, sceneStub)(planetStub, nextStub);
 
     orbitStub.should.have.been.calledWith(shipStub, planetStub, Math.PI);
@@ -59,7 +50,6 @@ describe('jumpDrive', function () {
   it("calls next when it enters orbit", function () {
     followStub.callsArg(2);
     orbitStub.callsArgWith(3, exitStub);
-
     jumpTo(shipStub, sceneStub)(planetStub, nextStub);
 
     nextStub.should.have.been.called;
@@ -67,11 +57,9 @@ describe('jumpDrive', function () {
 
   it("calls the exit orbit callback before leaving orbit", function () {
     var drive = jumpTo(shipStub, sceneStub);
-
     followStub.callsArg(2);
     orbitStub.callsArgWith(3, exitStub);
     exitStub.callsArg(1);
-
     drive(planetStub, nextStub);
 
     exitStub.should.not.have.been.called;
@@ -85,7 +73,6 @@ describe('jumpDrive', function () {
 
   it("plots the course from the current location", function () {
     var drive = jumpTo(shipStub, sceneStub);
-
     drive(planetStub, nextStub);
     drive(planetStub, nextStub);
 
@@ -96,7 +83,6 @@ describe('jumpDrive', function () {
   describe('#location', function () {
     it("returns the current location of the ship", function () {
       var drive = jumpTo(shipStub, sceneStub);
-
       drive(planetStub, nextStub);
 
       drive.location().should.equal(planetStub);

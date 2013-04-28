@@ -6,15 +6,7 @@ describe('animation/revealPlanet', function () {
 
   before(function () {
     mockery.registerMock('tween', tween);
-    mockery.registerAllowable('../../lib/animation/reveal_planet');
-
-    mockery.enable();
-
     revealPlanet = require('../../lib/animation/reveal_planet');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   it("starts from the cameras current position", function () {
@@ -22,8 +14,8 @@ describe('animation/revealPlanet', function () {
     tweenMock.expects('Tween')
       .withArgs({ x: 200, y: 200 }, 1e3)
       .returns(tween.methods);
-
     revealPlanet(camera, planetPosition);
+
     tweenMock.verify();
   });
 
@@ -32,16 +24,16 @@ describe('animation/revealPlanet', function () {
     tweenMock.expects('to')
       .withArgs({ x: 100, y: 100 })
       .returns(tween.methods);
-
     revealPlanet(camera, planetPosition);
+
     tweenMock.verify();
   });
 
   it("starts the animation", function () {
     var tweenMock = sinon.mock(tween.methods);
     tweenMock.expects('start');
-
     revealPlanet(camera, planetPosition);
+
     tweenMock.verify();
   });
 

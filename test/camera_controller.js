@@ -6,18 +6,11 @@ describe('CameraController', function () {
 
   before(function () {
     mockery.registerMock('./animation/reveal_planet', revealPlanet);
-    mockery.registerAllowable('../lib/camera_controller');
-    mockery.enable();
-
     CameraController = require('../lib/camera_controller');
   });
 
   beforeEach(function () {
     revealPlanet.reset();
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   describe("when a show:planet event is received", function () {
@@ -32,7 +25,7 @@ describe('CameraController', function () {
 
     it("starts a planet reveal animation", function () {
       subspace.emit('show:planet', planetStub);
-      
+
       revealPlanet.should.have.been.calledWith(cameraStub, planetStub.planet.pivot.position);
     });
 

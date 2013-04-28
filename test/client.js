@@ -11,15 +11,8 @@ describe("Client", function () {
       };
 
   before(function () {
-    mockery.enable();
     mockery.registerMock('./util', utilStub);
-    mockery.registerAllowables(['../lib/client', 'emitter']);
-
     Client = require('../lib/client');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   afterEach(function () {
@@ -36,16 +29,13 @@ describe("Client", function () {
     it("sends a message to the socket", function () {
       var sendMock = sinon.mock(),
           client;
-
       sendMock.withArgs(JSON.stringify({
         event: 'ping',
         data: 'pong'
       }));
-
       WebSocketStub.returns({
         send: sendMock
       });
-
       new Client()
         .send('ping', 'pong');
 
@@ -54,7 +44,6 @@ describe("Client", function () {
 
     it("returns the instance", function () {
       WebSocketStub.returns({ send: function () {} });
-
       var client = new Client();
 
       client.send().should.equal(client);
@@ -69,16 +58,13 @@ describe("Client", function () {
     beforeEach(function () {
       spy = sinon.spy();
       socketStub = sinon.stub();
-
       WebSocketStub.returns(socketStub);
-
       client = new Client();
     });
 
     describe("when connection is established", function () {
       it("emits an 'open' event", function () {
         client.on('open', spy);
-
         socketStub.onopen();
 
         spy.should.have.been.calledOnce;
@@ -88,7 +74,6 @@ describe("Client", function () {
     describe("receiving a message", function () {
       it("emits the event's message", function () {
         client.on('ping', spy);
-
         socketStub.onmessage({
           data: JSON.stringify({
             event: 'ping',

@@ -39,40 +39,26 @@ describe('Planet', function () {
       };
 
   before(function () {
-    mockery.registerAllowable('../lib/planet');
-    mockery.registerAllowable('./shaders');
     mockery.registerMock('three', threeMock);
     mockery.registerMock('tween', tweenMock);
     mockery.registerMock('../config', configMock);
-
-    mockery.enable();
-
     Planet = require('../lib/planet');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   describe('#scale', function () {
     it("transforms the mesh", function () {
       var meshStub = sinon.stub(threeMock, 'Mesh'),
           scaleMock = sinon.mock();
-
       scaleMock.withArgs(3, 3, 3);
-
       meshStub.returns({
         scale: {
           set: scaleMock
         }
       });
-
       var planet = new Planet(sceneStub, 'bob/repo', 'JavaScript');
-
       planet.scale(3);
 
       scaleMock.verify();
-      meshStub.restore();
     });
   });
 });

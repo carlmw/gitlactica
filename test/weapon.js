@@ -23,16 +23,7 @@ describe('Weapon', function () {
     mockery.registerMock('./animation/bombard', bombardMock);
     mockery.registerMock('./animation/tractor', tractorMock);
     mockery.registerMock('queue-async', queueMock);
-    mockery.registerAllowable('lodash');
-    mockery.registerAllowable('../lib/weapon');
-  
-    mockery.enable();
-
     Weapon = require('../lib/weapon');
-  });
-
-  after(function () {
-    mockery.deregisterAll();
   });
 
   describe('#fire', function () {
@@ -42,7 +33,6 @@ describe('Weapon', function () {
     beforeEach(function () {
       weapon = new Weapon(ship, scene);
       nextStub = sinon.stub();
-
       queueMock.reset();
     });
 
