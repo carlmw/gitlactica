@@ -36,13 +36,18 @@ a:link, a:visited {
 
 .landing {
   -webkit-transition: 2s -webkit-transform;
+  -moz-transition: 2s -moz-transform;
+  transition: 2s transform;
   position: absolute;
   width: 100%;
   height: 600px;
+  max-width: 1400px;
   top: 60px;
-  left: 20px;
+  padding-left: 60px;
 
   -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .landing h1 {
@@ -52,6 +57,8 @@ a:link, a:visited {
 
 .landing a {
   -webkit-transition: 1s border-color;
+  -moz-transition: 1s border-color;
+  transition: 1s border-color;
 
   position: absolute;
   right: 130px;
@@ -88,6 +95,18 @@ a:link, a:visited {
   -webkit-animation: bobble 7s infinite;
   -moz-animation: bobble 7s infinite;
   animation: bobble 7s infinite;
+}
+
+canvas {
+  -webkit-filter: blur(10px);
+  -moz-filter: blur(10px);
+  filter: blur(10px);
+}
+
+.no-landing canvas {
+  -webkit-filter: none;
+  -moz-filter: none;
+  filter: none;
 }
 
 @-webkit-keyframes bobble {

@@ -38,6 +38,7 @@ describe('Universe', function () {
     mockery.registerMock('./keyboard_navigation', keyboardNav);
     mockery.registerMock('./camera_controller', cameraController);
     mockery.registerMock('./hud', hud);
+    mockery.registerMock('./placeholder_planet', function () {});
     Universe = require('../lib/universe');
   });
 
