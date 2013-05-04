@@ -33,14 +33,6 @@ describe("HUD", function () {
       documentMock.verify();
     });
 
-    it("has a class of 'hud'", function () {
-      var el = { className: '' };
-      sinon.stub(global.document, 'createElement').returns(el);
-      new HUD(subspace);
-
-      el.className.should.equal('hud');
-    });
-
     it("is accessible", function () {
       var el = sinon.stub();
       sinon.stub(global.document, 'createElement').returns(el);

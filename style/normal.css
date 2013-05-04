@@ -1,25 +1,107 @@
 @font-face {
   font-family: 'ostrich';
-  src: url(../../assets/ostrich-black-webfont.woff);
+  src: url(../../assets/ostrich-rounded-webfont.woff);
 }
+
 * {
   margin: 0;
   padding: 0;
 }
+
 html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  line-height: 1.05;
 }
+
 body {
   background: #333;
   background-size: 100% auto;
   font-family: ostrich;
+  color: #eee;
 }
+
+a:link, a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+
 .hud {
   font: 6rem ostrich;
-  color: #fff;
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+}
+
+.landing {
+  -webkit-transition: 2s -webkit-transform;
+  position: absolute;
+  width: 100%;
+  height: 600px;
+  top: 60px;
+  left: 20px;
+
+  -webkit-transform: translateZ(0);
+}
+
+.landing h1 {
+  font-size: 200px;
+  font-weight: normal;
+}
+
+.landing a {
+  -webkit-transition: 1s border-color;
+
+  position: absolute;
+  right: 130px;
+  top: 350px;
+  width: 220px;
+  height: 120px;
+  display: inline-block;
+  padding: 20px 130px 14px 20px;
+
+  font-size: 60px;
+
+  border: 4px solid #eee;
+  border-radius: 16px;
+}
+
+.landing a:hover {
+  border-color: #f7f37f;
+}
+
+.landing a:after {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  display: block;
+  height: 100px;
+  width: 79px;
+
+  background: url('../assets/octo.png') no-repeat;
+  background-size: cover;
+  -moz-background-size: cover;
+
+  content: '';
+
+  -webkit-animation: bobble 7s infinite;
+  -moz-animation: bobble 7s infinite;
+  animation: bobble 7s infinite;
+}
+
+@-webkit-keyframes bobble {
+  0%   { -webkit-transform: rotate(5deg) translate3d(0, -5px, 0); }
+  50%  { -webkit-transform: rotate(-5deg) translate3d(0, 5px, 0); }
+  100% { -webkit-transform: rotate(5deg) translate3d(0, -5px, 0); }
+}
+@-moz-keyframes bobble {
+  0%   { -moz-transform: rotate(5deg) translate3d(0, -5px, 0); }
+  50%  { -moz-transform: rotate(-5deg) translate3d(0, 5px, 0); }
+  100% { -moz-transform: rotate(5deg) translate3d(0, -5px, 0); }
+}
+@keyframes bobble {
+  0%   { transform: rotate(5deg) translate3d(0, -5px, 0); }
+  50%  { transform: rotate(-5deg) translate3d(0, 5px, 0); }
+  100% { transform: rotate(5deg) translate3d(0, -5px, 0); }
 }

@@ -23,7 +23,7 @@ describe('Universe', function () {
         emitter(this);
         client = this;
       },
-      hud = sinon.stub(),
+      hud = sinon.stub().returns({ render: function () {} }),
       cameraController = sinon.stub(),
       keyboardNav = sinon.stub();
 
