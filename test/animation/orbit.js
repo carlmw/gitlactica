@@ -1,8 +1,6 @@
 describe('animation/orbit', function () {
   var tween = require('tween'),
-      config = {
-        orbit: { duration: 5e3, radius: 2000 }
-      },
+      config = { orbit: { duration: 5e3, radius: 2000 } },
       ship = 'ship',
       planet = 'planet',
       orbit;
@@ -55,7 +53,7 @@ describe('animation/orbit', function () {
 
     describe('when complete', function () {
       it("calls stop on the tween", function () {
-        tweenMock.expects('stop');
+        tweenMock.expects('stop').returns({ onComplete: function () {} });
         exit(Math.PI, function () {});
 
         tweenMock.verify();
