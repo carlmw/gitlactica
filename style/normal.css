@@ -123,7 +123,7 @@ p {
 }
 
 canvas {
-  -webkit-filter: blur(6px);
+  -webkit-filter: blur(10px);
   -moz-filter: blur(6px);
   filter: blur(6px);
 }
