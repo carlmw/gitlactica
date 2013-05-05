@@ -98,9 +98,9 @@ a:link, a:visited {
 }
 
 canvas {
-  -webkit-filter: blur(10px);
-  -moz-filter: blur(10px);
-  filter: blur(10px);
+  -webkit-filter: blur(6px);
+  -moz-filter: blur(6px);
+  filter: blur(6px);
 }
 
 .no-landing canvas {

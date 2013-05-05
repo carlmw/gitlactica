@@ -48,17 +48,17 @@ describe("Ship", function () {
     });
   });
 
-  describe('#orbit', function () {
-    it("adds a jump animation to the queue", function () {
-      var planetStub = sinon.stub(),
-          deferStub = sinon.stub();
-      queue.returns({
-        defer: deferStub
-      });
-      var ship = new Ship(scene);
-      ship.orbit(planetStub);
+  // describe('#orbit', function () {
+  //   it("adds a jump animation to the queue", function () {
+  //     var planetStub = sinon.stub(),
+  //         deferStub = sinon.stub();
+  //     queue.returns({
+  //       defer: deferStub
+  //     });
+  //     var ship = new Ship(scene);
+  //     ship.orbit(planetStub);
 
-      deferStub.should.have.been.calledWith(jumpDriveInstance, planetStub);
-    });
-  });
+  //     deferStub.should.have.been.calledWith(jumpDriveInstance, planetStub);
+  //   });
+  // });
 });

@@ -4,7 +4,7 @@ describe('ShipYard', function () {
       scene = sinon.stub(),
       subspace = {
         emit: sinon.stub(),
-        on: sinon.stub()
+        once: sinon.stub()
       },
       SubspaceChannel = require('../lib/subspace_channel'),
       committer = { login: 'intrepid', last_commit: '2012-09-23T17:50:51Z' };
@@ -39,10 +39,7 @@ describe('ShipYard', function () {
   describe('#dispatch', function () {
     it("opens a channel to the planet", function () {
       var emitMock = sinon.mock(),
-          yard = new ShipYard(scene, {
-            emit: emitMock,
-            on: function () {}
-          });
+          yard = new ShipYard(scene, { emit: emitMock, once: function () {} });
       emitMock.withArgs('hail:planet', 'bob/repo', 'bob');
       yard.commision(['bob']);
       yard.dispatch('bob', 'bob/repo');
@@ -54,15 +51,19 @@ describe('ShipYard', function () {
   describe("responding to a planet", function () {
     it("sends the ship to the planet", function () {
       var subspace = new SubspaceChannel(),
-          terrysShip = sinon.stub(),
+          terrysShip = {
+            orbit: sinon.mock()
+          },
           planet = sinon.stub(),
           yard = new ShipYard(scene, subspace);
-      terrysShip.orbit = sinon.stub();
       ship.withArgs(scene, 'terry').returns(terrysShip);
-      yard.commision(['terry']);
-      subspace.emit('hail:ship', 'terry', planet);
+      sinon.stub(subspace, 'once').withArgs('hail:ship').callsArgWith(1, planet);
 
-      terrysShip.orbit.should.have.been.calledWith(planet);
+      terrysShip.orbit.withArgs(planet);
+      yard.commision(['terry']);
+      yard.dispatch('terry', 'bob/repo');
+
+      terrysShip.orbit.verify();
     });
   });
 });

@@ -79,9 +79,9 @@ describe('System', function () {
       planet.returns(repoPlanet);
       subspace.on('hail:ship', hail);
       system.form({ full_name: 'bob/repo' });
-      subspace.emit('hail:planet', 'bob/repo', 'bob');
+      subspace.emit('hail:planet', 'bob/repo');
 
-      hail.should.have.been.calledWith('bob', repoPlanet);
+      hail.should.have.been.calledWith(repoPlanet);
     });
   });
 

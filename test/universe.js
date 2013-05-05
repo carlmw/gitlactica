@@ -57,7 +57,7 @@ describe('Universe', function () {
 
   beforeEach(function () {
     subspace.returns({ emit: function () {} });
-    shipYard.returns({ commision: function () {}, dispatch: function () {} });
+    shipYard.returns({ commision: function () {}, dispatch: function () {}, dispatchFleet: function () {} });
     system.returns({ form: function () {}, layout: function () {} });
   });
 
@@ -120,32 +120,28 @@ describe('Universe', function () {
       shipYard.should.have.been.calledWith(scene, subspace.returnValue);
     });
 
-    it("notified of new committers", function () {
-      var commisionMock = sinon.mock();
-      shipYard.returns({
-        commision: commisionMock,
-        dispatch: function () {}
-      });
-      commisionMock.withArgs(['bob']);
-      new Universe(scene, camera);
-      client.emit('committers', { repo: 'bob/repo', committers: [{ login: 'bob' }] });
+    describe("when a set of commits is received", function () {
+      it("dispatches a fleet to the repo's planet", function () {
+        var dispatchMock = sinon.mock();
+        dispatchMock.withArgs('bob/repo', [{ login: 'bob', input: 0, output: 0 }]);
+        shipYard.returns({
+          commision: function () {},
+          attack: function () {},
+          dispatchFleet: dispatchMock
+        });
+        new Universe(scene, camera);
+        client.emit('commits', {
+          repo: 'bob/repo',
+          commits: [{
+            committer: 'bob',
+            added: {},
+            modified: {},
+            removed: {}
+          }]
+        });
 
-      commisionMock.verify();
-    });
-
-    it("dispatches ships to a planet after notification", function () {
-      var dispatch = sinon.spy();
-      shipYard.returns({
-        commision: function () {},
-        dispatch: dispatch
+        dispatchMock.verify();
       });
-      new Universe(scene, camera);
-      client.emit('committers', {
-        repo: 'bob/repo',
-        committers: [{ login: 'bob' }]
-      });
-
-      dispatch.should.have.been.calledWith('bob', 'bob/repo');
     });
   });
 
@@ -191,54 +187,6 @@ describe('Universe', function () {
       client.emit('complexity', { repo: 'terry/repo', complexity: 2000 });
 
       reformMock.verify();
-    });
-  });
-
-  describe("when a set of commits is received", function () {
-    it("dispatches ships to the repo's planet", function () {
-      var dispatchMock = sinon.mock();
-      dispatchMock.withArgs('bob', 'bob/repo');
-      shipYard.returns({
-        commision: function () {},
-        attack: function () {},
-        dispatch: dispatchMock
-      });
-      new Universe(scene, camera);
-      client.emit('commits', {
-        repo: 'bob/repo',
-        commits: [{
-          committer: 'bob',
-          added: {},
-          modified: {},
-          removed: {}
-        }]
-      });
-
-      dispatchMock.verify();
-    });
-
-    it("orders the ship to fire it's weapons on arrival", function () {
-      var attackMock = sinon.mock();
-      attackMock.withArgs('bob', 3, 2);
-      shipYard.returns({
-        commision: function () {},
-        dispatch: function () {},
-        attack: attackMock
-      });
-      new Universe(scene, camera);
-      client.emit('commits', {
-        repo: 'bob/repo',
-        commits: [
-          {
-            committer: 'bob',
-            added: { JavaScript: ["foo.js", "bar.js"] },
-            modified: { JavaScript: ["baz.js"] },
-            removed: { JavaScript: ["bin.js"] }
-          }
-        ]
-      });
-
-      attackMock.verify();
     });
   });
 });

@@ -1,7 +1,7 @@
 describe('animation/revealPlanet', function () {
   var tween = require('tween'),
       planetPosition = { x: 100, y: 100 },
-      camera = { position: { x: 200, y: 200, z: 6000, c: 0 } },
+      camera = { position: { x: 200, y: 200, z: 100, c: 0 } },
       revealPlanet = require('../../lib/animation/reveal_planet');
 
   it("starts from the cameras current position", function () {
