@@ -1,4 +1,4 @@
-var emitter = require('emitter');
+var emitter = require('emitter-component');
 
 describe('Universe', function () {
   var Universe,
