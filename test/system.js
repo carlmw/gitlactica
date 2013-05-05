@@ -42,7 +42,7 @@ describe('System', function () {
       system.form({ full_name: 'terry/repo' });
       system.layout();
 
-      orbitAllocator.should.have.been.calledWith(['terry/repo'], [repoPlanet]);
+      orbitAllocator.should.have.been.calledWith([repoPlanet]);
     });
   });
 
