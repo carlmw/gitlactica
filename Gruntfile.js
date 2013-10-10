@@ -68,9 +68,13 @@ module.exports = function (grunt) {
       all: { src: ['test/setup.js', 'test/**/*.js'] }
     },
     watch: {
-      lib: {
-        files: ['index.js', 'lib/**/*', 'test/**/*.js'],
+      dist: {
+        files: ['index.js', 'lib/**/*.js', 'test/**/*.js'],
         tasks: ['browserify:standins', 'browserify:dist', 'simplemocha']
+      },
+      libs: {
+        files: ['adapters/**/*'],
+        tasks: ['browserify:libs']
       }
     },
     connect: {
