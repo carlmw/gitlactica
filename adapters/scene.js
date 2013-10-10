@@ -1,5 +1,5 @@
 var skyBox = require('./sky_box'),
-    TWEEN = require('../vendor/tween'),
+    TWEEN = require('tween.js'),
     global = require('../lib/util').global(),
     raf = require('raf-component'),
     THREE = require('three');
@@ -13,7 +13,7 @@ module.exports = function scene (config) {
   camera = new THREE.PerspectiveCamera(30, global.innerWidth / global.innerHeight, 0.1, 100000000);
   camera.up = new THREE.Vector3(0, 0, 1);
   camera.useQuaternion = true;
-  camera.position.z = -distance * 6;
+  camera.position.y = distance * 10;
   scene = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer({ antialias: true });

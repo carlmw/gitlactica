@@ -1,5 +1,5 @@
 var THREE = require('three'),
-    TWEEN = require('../vendor/tween'),
+    TWEEN = require('tween.js'),
     config = require('../config'),
     texture = THREE.ImageUtils.loadTexture('/textures/planet.jpg'),
     geometry = new THREE.SphereGeometry(400, 32, 32),
@@ -44,7 +44,7 @@ function generateMaterial(color) {
 
 function rotate(mesh) {
   new TWEEN.Tween(mesh.rotation)
-    .to({ x: Math.PI * 2 }, 64e3)
+    .to({ z: Math.PI * 2 }, 64e3)
     .repeat(Number.POSITIVE_INFINITY)
     .start();
 }
