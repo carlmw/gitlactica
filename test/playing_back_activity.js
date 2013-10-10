@@ -1,5 +1,6 @@
 var jsdom = require('jsdom'),
     connect = require('connect'),
+    moment = require('moment'),
     fs = require('fs');
 
 describe("Playing back activity", function () {
@@ -29,7 +30,8 @@ describe("Playing back activity", function () {
         "Requested https://api.github.com/repos/carlmw/gitlactica",
         "Added planet carlmw/gitlactica with colour 0xffffff",
         "Moved planet carlmw/gitlactica to 0, 0, 0",
-        "Looked at 0, 0, 0"
+        "Looked at 0, 0, 0",
+        "Requested https://api.github.com/repos/carlmw/gitlactica/commits?since=" + moment().startOf('month').format()
       ]).to.deep.equal(messages);
     });
   });
