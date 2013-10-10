@@ -15,7 +15,7 @@ module.exports = function Renderer () {
       log('Destroyed ship ' + name);
     },
     addPlanet: function (name, colour) {
-      log('Added planet ' + name + ' with colour ' + colour);
+      log('Added planet ' + name + ' with colour 0x' + colour.toString(16));
     },
     movePlanet: function (name, x, y, z) {
       log('Moved planet ' + name + ' to ' + x + ', ' + y + ', ' + z);
@@ -25,6 +25,9 @@ module.exports = function Renderer () {
     },
     scalePlanet: function (name, factor) {
       log('Scaled planet ' + name + ' to ' + factor);
+    },
+    lookAt: function (x, y, z) {
+      log('Looked at ' + x + ', ' + y + ', ' + z);
     }
   };
 };

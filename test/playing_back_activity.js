@@ -21,14 +21,16 @@ describe("Playing back activity", function () {
     });
   });
 
-  describe("for the last month", function () {
+  describe("for the most recent commits", function () {
     it("is done in serial", function () {
       expect([
         "Started renderer",
         "Set canvas size 1024x768",
+        "Requested https://api.github.com/repos/carlmw/gitlactica",
         "Added planet carlmw/gitlactica with colour 0xffffff",
-        "Moved planet carlmw/gitlactica to 0, 0, 0"
-      ]).to.equal(messages);
+        "Moved planet carlmw/gitlactica to 0, 0, 0",
+        "Looked at 0, 0, 0"
+      ]).to.deep.equal(messages);
     });
   });
 });

@@ -1,5 +1,5 @@
 var THREE = require('three'),
-    TWEEN = require('../vendor/tween'),
+    TWEEN = require('tween'),
     config = require('../config'),
     texture = THREE.ImageUtils.loadTexture('/textures/planet.jpg'),
     geometry = new THREE.SphereGeometry(400, 32, 32),
@@ -9,7 +9,7 @@ module.exports = Planet;
 
 function Planet(name, colour) {
   var pivot = new THREE.Object3D(),
-      mesh = new THREE.Mesh(geometry, selectMaterial(color));
+      mesh = new THREE.Mesh(geometry, selectMaterial(colour));
 
   pivot.add(mesh);
 
@@ -22,7 +22,7 @@ Planet.prototype.toString = function () {
   return '[Planet ' + this.name + ']';
 };
 
-function selectMaterial(color) {
+function selectMaterial(colour) {
   if (materials[colour]) {
     return materials[colour];
   }

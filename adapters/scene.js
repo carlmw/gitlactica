@@ -1,9 +1,8 @@
 var skyBox = require('./sky_box'),
     global = require('../lib/util').global(),
-    star = require('./star'),
     THREE = require('three');
 
-module.exports = function Scene (config) {
+module.exports = function scene (config) {
   var distance = 1000,
       camera,
       scene,
@@ -24,12 +23,13 @@ module.exports = function Scene (config) {
   scene.add(new THREE.AmbientLight(0x333333));
 
   skyBox(scene, config.sky_box);
-  star(scene);
 
   return {
     setSize: setSize,
     render: render,
-    domCanvas: renderer.domElement
+    domCanvas: renderer.domElement,
+    scene: scene,
+    camera: camera
   };
 
   function setSize (width, height) {

@@ -1,18 +1,20 @@
 (function (global) {
 var sinonChai = require('sinon-chai'),
-    chai = require('chai');
-
-global.sinon = require('sinon');
+    chai = require('chai'),
+    sinon = require('sinon');
 global.chai = chai;
-global.should = chai.should();
+global.sinon = undefined;
 global.expect = chai.expect;
 global.AssertionError = chai.AssertionError;
-global.mockery = mockery = require('mockery');
-require('sinon-mocha').enhance(global.sinon);
+require('sinon-mocha').enhance(sinon);
 chai.use(sinonChai);
-global.mockery.enable({
-  warnOnUnregistered: false,
-  useCleanCache: true
+
+beforeEach(function () {
+  global.sinon = sinon.sandbox.create();
+});
+
+afterEach(function () {
+  global.sinon.restore();
 });
 
 })(global);

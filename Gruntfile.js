@@ -50,7 +50,7 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
-          external: ['three', 'collada_loader', 'adapters/renderer']
+          external: ['three', 'collada_loader', 'adapters/renderer', 'adapters/transport']
         },
         src: ['./index.js'],
         dest: './build.js',
