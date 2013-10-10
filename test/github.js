@@ -1,7 +1,6 @@
-var commitsJSON = JSON.stringify([
-      { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' },
-      { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }
-    ]);
+var commitsData = [{ sha: 'd94709' }],
+    commitData = { url: "https://api.github.com/repos/carlmw/gitlactica/commits/d94709" },
+    repoData = { language: "JavaScript" };
 
 
 var github = require('../lib/github'),
@@ -22,8 +21,8 @@ describe("github", function () {
 
     it("triggers the repo event", function () {
       var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('repo', { language: "JavaScript" });
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, '{"language":"JavaScript"}');
+      subspaceMock.expects('emit').withArgs('repo', repoData);
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(repoData));
       github(transport, subspace).repo('carlmw/gitlactica');
 
       subspaceMock.verify();
@@ -43,9 +42,30 @@ describe("github", function () {
 
     it("triggers the commits event", function () {
       var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('commits', JSON.parse(commitsJSON));
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, commitsJSON);
+      subspaceMock.expects('emit').withArgs('commits', commitsData);
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData));
       github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
+
+      subspaceMock.verify();
+    });
+  });
+
+  describe("commit", function () {
+    it("fetches the commit", function () {
+      var transportMock = sinon.mock(transport);
+      transportMock.expects('xhr').withArgs({
+        uri: 'https://api.github.com/repos/carlmw/gitlactica/commits/d94709'
+      });
+      github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
+
+      transportMock.verify();
+    });
+
+    it("triggers the commit event", function () {
+      var subspaceMock = sinon.mock(subspace);
+      subspaceMock.expects('emit').withArgs('commit', commitData);
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitData));
+      github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
 
       subspaceMock.verify();
     });
