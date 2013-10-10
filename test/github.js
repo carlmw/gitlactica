@@ -1,9 +1,7 @@
 var commitsData = [{ sha: 'd94709' }],
     commitData = { url: "https://api.github.com/repos/carlmw/gitlactica/commits/d94709" },
-    repoData = { language: "JavaScript" };
-
-
-var github = require('../lib/github'),
+    repoData = { language: "JavaScript" },
+    github = require('../lib/github'),
     subspace = { emit: function () {} },
     transport = { xhr: function () {} };
 
