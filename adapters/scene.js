@@ -1,5 +1,7 @@
 var skyBox = require('./sky_box'),
+    TWEEN = require('../vendor/tween'),
     global = require('../lib/util').global(),
+    raf = require('raf-component'),
     THREE = require('three');
 
 module.exports = function scene (config) {
@@ -39,6 +41,8 @@ module.exports = function scene (config) {
   }
 
   function render () {
+    raf(render);
+    TWEEN.update();
     renderer.render(scene, camera);
   }
 };
