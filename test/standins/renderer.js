@@ -1,3 +1,4 @@
+/* global document */
 module.exports = function Renderer () {
   log('Started renderer');
 

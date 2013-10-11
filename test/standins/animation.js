@@ -3,11 +3,15 @@ module.exports = {
     var chains = [];
     var inst = {
       start: function () {
-        if (this._onStart) this._onStart;
+        if (this._onStart) {
+          this._onStart;
+        }
         onUpdate.call(from);
         log('Animated for ' + duration);
         onUpdate.call(to);
-        if (next) next();
+        if (next) {
+          next();
+        }
         chains.forEach(function (chain) {
           chain.start();
         });

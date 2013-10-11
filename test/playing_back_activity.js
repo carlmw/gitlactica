@@ -15,7 +15,9 @@ describe("Playing back activity", function () {
       url: 'http://localhost:8000#/carlmw/gitlactica',
       scripts: ["test/standins/clock.js", "../standins.js", "../build.js"],
       done: function (err, window) {
-        if (err) console.error(err);
+        if (err) {
+          console.error(err);
+        }
         messages = window.log.messages;
         done();
       }

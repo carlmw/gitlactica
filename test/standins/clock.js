@@ -1,3 +1,4 @@
+/* global window */
 (function (global) {
   var intervals = [];
 
