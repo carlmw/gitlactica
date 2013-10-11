@@ -7,30 +7,35 @@ var skyBox = require('./sky_box'),
 module.exports = function scene (config) {
   var distance = 1000,
       camera,
-      scene,
+      world,
       renderer;
 
   camera = new THREE.PerspectiveCamera(30, global.innerWidth / global.innerHeight, 0.1, 100000000);
   camera.up = new THREE.Vector3(0, 0, 1);
   camera.useQuaternion = true;
-  camera.position.y = distance * 10;
-  scene = new THREE.Scene();
+  camera.position.y = distance * 5;
+  camera.position.z = distance * 2;
+  world = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   config.maxAnisotropy = renderer.getMaxAnisotropy();
 
-  skyBox(scene, config.sky_box);
+  skyBox(world, config.sky_box);
 
-  scene.add(new THREE.PointLight(0xffffff, 1, 0));
-  scene.add(new THREE.AmbientLight(0x333333));
+  var point = new THREE.PointLight(0xffffff, 1, 0);
+  point.position.y = 4000;
+  point.position.z = 1000;
 
-  skyBox(scene, config.sky_box);
+  world.add(point);
+  world.add(new THREE.AmbientLight(0x333333));
+
+  skyBox(world, config.sky_box);
 
   return {
     setSize: setSize,
     render: render,
     domCanvas: renderer.domElement,
-    scene: scene,
+    scene: world,
     camera: camera
   };
 
@@ -43,6 +48,6 @@ module.exports = function scene (config) {
   function render () {
     raf(render);
     TWEEN.update();
-    renderer.render(scene, camera);
+    renderer.render(world, camera);
   }
 };
