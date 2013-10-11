@@ -6,16 +6,22 @@ module.exports = function shipYard (scene, model) {
   return {
     addShip: addShip,
     moveShip: moveShip,
-    destroyShip: destroyShip
-  }
+    destroyShip: destroyShip,
+    rotateShip: rotateShip
+  };
 
   function addShip (name) {
     var ship = ships[name] = new Ship(name);
     scene.add(ship.pivot);
+    console.log('Added ship ' + name);
   }
 
   function moveShip (name, x, y, z) {
     ships[name].pivot.position.set(x, y, z);
+  }
+
+  function rotateShip (name, x, y, z) {
+    ships[name].pivot.rotation.set(x, y, z);
   }
 
   function destroyShip (name) {

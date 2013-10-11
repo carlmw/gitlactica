@@ -27,18 +27,23 @@ describe("Playing back activity", function () {
       expect([
         "Started renderer",
         "Set canvas size 1024x768",
-        "Requested https://api.github.com/repos/carlmw/gitlactica",
         "Added planet carlmw/gitlactica with colour 0xffffff",
         "Moved planet carlmw/gitlactica to 0, 0, 0",
         "Looked at 0, 0, 0",
-        "Requested https://api.github.com/repos/carlmw/gitlactica/commits?since=" + moment().startOf('month').format(),
-        "Set interval 0 at 1000",
-        "after 1000 millis",
-        "Requested https://api.github.com/repos/carlmw/gitlactica/commits/d94709d1942c14fe4bd06e24e9639ed30232b58e",
-        "after 2000 millis",
-        "Requested https://api.github.com/repos/carlmw/gitlactica/commits/8b07ccd197085a2c9aac1cc04aef93750aafd49d",
-        "after 3000 millis",
-        "Clear interval"
+        "Added ship carlmw",
+        "Moved ship carlmw to 0, 50000, 0",
+        "Animated for 5000",
+        "Moved ship carlmw to 0, 0, 0",
+        "Rotated ship carlmw to 0, 0, 0",
+        "Animated for 6000",
+        "Rotated ship carlmw to 0, 0, -6.283185307179586",
+        "Added ship bobson",
+        "Moved ship bobson to 0, 50000, 0",
+        "Animated for 5000",
+        "Moved ship bobson to 0, 0, 0",
+        "Rotated ship bobson to 0, 0, 0",
+        "Animated for 6000",
+        "Rotated ship bobson to 0, 0, -6.283185307179586"
       ]).to.deep.equal(messages);
     });
   });

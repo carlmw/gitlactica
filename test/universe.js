@@ -5,16 +5,18 @@ var universe = require('../lib/universe'),
       movePlanet: function () {},
       lookAt: function () {}
     },
+    effectsQueue = {
+      push: function () {}
+    },
     SubspaceChannel = require('../lib/subspace_channel');
 
 describe("universe", function () {
+  var subspace;
+  beforeEach(function () {
+    subspace = new SubspaceChannel();
+    universe(subspace, effectsQueue, renderer);
+  });
   describe("when the repo event is triggered", function () {
-    var subspace;
-    beforeEach(function () {
-      subspace = new SubspaceChannel();
-      universe(subspace, renderer);
-    });
-
     it("renders a planet", function () {
       var rendererMock = sinon.mock(renderer);
       rendererMock.expects('addPlanet').withArgs('carlmw/gitlactica', 0xffffff);
@@ -31,6 +33,35 @@ describe("universe", function () {
       subspace.emit('repo', { full_name: 'carlmw/gitlactica' });
 
       rendererMock.verify();
+    });
+  });
+
+  describe("when the commit event is triggered", function () {
+    it("pushes the ship animations onto the queue", function () {
+      var effectsMock = sinon.mock(effectsQueue);
+
+      effectsMock.expects('push').withArgs('addShip', 'carlmw');
+      effectsMock.expects('push').withArgs('orbitShip', 'carlmw', 0, 0, 0);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 14, 4);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 7, 8);
+
+      subspace.emit('commit', {
+        committer: { login: 'carlmw' },
+        files: [{
+          filename: 'stuff.js',
+          additions: 14,
+          deletions: 4,
+          changes: 18,
+        },
+        {
+          filename: 'styles.css',
+          additions: 7,
+          deletions: 8,
+          changes: 15,
+        }]
+      });
+
+      effectsMock.verify();
     });
   });
 });

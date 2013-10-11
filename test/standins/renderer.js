@@ -14,6 +14,9 @@ module.exports = function Renderer () {
     destroyShip: function (name) {
       log('Destroyed ship ' + name);
     },
+    rotateShip: function (name, x, y, z) {
+      log('Rotated ship ' + name + ' to ' + x + ', ' + y + ', ' + z);
+    },
     addPlanet: function (name, colour) {
       log('Added planet ' + name + ' with colour 0x' + colour.toString(16));
     },

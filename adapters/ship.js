@@ -1,6 +1,11 @@
 var THREE = require('three'),
     ColladaLoader = require('collada_loader'),
-    models = {};
+    model,
+    queue = require('queue-async'),
+    modelFile = 'assets/freighter/models/freighter.dae',
+    modelQueue = queue(1);
+
+modelQueue.defer(loadModel);
 
 module.exports = Ship;
 
@@ -12,21 +17,24 @@ function Ship(login, model) {
   pivot.add(mesh);
 
   this.mesh = mesh;
+  this.mesh.position.x = 1000;
   this.pivot = pivot;
+
+  modelQueue.defer(addModel, this);
 }
 
 Ship.prototype.toString = function () {
   return '[Ship ' + this.name + ']';
 };
 
-// function loadModel(next) {
-//   new ColladaLoader().load(config.model, function (obj) {
-//     model = obj.scene;
+function loadModel(next) {
+  new ColladaLoader().load(modelFile, function (obj) {
+    model = obj.scene;
 
-//     next();
-//   });
-// }
+    next();
+  });
+}
 
-// function addModel(ship) {
-//   ship.mesh.add(model.clone());
-// }
+function addModel(ship) {
+  ship.mesh.add(model.clone());
+}
