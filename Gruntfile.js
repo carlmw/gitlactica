@@ -101,5 +101,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.registerTask('default', ['jshint', 'browserify', 'simplemocha', 'uglify']);
+  grunt.loadTasks('./tasks');
+  grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'uglify']);
 };

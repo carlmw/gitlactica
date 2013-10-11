@@ -12,7 +12,7 @@
   "node": true,
   "es5": true,
   "globals": {
-    "mockery": true, "sinon": true, "it": true, "describe": true,
+    "mockery": true, "sinon": true, "it": true, "describe": true, "expect": true,
     "before": true, "beforeEach": true, "after": true, "afterEach": true,
     "Uint8Array": true,
     "log": true
