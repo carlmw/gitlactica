@@ -1,10 +1,5 @@
 var universe = require('../lib/universe'),
     moment = require('moment'),
-    renderer = {
-      addPlanet: function () {},
-      movePlanet: function () {},
-      lookAt: function () {}
-    },
     effectsQueue = {
       push: function () {}
     },
@@ -17,27 +12,19 @@ describe("universe", function () {
   var subspace;
   beforeEach(function () {
     subspace = new SubspaceChannel();
-    universe(subspace, colour, effectsQueue, renderer);
+    universe(subspace, colour, effectsQueue);
   });
   describe("when the repo event is triggered", function () {
     it("renders a planet", function () {
       sinon.stub(colour, 'of').withArgs('JavaScript').returns(0xff0000);
-
-      var rendererMock = sinon.mock(renderer);
-      rendererMock.expects('addPlanet').withArgs('carlmw/gitlactica', 0xff0000);
+      var effectsMock = sinon.mock(effectsQueue);
+      effectsMock.expects('push').withArgs('addPlanet', 'carlmw/gitlactica', 0xff0000);
+      effectsMock.expects('push').withArgs('movePlanet', 'carlmw/gitlactica', 0, 0, 0);
+      effectsMock.expects('push').withArgs('lookAt', 0, 0, 0);
 
       subspace.emit('repo', { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
 
-      rendererMock.verify();
-    });
-
-    it("moves the planet into position", function () {
-      var rendererMock = sinon.mock(renderer);
-      rendererMock.expects('movePlanet').withArgs('carlmw/gitlactica', 0, 0, 0);
-
-      subspace.emit('repo', { full_name: 'carlmw/gitlactica' });
-
-      rendererMock.verify();
+      effectsMock.verify();
     });
   });
 
