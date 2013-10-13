@@ -1,5 +1,6 @@
 // TODO move this into something neater, nock?
 var repo = { full_name: 'carlmw/gitlactica' },
+    moment = require('moment'),
     firstCommit = { committer: { login: 'carlmw' }, files: [{ additions: 10, deletions: 5 }] },
     secondCommit = { committer: { login: 'bobson' }, files: [{ additions: 15, deletions: 20 }] },
     commits = [
@@ -12,7 +13,7 @@ module.exports.xhr = function (opts, callback) {
     respond(repo);
     return;
   }
-  if (opts.uri === 'https://api.github.com/repos/carlmw/gitlactica/commits?since=2013-10-01T00:00:00+01:00') {
+  if (opts.uri === 'https://api.github.com/repos/carlmw/gitlactica/commits?since=' + moment().startOf('month').format()) {
     respond(commits);
     return;
   }
