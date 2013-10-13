@@ -35,6 +35,7 @@ function loadModel(next) {
   });
 }
 
-function addModel(ship) {
+function addModel(ship, next) {
   ship.mesh.add(model.clone());
+  next();
 }
