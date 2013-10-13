@@ -27,7 +27,7 @@ module.exports = function scene (config) {
   point.position.z = 1000;
 
   world.add(point);
-  world.add(new THREE.AmbientLight(0x333333));
+  world.add(new THREE.AmbientLight(0x111111));
 
   skyBox(world, config.sky_box);
 
