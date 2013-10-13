@@ -29,7 +29,7 @@ describe("Playing back activity", function () {
       expect([
         "Started renderer",
         "Set canvas size 1024x768",
-        "Added planet carlmw/gitlactica with colour 0xffffff",
+        "Added planet carlmw/gitlactica with colour 0xf15501",
         "Moved planet carlmw/gitlactica to 0, 0, 0",
         "Looked at 0, 0, 0",
         "Added ship carlmw",

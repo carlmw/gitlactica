@@ -8,20 +8,25 @@ var universe = require('../lib/universe'),
     effectsQueue = {
       push: function () {}
     },
+    colour = {
+      of: function () {}
+    },
     SubspaceChannel = require('../lib/subspace_channel');
 
 describe("universe", function () {
   var subspace;
   beforeEach(function () {
     subspace = new SubspaceChannel();
-    universe(subspace, effectsQueue, renderer);
+    universe(subspace, colour, effectsQueue, renderer);
   });
   describe("when the repo event is triggered", function () {
     it("renders a planet", function () {
-      var rendererMock = sinon.mock(renderer);
-      rendererMock.expects('addPlanet').withArgs('carlmw/gitlactica', 0xffffff);
+      sinon.stub(colour, 'of').withArgs('JavaScript').returns(0xff0000);
 
-      subspace.emit('repo', { full_name: 'carlmw/gitlactica' });
+      var rendererMock = sinon.mock(renderer);
+      rendererMock.expects('addPlanet').withArgs('carlmw/gitlactica', 0xff0000);
+
+      subspace.emit('repo', { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
 
       rendererMock.verify();
     });

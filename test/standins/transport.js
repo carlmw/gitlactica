@@ -1,5 +1,5 @@
 // TODO move this into something neater, nock?
-var repo = { full_name: 'carlmw/gitlactica' },
+var repo = { full_name: 'carlmw/gitlactica', language: 'JavaScript' },
     moment = require('moment'),
     firstCommit = { committer: { login: 'carlmw' }, files: [{ additions: 10, deletions: 5 }] },
     secondCommit = { committer: { login: 'bobson' }, files: [{ additions: 15, deletions: 20 }] },
