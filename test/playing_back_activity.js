@@ -39,13 +39,23 @@ describe("Playing back activity", function () {
         "Rotated ship carlmw to 0, 0, 0",
         "Animated for 6000",
         "Rotated ship carlmw to 0, 0, -6.283185307179586",
+        "Added torpedo for carlmw with id 0 and colour 0xff",
+        "Moved torpedo 0 to 100, 200, 300",
+        "Animated for 1000",
+        "Moved torpedo 0 to 0, 0, 0",
+        "Destroyed torpedo 0",
         "Added ship bobson",
         "Moved ship bobson to 0, 50000, 0",
         "Animated for 5000",
         "Moved ship bobson to 0, 0, 0",
         "Rotated ship bobson to 0, 0, 0",
         "Animated for 6000",
-        "Rotated ship bobson to 0, 0, -6.283185307179586"
+        "Rotated ship bobson to 0, 0, -6.283185307179586",
+        "Added torpedo for bobson with id 1 and colour 0xff",
+        "Moved torpedo 1 to 100, 200, 300",
+        "Animated for 1000",
+        "Moved torpedo 1 to 0, 0, 0",
+        "Destroyed torpedo 1"
       ]).to.deep.equal(messages);
     });
   });

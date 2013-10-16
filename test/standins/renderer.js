@@ -12,6 +12,9 @@ module.exports = function Renderer () {
     moveShip: function (name, x, y, z) {
       log('Moved ship ' + name + ' to ' + x + ', ' + y + ', ' + z);
     },
+    shipPosition: function () {
+      return { x: 100, y: 200, z: 300 };
+    },
     destroyShip: function (name) {
       log('Destroyed ship ' + name);
     },
@@ -32,6 +35,15 @@ module.exports = function Renderer () {
     },
     lookAt: function (x, y, z) {
       log('Looked at ' + x + ', ' + y + ', ' + z);
+    },
+    addTorpedo: function (name, id, colour) {
+      log('Added torpedo for ' + name + ' with id ' + id + ' and colour 0x' + colour.toString(16));
+    },
+    moveTorpedo: function (id, x, y, z) {
+      log('Moved torpedo ' + id + ' to ' + x + ', ' + y + ', ' + z);
+    },
+    destroyTorpedo: function (id) {
+      log('Destroyed torpedo ' + id);
     }
   };
 };

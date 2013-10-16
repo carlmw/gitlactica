@@ -27,6 +27,11 @@ Ship.prototype.toString = function () {
   return '[Ship ' + this.name + ']';
 };
 
+Ship.prototype.position = function () {
+  var pos = new THREE.Vector3();
+  return pos.getPositionFromMatrix(this.mesh.matrixWorld);
+};
+
 function loadModel(next) {
   new ColladaLoader().load(modelFile, function (obj) {
     model = obj.scene;
