@@ -1,8 +1,12 @@
 // TODO move this into something neater, nock?
 var repo = { full_name: 'carlmw/gitlactica', language: 'JavaScript' },
     moment = require('moment'),
-    firstCommit = { committer: { login: 'carlmw' }, files: [{ additions: 1, deletions: 1 }] },
-    secondCommit = { committer: { login: 'bobson' }, files: [{ additions: 1, deletions: 1 }] },
+    firstCommit = { committer: { login: 'carlmw' }, files: [
+      { filename: 'something.js', additions: 1, deletions: 1 }
+    ]},
+    secondCommit = { committer: { login: 'bobson' }, files: [
+      { filename: 'that.py', additions: 1, deletions: 1 }
+    ]},
     commits = [
       { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' },
       { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }

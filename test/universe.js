@@ -4,7 +4,7 @@ var universe = require('../lib/universe'),
       push: function () {}
     },
     colour = {
-      of: function () {}
+      of: function (identifier) {}
     },
     SubspaceChannel = require('../lib/subspace_channel');
 
@@ -30,11 +30,15 @@ describe("universe", function () {
 
   describe("when the commit event is triggered", function () {
     it("pushes the ship animations onto the queue", function () {
+      sinon.stub(colour, 'of');
+      colour.of.withArgs('.js').returns(0xffff00);
+      colour.of.withArgs('.css').returns(0x0000ff);
+
       var effectsMock = sinon.mock(effectsQueue);
 
       effectsMock.expects('push').withArgs('addShip', 'carlmw');
       effectsMock.expects('push').withArgs('orbitShip', 'carlmw', 0, 0, 0);
-      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 14, 4);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0xffff00, 14, 4);
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 7, 8);
 
       subspace.emit('commit', {
