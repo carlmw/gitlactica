@@ -36,14 +36,8 @@ module.exports = function Renderer () {
     lookAt: function (x, y, z) {
       log('Looked at ' + x + ', ' + y + ', ' + z);
     },
-    addTorpedo: function (name, id, colour) {
-      log('Added torpedo for ' + name + ' with id ' + id + ' and colour 0x' + colour.toString(16));
-    },
-    moveTorpedo: function (id, x, y, z) {
-      log('Moved torpedo ' + id + ' to ' + x + ', ' + y + ', ' + z);
-    },
-    destroyTorpedo: function (id) {
-      log('Destroyed torpedo ' + id);
+    addTorpedo: function (colour, x, y, z) {
+      log('Added torpedo with colour 0x' + colour.toString(16) + ' at ' + x + ', ' + y + ', ' + z);
     }
   };
 };

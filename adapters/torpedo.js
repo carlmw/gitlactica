@@ -1,16 +1,19 @@
 var THREE = require('three'),
-    material = new THREE.ParticleBasicMaterial({
-      color: 0xff0040,
-      size: 400,
-      map: THREE.ImageUtils.loadTexture('textures/torpedo.png'),
-      transparent: true,
-      blending: THREE.AdditiveBlending
-    });
+    zero = new THREE.Vector3(0, 0, 0);
 
 module.exports = Torpedo;
 
-function Torpedo() {
-  var geo = new THREE.Geometry();
-  geo.vertices.push(new THREE.Vector3(0, 0, 0));
-  this.particle = new THREE.ParticleSystem(geo, material);
+function Torpedo(position) {
+  this.alpha = 0;
+  this.position = position;
 }
+
+Torpedo.prototype.track = function () {
+  this.alpha += 0.001;
+  this.position.lerp(zero, this.alpha);
+  return this;
+};
+
+Torpedo.prototype.unDetonated = function () {
+  return this.alpha < 1;
+};

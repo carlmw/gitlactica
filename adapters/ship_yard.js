@@ -1,19 +1,14 @@
-var Ship = require('./ship'),
-    Torpedo = require('./torpedo');
+var Ship = require('./ship');
 
 module.exports = function shipYard (scene, model) {
-  var ships = {},
-      projectiles = {};
+  var ships = {};
 
   return {
     addShip: addShip,
     moveShip: moveShip,
     shipPosition: shipPosition,
     destroyShip: destroyShip,
-    rotateShip: rotateShip,
-    addTorpedo: addTorpedo,
-    moveTorpedo: moveTorpedo,
-    destroyTorpedo: destroyTorpedo
+    rotateShip: rotateShip
   };
 
   function addShip (name) {
@@ -38,19 +33,5 @@ module.exports = function shipYard (scene, model) {
     var ship = ships[name];
     scene.remove(ship.pivot);
     delete ships[name];
-  }
-
-  function addTorpedo (name, id, colour) {
-    var torpedo = projectiles[id] = new Torpedo();
-    scene.add(torpedo.particle);
-  }
-
-  function moveTorpedo (id, x, y, z) {
-    projectiles[id].particle.position.set(x, y, z);
-  }
-
-  function destroyTorpedo (id) {
-    scene.remove(projectiles[id]);
-    delete projectiles[id];
   }
 };
