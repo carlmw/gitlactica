@@ -1,19 +1,19 @@
-var THREE = require('three'),
-    zero = new THREE.Vector3(0, 0, 0);
+var THREE = require('three');
 
 module.exports = Torpedo;
 
-function Torpedo(position) {
+function Torpedo(position, destination) {
   this.alpha = 0;
+  this.destination = destination;
   this.position = position;
 }
 
 Torpedo.prototype.track = function () {
   this.alpha += 0.001;
-  this.position.lerp(zero, this.alpha);
+  this.position.lerp(this.destination, this.alpha);
   return this;
 };
 
-Torpedo.prototype.unDetonated = function () {
-  return this.alpha < 1;
+Torpedo.prototype.detonated = function () {
+  return this.alpha >= 1;
 };

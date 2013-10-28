@@ -9,23 +9,19 @@ modelQueue.defer(loadModel);
 
 module.exports = Ship;
 
-function Ship(login, model) {
+function Ship() {
   var mesh = new THREE.Object3D(),
       pivot = new THREE.Object3D();
 
-  this.name = login;
   pivot.add(mesh);
 
   this.mesh = mesh;
-  this.mesh.position.x = 2000;
+  this.mesh.position.x = 5000;
+  this.mesh.rotation.y = Math.PI * 0.5;
   this.pivot = pivot;
 
   modelQueue.defer(addModel, this);
 }
-
-Ship.prototype.toString = function () {
-  return '[Ship ' + this.name + ']';
-};
 
 Ship.prototype.position = function () {
   var pos = new THREE.Vector3();
@@ -35,6 +31,7 @@ Ship.prototype.position = function () {
 function loadModel(next) {
   new ColladaLoader().load(config.ship_model, function (obj) {
     model = obj.scene;
+    model.position.set(0, 0, -50);
 
     next();
   });

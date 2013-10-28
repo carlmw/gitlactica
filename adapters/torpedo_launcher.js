@@ -14,16 +14,17 @@ module.exports = function (scene) {
   scene.add(system);
 
   return {
-    addTorpedo: addTorpedo,
-    updateTorpedoes: updateTorpedoes
+    add: add,
+    system: system
   };
 
-  function addTorpedo (colorHex, x, y, z) {
+  function add (colorHex, sx, sy, sz, dx, dy, dz) {
     var position = geo.vertices[i],
         color = geo.colors[i],
-        torpedo = new Torpedo(position);
+        torpedo;
 
-    position.set(x, y, z);
+    position.set(sx, sy, sz);
+    torpedo = new Torpedo(position, new THREE.Vector3(dx, dy, dz));
     color.setHex(colorHex);
     geo.colorsNeedUpdate = true;
     geo.verticesNeedUpdate = true;
@@ -39,17 +40,17 @@ module.exports = function (scene) {
     }
   }
 
-  function updateTorpedoes () {
+  function update () {
     // Remove detonated torpedoes and advance all remaining torward their targets
     projectiles = _(projectiles).filter(function (projectile) {
-      return projectile.unDetonated();
+      return !projectile.detonated();
     }).invoke('track').value();
     geo.verticesNeedUpdate = true;
   }
 
   function render () {
     raf(render);
-    updateTorpedoes();
+    update();
   }
 };
 
@@ -67,7 +68,7 @@ function generateSystem () {
 
 function generateMaterial () {
   return new THREE.ParticleBasicMaterial({
-    size: 600,
+    size: 500,
     map: THREE.ImageUtils.loadTexture('textures/torpedo.png'),
     transparent: true,
     blending: THREE.AdditiveBlending,

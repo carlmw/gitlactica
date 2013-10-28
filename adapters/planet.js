@@ -2,7 +2,7 @@ var THREE = require('three'),
     TWEEN = require('tween.js'),
     config = require('../config'),
     texture = THREE.ImageUtils.loadTexture('/textures/planet.jpg'),
-    geometry = new THREE.SphereGeometry(500, 32, 32),
+    geometry = new THREE.SphereGeometry(1000, 32, 32),
     materials = {};
 
 module.exports = Planet;

@@ -5,12 +5,12 @@ var skyBox = require('./sky_box'),
     THREE = require('three');
 
 module.exports = function scene (config) {
-  var distance = 1000,
+  var distance = 2000,
       camera,
       world,
       renderer;
 
-  camera = new THREE.PerspectiveCamera(30, global.innerWidth / global.innerHeight, 0.1, 100000000);
+  camera = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 0.1, 100000000);
   camera.up = new THREE.Vector3(0, 0, 1);
   camera.useQuaternion = true;
   camera.position.y = distance * 5;

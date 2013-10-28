@@ -6,13 +6,17 @@ module.exports = function shipYard (scene, model) {
   return {
     addShip: addShip,
     moveShip: moveShip,
+    shipWorldPosition: shipWorldPosition,
     shipPosition: shipPosition,
     destroyShip: destroyShip,
-    rotateShip: rotateShip
+    rotateShip: rotateShip,
+    addObjectToShip: function (name, object) {
+      ships[name].pivot.add(object);
+    }
   };
 
   function addShip (name) {
-    var ship = ships[name] = new Ship(name);
+    var ship = ships[name] = new Ship();
     scene.add(ship.pivot);
     console.log('Added ship ' + name);
   }
@@ -22,6 +26,10 @@ module.exports = function shipYard (scene, model) {
   }
 
   function shipPosition (name) {
+    return ships[name].mesh.position;
+  }
+
+  function shipWorldPosition (name) {
     return ships[name].position();
   }
 

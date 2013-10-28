@@ -12,8 +12,11 @@ module.exports = function Renderer () {
     moveShip: function (name, x, y, z) {
       log('Moved ship ' + name + ' to ' + x + ', ' + y + ', ' + z);
     },
-    shipPosition: function () {
+    shipWorldPosition: function () {
       return { x: 100, y: 200, z: 300 };
+    },
+    shipPosition: function () {
+      return { x: 200, y: 300, z: 400 };
     },
     destroyShip: function (name) {
       log('Destroyed ship ' + name);
@@ -36,8 +39,20 @@ module.exports = function Renderer () {
     lookAt: function (x, y, z) {
       log('Looked at ' + x + ', ' + y + ', ' + z);
     },
-    addTorpedo: function (colour, x, y, z) {
-      log('Added torpedo with colour 0x' + colour.toString(16) + ' at ' + x + ', ' + y + ', ' + z);
+    addTorpedo: function (colour, sx, sy, sz, dx, dy, dz) {
+      log('Added torpedo with colour 0x' + colour.toString(16) + ' from ' + sx + ', ' + sy + ', ' + sz + ' to ' + dx + ', ' + dy + ', ' + dz);
+    },
+    extractTorpedo: function (colour, sx, sy, sz, dx, dy, dz) {
+      log('Tractored torpedo with colour 0x' + colour.toString(16) + ' from ' + sx + ', ' + sy + ', ' + sz + ' to ' + dx + ', ' + dy + ', ' + dz);
+    },
+    addWeapons: function (name) {
+      log('Added weapons to ' + name);
+    },
+    hideBeam: function () {
+      log('Hidden beam');
+    },
+    showBeam: function () {
+      log('Shown beam');
     }
   };
 };
