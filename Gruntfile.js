@@ -3,8 +3,12 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
       build: {
-        src: 'build.js',
-        dest: 'build.min.js'
+        src: 'dist/build.js',
+        dest: 'dist/build.js'
+      },
+      libs: {
+        src: 'dist/libs.js',
+        dest: 'dist/libs.js'
       }
     },
     jshint: {
@@ -24,7 +28,7 @@ module.exports = function (grunt) {
     browserify: {
       libs: {
         src: ['three', './adapters/*.js', './vendor/collada_loader'],
-        dest: './libs.js',
+        dest: './dist/libs.js',
         options: {
           alias: [
             'three:three',
@@ -39,7 +43,7 @@ module.exports = function (grunt) {
       },
       standins: {
         src: ['./test/standins/*.js'],
-        dest: './standins.js',
+        dest: './dist/standins.js',
         options: {
           aliasMappings: {
             src: ['./test/standins/*.js'],
@@ -60,7 +64,7 @@ module.exports = function (grunt) {
           ]
         },
         src: ['./index.js'],
-        dest: './build.js',
+        dest: './dist/build.js',
         transform: ['brfs']
       }
     },

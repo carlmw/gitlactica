@@ -7,13 +7,13 @@ describe("Playing back activity", function () {
   var messages;
 
   before(function () {
-    connect(connect.static(__dirname + '/../')).listen(8001);
+    connect(connect.static(__dirname + '/../dist/')).listen(8001);
   });
 
   beforeEach(function (done) {
     jsdom.env({
       url: 'http://localhost:8001#/carlmw/gitlactica',
-      scripts: ["test/standins/clock.js", "../standins.js", "../build.js"],
+      scripts: ["../clock.js", "../standins.js", "../build.js"],
       done: function (err, window) {
         if (err) {
           console.error(err);

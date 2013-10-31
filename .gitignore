@@ -14,10 +14,10 @@ results
 npm-debug.log
 .DS_Store
 /node_modules/
-/build.js
 /config.js
-/build.min.js
 /dump.rdb
-/standins.js
-/libs.js
 /colours.json
+/dist/libs.js
+/dist/standins.js
+/dist/build.min.js
+/dist/build.js
