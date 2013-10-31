@@ -107,4 +107,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadTasks('./tasks');
   grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'uglify']);
+  grunt.registerTask('heroku:production', ['default']);
 };
