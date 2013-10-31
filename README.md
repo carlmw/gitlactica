@@ -2,15 +2,11 @@
 
 ## Installation
 
-### Get and run the server
-[http://github.com/leocassarani/gitlactica-server](http://github.com/leocassarani/gitlactica-server)
-
-### Run the client
-    cp config.example.js config.js
+### Run the app
     npm install grunt-cli -g
     npm install
     grunt
-    grunt connect
+    node app.js
 
 ## Development
     grunt watch

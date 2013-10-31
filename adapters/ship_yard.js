@@ -1,6 +1,6 @@
 var Ship = require('./ship');
 
-module.exports = function shipYard (scene, model) {
+module.exports = function shipYard (scene) {
   var ships = {};
 
   return {

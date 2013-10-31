@@ -8,7 +8,7 @@ var scene = require('./scene'),
 
 module.exports = function Renderer (config) {
   var stage = scene(config),
-      ships = shipYard(stage.scene, config.ship_model),
+      ships = shipYard(stage.scene),
       launcher = torpedoLauncher(stage.scene),
       tractor = torpedoLauncher(stage.scene),
       particleBeam = beam(),

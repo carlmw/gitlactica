@@ -4,7 +4,7 @@ var skyBox = require('./sky_box'),
     raf = require('raf-component'),
     THREE = require('three');
 
-module.exports = function scene (config) {
+module.exports = function scene () {
   var distance = 2000,
       camera,
       world,
@@ -18,9 +18,6 @@ module.exports = function scene (config) {
   world = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  config.maxAnisotropy = renderer.getMaxAnisotropy();
-
-  skyBox(world, config.sky_box);
 
   var point = new THREE.PointLight(0xffffff, 1, 0);
   point.position.y = 4000;
@@ -29,7 +26,7 @@ module.exports = function scene (config) {
   world.add(point);
   world.add(new THREE.AmbientLight(0x111111));
 
-  skyBox(world, config.sky_box);
+  skyBox(world, 'textures/stars.jpg');
 
   return {
     setSize: setSize,

@@ -1,7 +1,6 @@
 var THREE = require('three'),
     ColladaLoader = require('collada_loader'),
     model,
-    config = require('../config'),
     queue = require('queue-async'),
     modelQueue = queue(1);
 
@@ -29,7 +28,7 @@ Ship.prototype.position = function () {
 };
 
 function loadModel(next) {
-  new ColladaLoader().load(config.ship_model, function (obj) {
+  new ColladaLoader().load('assets/freighter/models/freighter.dae', function (obj) {
     model = obj.scene;
     model.position.set(0, 0, -50);
 
