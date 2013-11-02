@@ -6,7 +6,7 @@
     grunt
 
 ### Run the app
-    node app.js
+    node web.js
 
 or use foreman
 
@@ -18,6 +18,11 @@ or use foreman
 
 ## Run the tests
     grunt simplemocha
+    grunt integration
+
+NOTE: The integration tests depend on [http://slimerjs.org/](slimerjs) which can be installed via homebrew.
+
+    brew install slimerjs
 
 ## Creating a Heroku app
     heroku create <appname> --buildpack https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git

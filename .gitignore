@@ -17,6 +17,4 @@ npm-debug.log
 /dump.rdb
 /colours.json
 /dist/libs.js
-/dist/standins.js
-/dist/build.min.js
 /dist/build.js

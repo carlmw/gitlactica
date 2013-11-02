@@ -28,13 +28,16 @@ module.exports = function Renderer (config) {
 
   function addWeapons (name) {
     ships.addObjectToShip(name, tractor.system);
+    log('Added weapons to ' + name);
   }
 
   function hideBeam () {
     particleBeam.visible =  false;
+    log('Hidden beam');
   }
 
   function showBeam () {
     particleBeam.visible = true;
+    log('Shown beam');
   }
 };

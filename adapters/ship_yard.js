@@ -18,7 +18,7 @@ module.exports = function shipYard (scene) {
   function addShip (name) {
     var ship = ships[name] = new Ship();
     scene.add(ship.pivot);
-    console.log('Added ship ' + name);
+    log('Added ship ' + name);
   }
 
   function moveShip (name, x, y, z) {

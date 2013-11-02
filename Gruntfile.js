@@ -41,17 +41,6 @@ module.exports = function (grunt) {
           }
         }
       },
-      standins: {
-        src: ['./test/standins/*.js'],
-        dest: './dist/standins.js',
-        options: {
-          aliasMappings: {
-            src: ['./test/standins/*.js'],
-            dest: 'adapters/',
-            flatten: true
-          }
-        }
-      },
       dist: {
         options: {
           external: [
@@ -81,20 +70,17 @@ module.exports = function (grunt) {
     watch: {
       dist: {
         files: ['index.js', 'lib/**/*.js', 'test/**/*.js'],
-        tasks: ['browserify:standins', 'browserify:dist', 'simplemocha']
+        tasks: ['browserify:dist', 'simplemocha']
       },
       libs: {
         files: ['adapters/**/*'],
         tasks: ['browserify:libs']
       }
     },
-    connect: {
-      server: {
-        options: {
-          port: 8000,
-          base: '.',
-          keepalive: true
-        }
+    casperjs: {
+      files: ['integration/**/*.js'],
+      options: {
+        engine: 'slimerjs'
       }
     }
   });
@@ -104,8 +90,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-casperjs');
   grunt.loadTasks('./tasks');
-  grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'uglify']);
+  grunt.registerTask('integration', ['start_test_server', 'casperjs', 'close_test_server']);
+  grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'casperjs', 'uglify']);
   grunt.registerTask('heroku:production', ['default']);
 };

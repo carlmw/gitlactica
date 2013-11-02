@@ -18,14 +18,14 @@ module.exports = function (scene) {
     system: system
   };
 
-  function add (colorHex, sx, sy, sz, dx, dy, dz) {
+  function add (colourHex, sx, sy, sz, dx, dy, dz) {
     var position = geo.vertices[i],
         color = geo.colors[i],
         torpedo;
 
     position.set(sx, sy, sz);
     torpedo = new Torpedo(position, new THREE.Vector3(dx, dy, dz));
-    color.setHex(colorHex);
+    color.setHex(colourHex);
     geo.colorsNeedUpdate = true;
     geo.verticesNeedUpdate = true;
     projectiles.push(torpedo);
@@ -33,7 +33,7 @@ module.exports = function (scene) {
     if (i > PARTICLE_COUNT - 1) {
       i = 0;
     }
-
+    log('Launched torpedo with colour 0x' + colourHex.toString(16));
     if (!rendering) {
       rendering = true;
       render();
