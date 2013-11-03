@@ -1,14 +1,33 @@
 /* global casper */
+var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('playing back activity', 19, function (test) {
+casper.test.begin('Playing back activity', 27, function (test) {
   var lastMessage;
-  casper.start('http://localhost:8091#/carlmw/gitlactica');
+  casper.start('http://localhost:8091');
+
+  expect('Hidden beam');
+  expect('Set canvas size 400x300');
+  expect('Rendered template /');
+  casper.thenClick(x('//a[text()="Connect to GitHub"]'));
+
+  casper.waitForSelector(x('//a[text()="gitlactica"]'), function () {
+    test.assertUrlMatch('/repos', 'Redirected to /repos');
+  });
+
+  expect('Hidden beam');
+  expect('Set canvas size 400x300');
+  expect('Rendered template /repos');
+
+  casper.thenClick(x('//a[text()="gitlactica"]'));
+
+  casper.waitForUrl('/repos/carlmw/gitlactica');
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
   expect('Added planet carlmw/gitlactica with colour 0xf15501');
   expect('Moved planet carlmw/gitlactica to 0, 0, 0');
   expect('Looked at 0, 0, 0');
+  expect('Rendered template /repo');
   expect('Added ship carlmw');
   expect('Ship carlmw orbiting 0, 0, 0');
   expect('Added weapons to carlmw');

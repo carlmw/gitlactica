@@ -28,9 +28,14 @@ module.exports = function (grunt) {
         files: [
           { filename: 'that.py', additions: 1, deletions: 1 }
         ]
-      });
+      })
+      .get('/user/repos')
+      .reply(200, [{
+        name: 'gitlactica',
+        full_name: 'carlmw/gitlactica'
+      }]);
 
-    server = connect(app).listen(8091);
+    server = connect(app('test')).listen(8091);
   });
   grunt.registerTask('close_test_server', function () {
     server.close();

@@ -3,14 +3,15 @@ var commitsData = [{ sha: 'd94709' }],
     repoData = { language: "JavaScript" },
     github = require('../lib/github'),
     subspace = { emit: function () {} },
-    transport = { xhr: function () {} };
+    transport = { xhr: function () {} },
+    reposList = [{ full_name: 'carlmw/gitlactica' }];
 
 describe("github", function () {
   describe("repo", function () {
     it("fetches the repo details", function () {
       var transportMock = sinon.mock(transport);
       transportMock.expects('xhr').withArgs({
-        uri: 'https://api.github.com/repos/carlmw/gitlactica'
+        uri: '/api/repos/carlmw/gitlactica'
       });
       github(transport, subspace).repo('carlmw/gitlactica');
 
@@ -31,7 +32,7 @@ describe("github", function () {
     it("fetches a list of commits", function () {
       var transportMock = sinon.mock(transport);
       transportMock.expects('xhr').withArgs({
-        uri: 'https://api.github.com/repos/carlmw/gitlactica/commits?since=2013-11-04T00:00:00+00:00'
+        uri: '/api/repos/carlmw/gitlactica/commits?since=2013-11-04T00:00:00+00:00'
       });
       github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
 
@@ -41,7 +42,7 @@ describe("github", function () {
     it("triggers the commits event", function () {
       var subspaceMock = sinon.mock(subspace);
       subspaceMock.expects('emit').withArgs('commits', commitsData);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData));
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData), 'carlmw/gitlactica');
       github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
 
       subspaceMock.verify();
@@ -52,7 +53,7 @@ describe("github", function () {
     it("fetches the commit", function () {
       var transportMock = sinon.mock(transport);
       transportMock.expects('xhr').withArgs({
-        uri: 'https://api.github.com/repos/carlmw/gitlactica/commits/d94709'
+        uri: '/api/repos/carlmw/gitlactica/commits/d94709'
       });
       github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
 
@@ -64,6 +65,27 @@ describe("github", function () {
       subspaceMock.expects('emit').withArgs('commit', commitData);
       sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitData));
       github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
+
+      subspaceMock.verify();
+    });
+  });
+
+  describe("repos", function () {
+    it("fetches the commit", function () {
+      var transportMock = sinon.mock(transport);
+      transportMock.expects('xhr').withArgs({
+        uri: '/api/user/repos'
+      });
+      github(transport, subspace).repos();
+
+      transportMock.verify();
+    });
+
+    it("triggers the repos event", function () {
+      var subspaceMock = sinon.mock(subspace);
+      subspaceMock.expects('emit').withArgs('repos', reposList);
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(reposList));
+      github(transport, subspace).repos();
 
       subspaceMock.verify();
     });

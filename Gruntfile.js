@@ -50,11 +50,11 @@ module.exports = function (grunt) {
             'adapters/transport',
             'adapters/clock',
             'adapters/animation'
-          ]
+          ],
+          transform: ['hbsfy']
         },
         src: ['./index.js'],
-        dest: './dist/build.js',
-        transform: ['brfs']
+        dest: './dist/build.js'
       }
     },
     simplemocha: {
@@ -69,7 +69,7 @@ module.exports = function (grunt) {
     },
     watch: {
       dist: {
-        files: ['index.js', 'lib/**/*.js', 'test/**/*.js'],
+        files: ['index.js', 'lib/**/*.js', 'test/**/*.js', 'lib/templates/*.hbs'],
         tasks: ['browserify:dist', 'simplemocha']
       },
       libs: {
@@ -90,9 +90,14 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-casperjs');
   grunt.loadTasks('./tasks');
-  grunt.registerTask('integration', ['start_test_server', 'casperjs', 'close_test_server']);
-  grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'casperjs', 'uglify']);
+  grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'uglify']);
   grunt.registerTask('heroku:production', ['default']);
+
+  try {
+    // Skip casper when deploying to heroku
+    require.resolve('grunt-casperjs');
+    grunt.loadNpmTasks('grunt-casperjs');
+    grunt.registerTask('integration', ['start_test_server', 'casperjs', 'close_test_server']);
+  } catch (e) {}
 };

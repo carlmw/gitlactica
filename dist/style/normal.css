@@ -37,11 +37,21 @@ a:link, a:visited {
 }
 
 .canvas-wrapper {
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 100%;
 
   overflow: hidden;
+}
+
+.ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  overflow: auto;
 }
 
 .current-planet {

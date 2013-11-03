@@ -25,9 +25,11 @@ NOTE: The integration tests depend on [http://slimerjs.org/](slimerjs) which can
     brew install slimerjs
 
 ## Creating a Heroku app
-    heroku create <appname> --buildpack https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
-    heroku labs:enable user-env-compile -a <appname>
+    heroku create <APP NAME> --buildpack https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
+    heroku labs:enable user-env-compile -a <APP NAME>
     heroku config:set NODE_ENV=production
+    heroku config:set GITHUB_CLIENT_ID=<YOUR GITHUB APPLICATION CLIENT ID>
+    heroku config:set GITHUB_CLIENT_SECRET=<YOUR GITHUB APPLICATION CLIENT SECRET>
 
 ## Deploying to Heroku
     git push heroku master
