@@ -1,5 +1,5 @@
 var THREE = require('three'),
-    tex = THREE.ImageUtils.loadTexture("textures/beam.png");
+    tex = THREE.ImageUtils.loadTexture("/textures/beam.png");
 
 module.exports = beam;
 

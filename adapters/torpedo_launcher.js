@@ -69,7 +69,7 @@ function generateSystem () {
 function generateMaterial () {
   return new THREE.ParticleBasicMaterial({
     size: 500,
-    map: THREE.ImageUtils.loadTexture('textures/torpedo.png'),
+    map: THREE.ImageUtils.loadTexture('/textures/torpedo.png'),
     transparent: true,
     blending: THREE.AdditiveBlending,
     vertexColors: true

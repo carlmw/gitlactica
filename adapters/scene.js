@@ -26,7 +26,7 @@ module.exports = function scene () {
   world.add(point);
   world.add(new THREE.AmbientLight(0x111111));
 
-  skyBox(world, 'textures/stars.jpg');
+  skyBox(world, '/textures/stars.jpg');
 
   return {
     setSize: setSize,
