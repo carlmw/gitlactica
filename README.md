@@ -1,4 +1,4 @@
-# gitlactica
+# gitlactica [![Build Status](https://travis-ci.org/carlmw/gitlactica.png?branch=master)](https://travis-ci.org/carlmw/gitlactica)
 
 ## Installation
     npm install grunt-cli -g
