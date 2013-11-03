@@ -14,21 +14,6 @@ describe("network", function () {
     subspace = new SubspaceChannel();
   });
 
-  describe("when the repo event is triggered", function () {
-    beforeEach(function () {
-      network(subspace, git);
-    });
-
-    it("requests the commits for the past month", function () {
-      var gitMock = sinon.mock(git);
-      gitMock.expects('commits').withArgs('carlmw/gitlactica', moment().startOf('month').format());
-
-      subspace.emit('repo', { full_name: 'carlmw/gitlactica' });
-
-      gitMock.verify();
-    });
-  });
-
   describe("when the commits event is triggered", function () {
     describe("every second", function () {
       it("pops a commit and requests its details", function () {
@@ -63,9 +48,20 @@ describe("network", function () {
   describe("when the fetch:repo event is triggered", function () {
     it("requests repo data", function () {
       var gitMock = sinon.mock(git);
-      gitMock.expects('repo', 'carlmw/gitlactica');
+      gitMock.expects('repo').withArgs('carlmw/gitlactica');
       network(subspace, git);
       subspace.emit('fetch:repo', 'carlmw/gitlactica');
+
+      gitMock.verify();
+    });
+  });
+
+  describe("when the fetch:commits event is triggered", function () {
+    it("requests commits starting from the day supplied", function () {
+      var gitMock = sinon.mock(git);
+      gitMock.expects('commits').withArgs('carlmw/gitlactica', moment().subtract('days', 30).format());
+      network(subspace, git);
+      subspace.emit('fetch:commits', 'carlmw/gitlactica', 30);
 
       gitMock.verify();
     });

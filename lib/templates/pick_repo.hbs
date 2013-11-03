@@ -1,0 +1,14 @@
+<header class="header">
+  <h1>Repos</h1>
+  <p>Pick a repo with recent activity.</p>
+</header>
+<ul class="repo-list">
+  {{#.}}
+    <li>
+      <a href="/repos/{{full_name}}" class="button pick-repo">
+        <span class="name">{{name}}</span>
+        <span class="description">{{description}}</span>
+      </a>
+    </li>
+  {{/.}}
+</ul>

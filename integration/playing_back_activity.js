@@ -1,33 +1,40 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 27, function (test) {
+casper.test.begin('Playing back activity', 29, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
-  expect('Rendered template /');
-  casper.thenClick(x('//a[text()="Connect to GitHub"]'));
+  expect('Rendered template root');
+  casper.thenClick('.github-auth');
 
-  casper.waitForSelector(x('//a[text()="gitlactica"]'), function () {
-    test.assertUrlMatch('/repos', 'Redirected to /repos');
-  });
+  casper.waitForUrl('/repos');
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
-  expect('Rendered template /repos');
+  expect('Rendered template pick_repo');
 
-  casper.thenClick(x('//a[text()="gitlactica"]'));
+  casper.thenClick(x('//a[span[text()="gitlactica"]]'));
 
   casper.waitForUrl('/repos/carlmw/gitlactica');
+
+  expect('Hidden beam');
+  expect('Set canvas size 400x300');
+  expect('Rendered template pick_interval');
+
+  casper.thenClick(x('//a[text()="Last 7 days"]'));
+
+  casper.waitForUrl('/repos/carlmw/gitlactica/days/7');
+
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
   expect('Added planet carlmw/gitlactica with colour 0xf15501');
   expect('Moved planet carlmw/gitlactica to 0, 0, 0');
   expect('Looked at 0, 0, 0');
-  expect('Rendered template /repo');
+  expect('Rendered template playback');
   expect('Added ship carlmw');
   expect('Ship carlmw orbiting 0, 0, 0');
   expect('Added weapons to carlmw');

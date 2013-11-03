@@ -21,7 +21,7 @@ everyauth.github
 module.exports = function (mode) {
   var app = connect()
     .use(rewrite([
-      '^/repos(/[^/]+/[^/]+)? /'
+      '^/repos(/[^/]+/[^/]+)?(/days/[\\d]+)? /'
     ]))
     .use(connect.static('dist'))
     .use(connect.urlencoded())

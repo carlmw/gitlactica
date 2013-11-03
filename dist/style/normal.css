@@ -12,19 +12,36 @@ html, body {
   height: 100%;
   width: 100%;
 
-  line-height: 1.05;
+  line-height: 1.2;
+}
+
+html {
+  font-size: 10px;
 }
 
 body {
   background: #333;
   background-size: 100% auto;
-  font-family: ostrich;
-  font-size: 30px;
+  font-family: ostrich, helvetica, sans-serif;
+  font-size: 2rem;
   color: #eee;
 }
 
+h1 {
+  font-size: 6rem;
+  margin-bottom: 2rem;
+  font-weight: normal;
+  word-break: break-all;
+}
+
+@media (min-width: 960px) {
+  h1 {
+    font-size: 10rem;
+  }
+}
+
 p {
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 }
 
 ul {
@@ -51,26 +68,164 @@ a:link, a:visited {
   right: 0;
   bottom: 0;
   z-index: 2;
+  padding: 6rem;
   overflow: auto;
 }
 
-.current-planet {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
 
-  font: 6rem ostrich;
-}
-
+/* Button */
 .button {
+  position: relative;
   display: inline-block;
-  padding: 20px 20px 12px 20px;
-  margin-bottom: 20px;
+  padding: 2rem 2rem 1.4rem 2rem;
+  margin-bottom: 2rem;
   box-sizing: border-box;
 
   border: 4px solid #eee;
   border-radius: 16px;
 
+  font-size: 3rem;
+
   color: #fff;
   cursor: pointer;
+
+  -webkit-transition: 0.2s border-color;
+  -moz-transition: 0.2s border-color;
+  transition: 0.2s border-color;
+}
+
+.button:hover, .button:focus {
+  border-color: #e2d610;
+}
+
+@media (min-width: 960px) {
+  .button {
+    font-size: 4rem;
+  }
+}
+
+/* Header */
+@media (min-width: 960px) {
+  .header {
+    position: fixed;
+    left: 6rem;
+    top: 6rem;
+    width: 30%;
+  }
+}
+
+/* Root */
+.root h1 {
+  font-size: 10rem;
+}
+
+.github-auth {
+  padding-left: 105px;
+}
+
+.github-auth:before {
+  position: absolute;
+  display: block;
+  width: 79px;
+  height: 100px;
+  left: 10px;
+  top: -20px;
+  background: url(/assets/octo.png) no-repeat left;
+  background-size: 79px 100px;
+  content: '';
+  -webkit-animation: bobble 7s infinite;
+  -moz-animation: bobble 7s infinite;
+  animation: bobble 7s infinite;
+}
+
+@media (min-width: 960px) {
+  .root {
+    position: absolute;
+    bottom: 6rem;
+    right: 6rem;
+  }
+
+  .root h1 {
+    font-size: 20rem;
+    line-height: 22rem;
+  }
+}
+
+/* Repos */
+.pick-repo {
+  width: 100%;
+  line-height: 1;
+}
+
+.pick-repo .name {
+  display: block;
+}
+
+.pick-repo .description {
+  display: block;
+  color: #999;
+  font-size: 3rem;
+}
+
+@media (min-width: 960px) {
+  .repo-list {
+    padding-left: 33%;
+    float: left;
+  }
+}
+
+/* Intervals */
+.interval {
+  width: 100%;
+}
+
+@media (min-width: 960px) {
+  .repo-intervals-header {
+    width: 50%;
+  }
+
+  .repo-intervals {
+    position: absolute;
+    width: 30%;
+    right: 6rem;
+    top: 6rem;
+    bottom: 6rem;
+  }
+
+  .repo-intervals li {
+    position: relative;
+    height: 33%;
+  }
+
+  .repo-intervals .interval {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+/* Repo */
+.repo {
+  position: absolute;
+  bottom: 2rem;
+  right: 4rem;
+  padding-left: 4rem;
+  margin-bottom: 0;
+}
+
+/* Animation */
+@-webkit-keyframes bobble {
+  0%   { -webkit-transform: rotate(5deg) translate3d(0, -5px, 0); }
+  50%  { -webkit-transform: rotate(-5deg) translate3d(0, 5px, 0); }
+  100% { -webkit-transform: rotate(5deg) translate3d(0, -5px, 0); }
+}
+@-moz-keyframes bobble {
+  0%   { -moz-transform: rotate(5deg) translate3d(0, -5px, 0); }
+  50%  { -moz-transform: rotate(-5deg) translate3d(0, 5px, 0); }
+  100% { -moz-transform: rotate(5deg) translate3d(0, -5px, 0); }
+}
+@keyframes bobble {
+  0%   { transform: rotate(5deg) translate3d(0, -5px, 0); }
+  50%  { transform: rotate(-5deg) translate3d(0, 5px, 0); }
+  100% { transform: rotate(5deg) translate3d(0, -5px, 0); }
 }
