@@ -63,7 +63,9 @@ function generateSystem () {
     geo.vertices.push(new THREE.Vector3(0, 0, 0));
     geo.colors.push(new THREE.Color(0xffffff));
   });
-  return new THREE.ParticleSystem(geo, material);
+  var system = new THREE.ParticleSystem(geo, material);
+  system.sortParticles = true;
+  return system;
 }
 
 function generateMaterial () {
@@ -72,6 +74,7 @@ function generateMaterial () {
     map: THREE.ImageUtils.loadTexture('/textures/torpedo.png'),
     transparent: true,
     blending: THREE.AdditiveBlending,
-    vertexColors: true
+    vertexColors: true,
+    depthWrite: false
   });
 }
