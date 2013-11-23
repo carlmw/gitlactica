@@ -1,7 +1,7 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 29, function (test) {
+casper.test.begin('Playing back activity', 30, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
@@ -28,14 +28,13 @@ casper.test.begin('Playing back activity', 29, function (test) {
 
   casper.waitForUrl('/repos/carlmw/gitlactica/days/7');
 
-
   expect('Hidden beam');
   expect('Set canvas size 400x300');
   expect('Added planet carlmw/gitlactica with colour 0xf15501');
   expect('Moved planet carlmw/gitlactica to 0, 0, 0');
-  expect('Looked at 0, 0, 0');
   expect('Rendered template playback');
   expect('Added ship carlmw');
+  expect('Following ship carlmw');
   expect('Ship carlmw orbiting 0, 0, 0');
   expect('Added weapons to carlmw');
   expect('Shown beam');
@@ -43,6 +42,7 @@ casper.test.begin('Playing back activity', 29, function (test) {
   expect('Hidden beam');
   expect('Launched torpedo with colour 0xf15501');
   expect('Added ship bobson');
+  expect('Following ship bobson');
   expect('Ship bobson orbiting 0, 0, 0');
   expect('Added weapons to bobson');
   expect('Shown beam');

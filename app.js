@@ -14,7 +14,6 @@ everyauth.github
   })
   .redirectPath(function (req) {
     var protocol = (req.headers.host.match(/^localhost/)) ? 'http' : 'https';
-    console.log(protocol);
     return protocol + '://' + req.headers.host + '/repos';
   });
 
