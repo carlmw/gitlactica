@@ -6,6 +6,10 @@ var connect = require('connect'),
     proxy = require('proxy-middleware'),
     fs = require('fs');
 
+if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+  console.error("You must set a GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET");
+}
+
 everyauth.github
   .appId(process.env.GITHUB_CLIENT_ID)
   .appSecret(process.env.GITHUB_CLIENT_SECRET)
