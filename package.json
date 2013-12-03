@@ -6,7 +6,7 @@
     "npm": "1.3.11"
   },
   "scripts": {
-    "test": "npm install grunt-cli -g; grunt"
+    "test": "npm install grunt-cli -g; grunt; grunt integration"
   },
   "dependencies": {
     "three": "~0.56.7",
