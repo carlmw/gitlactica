@@ -1,5 +1,4 @@
 var THREE = require('three'),
-    TWEEN = require('tween.js'),
     texture = THREE.ImageUtils.loadTexture('/textures/planet.jpg'),
     geometry = new THREE.SphereGeometry(1000, 32, 32),
     materials = {};
@@ -12,11 +11,8 @@ function Planet(name, colour) {
 
   pivot.add(mesh);
 
-  this.name = name;
   this.mesh = mesh;
   this.pivot = pivot;
-
-  rotate(mesh);
 }
 
 function selectMaterial(colour) {
@@ -37,9 +33,3 @@ function generateMaterial(color) {
   });
 }
 
-function rotate(mesh) {
-  new TWEEN.Tween(mesh.rotation)
-    .to({ z: Math.PI * 2 }, 64e3)
-    .repeat(Number.POSITIVE_INFINITY)
-    .start();
-}
