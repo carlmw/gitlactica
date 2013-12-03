@@ -19,10 +19,6 @@ function Planet(name, colour) {
   rotate(mesh);
 }
 
-Planet.prototype.toString = function () {
-  return '[Planet ' + this.name + ']';
-};
-
 function selectMaterial(colour) {
   if (materials[colour]) {
     return materials[colour];
