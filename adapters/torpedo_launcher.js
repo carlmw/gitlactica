@@ -11,8 +11,6 @@ module.exports = function (scene) {
       i = 0,
       projectiles = [];
 
-  scene.add(system);
-
   return {
     add: add,
     system: system

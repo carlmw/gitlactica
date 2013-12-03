@@ -9,5 +9,6 @@ module.exports = {
     if (next) tween.onComplete(next);
 
     return tween;
-  }
+  },
+  EASING: TWEEN.Easing
 };

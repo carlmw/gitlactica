@@ -211,6 +211,14 @@ a:link, a:visited {
   right: 4rem;
   padding-left: 4rem;
   margin-bottom: 0;
+  opacity: 0;
+  -webkit-transition: 3s ease-out opacity;
+  -moz-transition: 3s ease-out opacity;
+  transition: 3s ease-out opacity;
+}
+
+.visible.repo {
+  opacity: 1;
 }
 
 /* Animation */

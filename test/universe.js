@@ -20,7 +20,8 @@ describe("universe", function () {
       var effectsMock = sinon.mock(effectsQueue);
       effectsMock.expects('push').withArgs('addPlanet', 'carlmw/gitlactica', 0xff0000);
       effectsMock.expects('push').withArgs('movePlanet', 'carlmw/gitlactica', 0, 0, 0);
-      effectsMock.expects('push').withArgs('lookAt', 0, 0, 0);
+      effectsMock.expects('push').withArgs('revealPlanet', 'carlmw/gitlactica');
+      effectsMock.expects('push').withArgs('fadeInPlanetName');
 
       subspace.emit('repo', { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
 

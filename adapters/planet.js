@@ -1,6 +1,6 @@
 var THREE = require('three'),
     texture = THREE.ImageUtils.loadTexture('/textures/planet.jpg'),
-    geometry = new THREE.SphereGeometry(1000, 32, 32),
+    geometry = new THREE.SphereGeometry(1000, 128, 128),
     materials = {};
 
 module.exports = Planet;
@@ -26,10 +26,6 @@ function selectMaterial(colour) {
 function generateMaterial(color) {
   return new THREE.MeshPhongMaterial({
     color: color,
-    bumpMap: texture,
-    map: texture,
-    bumpScale: 10,
-    perPixel: true
+    map: texture
   });
 }
-

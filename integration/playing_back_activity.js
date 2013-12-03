@@ -1,13 +1,14 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 30, function (test) {
+casper.test.begin('Playing back activity', 32, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
   expect('Rendered template root');
+
   casper.thenClick('.github-auth');
 
   casper.waitForUrl('/repos');
@@ -32,7 +33,9 @@ casper.test.begin('Playing back activity', 30, function (test) {
   expect('Set canvas size 400x300');
   expect('Added planet carlmw/gitlactica with colour 0xf15501');
   expect('Moved planet carlmw/gitlactica to 0, 0, 0');
+  expect('Revealed planet');
   expect('Rendered template playback');
+  expect('Revealed repo name');
   expect('Added ship carlmw');
   expect('Following ship carlmw');
   expect('Ship carlmw orbiting 0, 0, 0');

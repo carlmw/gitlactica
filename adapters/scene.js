@@ -13,15 +13,14 @@ module.exports = function scene () {
   camera = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 0.1, 100000000);
   camera.up = new THREE.Vector3(0, 0, 1);
   camera.useQuaternion = true;
-  camera.position.y = distance * 5;
-  camera.position.z = distance * 2;
+  camera.position.z = 1200;
   world = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
 
   var point = new THREE.PointLight(0xffffff, 1, 0);
-  point.position.y = 4000;
-  point.position.z = 1000;
+  point.position.y = 8000;
+  point.position.x = 8000;
 
   world.add(point);
   world.add(new THREE.AmbientLight(0x111111));
