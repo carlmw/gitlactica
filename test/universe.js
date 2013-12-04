@@ -38,7 +38,6 @@ describe("universe", function () {
       var effectsMock = sinon.mock(effectsQueue);
 
       effectsMock.expects('push').withArgs('addShip', 'carlmw');
-      effectsMock.expects('push').withArgs('followShip', 'carlmw');
       effectsMock.expects('push').withArgs('orbitShip', 'carlmw', 0, 0, 0);
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0xffff00, 14, 4);
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 7, 8);

@@ -14,9 +14,11 @@ function Ship() {
 
   pivot.add(mesh);
 
+  mesh.position.x = 5000;
+  mesh.rotation.y = Math.PI * 0.5;
+  pivot.position.y = 25000;
+
   this.mesh = mesh;
-  this.mesh.position.x = 5000;
-  this.mesh.rotation.y = Math.PI * 0.5;
   this.pivot = pivot;
 
   modelQueue.defer(addModel, this);
@@ -31,6 +33,7 @@ function loadModel(next) {
   new ColladaLoader().load('/assets/freighter/models/freighter.dae', function (obj) {
     model = obj.scene;
     model.position.set(0, 0, -50);
+    model.scale.set(0.5, 0.5, 0.5);
 
     next();
   });
