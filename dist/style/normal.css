@@ -212,9 +212,9 @@ a:link, a:visited {
   padding-left: 4rem;
   margin-bottom: 0;
   opacity: 0;
-  -webkit-transition: 3s ease-out opacity;
-  -moz-transition: 3s ease-out opacity;
-  transition: 3s ease-out opacity;
+  -webkit-transition: 10s ease-out opacity;
+  -moz-transition: 10s ease-out opacity;
+  transition: 10s ease-out opacity;
 }
 
 .visible.repo {
