@@ -32,7 +32,6 @@ Ship.prototype.position = function () {
 function loadModel(next) {
   new ColladaLoader().load('/assets/freighter/models/freighter.dae', function (obj) {
     model = obj.scene;
-    model.position.set(0, 0, -50);
     model.scale.set(0.5, 0.5, 0.5);
 
     next();
