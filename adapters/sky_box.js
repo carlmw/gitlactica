@@ -9,7 +9,7 @@ function skyBox(scene, texture) {
       geometry,
       faceMaterial;
 
-  geometry = new THREE.CubeGeometry(4194304, 4194304, 4194304, 1, 1, 1, null, true),
+  geometry = new THREE.CubeGeometry(4194304, 4194304, 4194304, 1, 1, 1, null, true);
   material = new THREE.MeshLambertMaterial({
     map: tex,
     depthWrite: false,

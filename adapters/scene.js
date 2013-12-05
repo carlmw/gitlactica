@@ -1,4 +1,5 @@
 var skyBox = require('./sky_box'),
+    star = require('./star'),
     TWEEN = require('tween.js'),
     global = require('../lib/util').global(),
     raf = require('raf-component'),
@@ -13,19 +14,13 @@ module.exports = function scene () {
   camera = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 0.1, 100000000);
   camera.up = new THREE.Vector3(0, 0, 1);
   camera.useQuaternion = true;
-  camera.position.z = 1200;
+  camera.position.z = 3000;
   world = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
 
-  var point = new THREE.PointLight(0xffffff, 1, 0);
-  point.position.y = 8000;
-  point.position.x = 8000;
-
-  world.add(point);
-  world.add(new THREE.AmbientLight(0x111111));
-
   skyBox(world, '/textures/stars.jpg');
+  star(world, 6000, 6000, -6000);
 
   return {
     setSize: setSize,
