@@ -1,54 +1,33 @@
-var Torpedo = require('./torpedo'),
-    _ = require('lodash'),
-    raf = require('raf-component'),
+var _ = require('lodash'),
     THREE = require('three'),
     PARTICLE_COUNT = 60;
 
 module.exports = function (scene) {
   var system = generateSystem(),
-      rendering = false,
       geo = system.geometry,
       i = 0,
       projectiles = [];
 
-  return {
-    add: add,
-    system: system
-  };
+  return { add: add, move: move, system: system };
 
-  function add (colourHex, sx, sy, sz, dx, dy, dz) {
+  function move (i, x, y, z) {
+    geo.vertices[i].set(x, y, z);
+    geo.verticesNeedUpdate = true;
+  }
+
+  function add (colourHex) {
+    if (i > PARTICLE_COUNT) {
+      i = 0
+    };
     var position = geo.vertices[i],
-        color = geo.colors[i],
-        torpedo;
+        color = geo.colors[i];
 
-    position.set(sx, sy, sz);
-    torpedo = new Torpedo(position, new THREE.Vector3(dx, dy, dz));
     color.setHex(colourHex);
     geo.colorsNeedUpdate = true;
-    geo.verticesNeedUpdate = true;
-    projectiles.push(torpedo);
     i++;
-    if (i > PARTICLE_COUNT - 1) {
-      i = 0;
-    }
     log('Launched torpedo with colour 0x' + colourHex.toString(16));
-    if (!rendering) {
-      rendering = true;
-      render();
-    }
-  }
 
-  function update () {
-    // Remove detonated torpedoes and advance all remaining torward their targets
-    projectiles = _(projectiles).filter(function (projectile) {
-      return !projectile.detonated();
-    }).invoke('track').value();
-    geo.verticesNeedUpdate = true;
-  }
-
-  function render () {
-    raf(render);
-    update();
+    return i - 1;
   }
 };
 
@@ -68,7 +47,7 @@ function generateSystem () {
 
 function generateMaterial () {
   return new THREE.ParticleBasicMaterial({
-    size: 500,
+    size: 250,
     map: THREE.ImageUtils.loadTexture('/textures/torpedo.png'),
     transparent: true,
     blending: THREE.AdditiveBlending,

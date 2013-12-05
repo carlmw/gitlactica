@@ -15,12 +15,16 @@ module.exports = function Renderer (config) {
       planets = system(stage.scene),
       cam = camera(stage.camera);
 
+  stage.scene.add(launcher.system);
   tractor.system.add(particleBeam);
   hideBeam();
 
+  // TODO move launcher and tractor out of renderer
   return _.extend({}, stage, ships, planets, cam, {
     addTorpedo: launcher.add,
+    moveTorpedo: launcher.move,
     extractTorpedo: tractor.add,
+    moveExtractedTorpedo: tractor.move,
     addWeapons: addWeapons,
     hideBeam: hideBeam,
     showBeam: showBeam

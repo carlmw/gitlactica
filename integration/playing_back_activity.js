@@ -42,16 +42,16 @@ casper.test.begin('Playing back activity', 32, function (test) {
   expect('Added weapons to carlmw');
   expect('Shown beam');
   expect('Launched torpedo with colour 0xf15501');
-  expect('Hidden beam');
   expect('Launched torpedo with colour 0xf15501');
+  expect('Hidden beam');
   expect('Added ship bobson');
   expect('Following ship bobson');
   expect('Ship bobson orbiting 0, 0, 0');
   expect('Added weapons to bobson');
   expect('Shown beam');
   expect('Launched torpedo with colour 0x3581ba');
-  expect('Hidden beam');
   expect('Launched torpedo with colour 0x3581ba');
+  expect('Hidden beam');
 
   casper.run(function () {
     test.done();
