@@ -1,6 +1,6 @@
 var Planet = require('./planet');
 
-module.exports = function system(scene) {
+module.exports = function system(scene, camera) {
   var planets = {};
 
   return {
@@ -11,7 +11,7 @@ module.exports = function system(scene) {
   };
 
   function addPlanet (name, colour) {
-    var planet = planets[name] = new Planet(name, colour);
+    var planet = planets[name] = new Planet(name, colour, camera);
     scene.add(planet.pivot);
     log('Added planet ' + name + ' with colour 0x' + colour.toString(16));
   }

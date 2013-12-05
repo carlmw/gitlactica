@@ -12,7 +12,7 @@ module.exports = function Renderer (config) {
       launcher = torpedoLauncher(stage.scene),
       tractor = torpedoLauncher(stage.scene),
       particleBeam = beam(),
-      planets = system(stage.scene),
+      planets = system(stage.scene, stage.camera),
       cam = camera(stage.camera);
 
   stage.scene.add(launcher.system);

@@ -38,7 +38,8 @@ module.exports = function (grunt) {
             src: ['./adapters/*.js'],
             dest: 'adapters/',
             flatten: true
-          }
+          },
+          transform: ['glslifyify']
         }
       },
       dist: {
