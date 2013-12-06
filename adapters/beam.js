@@ -5,7 +5,6 @@ module.exports = beam;
 
 function beam () {
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-  tex.repeat.set(1, 12);
 
   var mat = new THREE.MeshBasicMaterial({
         color: 0x00FFFC,
@@ -13,8 +12,9 @@ function beam () {
         blending: THREE.AdditiveBlending,
         transparent: true
       }),
-      geo = new THREE.CylinderGeometry(10, 10, 5000, 10, 10, false);
+      geo = new THREE.PlaneGeometry(40, 5000, 1, 1);
   var mesh = new THREE.Mesh(geo, mat);
+  mesh.doubleSided = true;
   mesh.rotation.setZ(Math.PI * 1.5);
   mesh.translateY(2500);
 
