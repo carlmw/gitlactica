@@ -1,5 +1,6 @@
 var _ = require('lodash'),
     THREE = require('three'),
+    INF = Number.POSITIVE_INFINITY,
     PARTICLE_COUNT = 60;
 
 module.exports = function (scene) {
@@ -17,8 +18,8 @@ module.exports = function (scene) {
 
   function add (colourHex) {
     if (i > PARTICLE_COUNT) {
-      i = 0
-    };
+      i = 0;
+    }
     var position = geo.vertices[i],
         color = geo.colors[i];
 
@@ -37,7 +38,7 @@ function generateSystem () {
 
   // Generate a stack of torpedoes for use later
   _.times(PARTICLE_COUNT, function () {
-    geo.vertices.push(new THREE.Vector3(0, 0, 0));
+    geo.vertices.push(new THREE.Vector3(INF, INF, INF));
     geo.colors.push(new THREE.Color(0xffffff));
   });
   var system = new THREE.ParticleSystem(geo, material);
