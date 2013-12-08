@@ -29,14 +29,17 @@ function Planet(name, colour, camera) {
 function selectMaterial(colour) {
   if (materials[colour]) {
     return materials[colour];
-}
+  }
   materials[colour] = generateMaterial(colour);
   return materials[colour];
 }
 
-function generateMaterial(color) {
+function generateMaterial(colour) {
+  colour = new THREE.Color(colour);
+  var hsl = colour.getHSL();
+  colour.setHSL(hsl.h, 1, hsl.l);
   return new THREE.MeshPhongMaterial({
-    color: color,
+    color: colour,
     map: texture
   });
 }
