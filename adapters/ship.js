@@ -24,7 +24,7 @@ function Ship() {
   modelQueue.defer(addModel, this);
 }
 
-Ship.prototype.position = function () {
+Ship.prototype.worldPosition = function () {
   var pos = new THREE.Vector3();
   return pos.getPositionFromMatrix(this.mesh.matrixWorld);
 };
@@ -32,8 +32,6 @@ Ship.prototype.position = function () {
 function loadModel(next) {
   new ColladaLoader().load('/assets/freighter/models/freighter.dae', function (obj) {
     model = obj.scene;
-    model.scale.set(0.5, 0.5, 0.5);
-
     next();
   });
 }

@@ -1,7 +1,7 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 32, function (test) {
+casper.test.begin('Playing back activity', 33, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
@@ -36,6 +36,7 @@ casper.test.begin('Playing back activity', 32, function (test) {
   expect('Revealed planet');
   expect('Rendered template playback');
   expect('Revealed repo name');
+  expect('Moved camera away from planet');
   expect('Added ship carlmw');
   expect('Following ship carlmw');
   expect('Ship carlmw orbiting 0, 0, 0');

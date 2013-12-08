@@ -10,10 +10,12 @@ module.exports = function shipYard (scene) {
     shipPosition: shipPosition,
     destroyShip: destroyShip,
     rotateShip: rotateShip,
-    addObjectToShip: function (name, object) {
-      ships[name].pivot.add(object);
-    }
+    addObjectToShip: addObjectToShip
   };
+
+  function addObjectToShip (name, object) {
+    ships[name].pivot.add(object);
+  }
 
   function addShip (name) {
     var ship = ships[name] = new Ship();
@@ -30,7 +32,7 @@ module.exports = function shipYard (scene) {
   }
 
   function shipWorldPosition (name) {
-    return ships[name].position();
+    return ships[name].worldPosition();
   }
 
   function rotateShip (name, x, y, z) {

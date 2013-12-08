@@ -9,7 +9,7 @@
     "test": "npm install grunt-cli -g; grunt; grunt integration"
   },
   "dependencies": {
-    "three": "~0.56.7",
+    "three": "~0.58.10",
     "raf-component": "0.0.1",
     "queue-async": "~1.0.1",
     "lodash": "~2.2.1",
