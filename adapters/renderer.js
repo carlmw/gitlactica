@@ -17,7 +17,6 @@ module.exports = function Renderer (config) {
 
   stage.scene.add(launcher.system);
   tractor.system.add(particleBeam);
-  cam.lookAt(0, 20000, 0);
   hideBeam();
 
   // TODO move launcher and tractor out of renderer
