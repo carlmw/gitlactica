@@ -15,7 +15,7 @@ function beam () {
       geo = new THREE.PlaneGeometry(40, 5000, 1, 1);
   var mesh = new THREE.Mesh(geo, mat);
   mesh.doubleSided = true;
-  mesh.rotation.setZ(Math.PI * 1.5);
+  mesh.rotation.z = Math.PI * 1.5;
   mesh.translateY(2500);
 
   return mesh;
