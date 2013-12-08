@@ -25,6 +25,6 @@ module.exports = function camera (cam) {
     var targetQuat = new THREE.Quaternion();
     targetQuat.setFromRotationMatrix(targetMat);
 
-    cam.quaternion.slerp(targetQuat, 0.07);
+    cam.quaternion.slerp(targetQuat, 0.01);
   }
 };
