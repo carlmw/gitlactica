@@ -1,6 +1,6 @@
 var THREE = require('three'),
     shaders = require('./shaders'),
-    texture = THREE.ImageUtils.loadTexture('/textures/planet.gif'),
+    texture = THREE.ImageUtils.loadTexture('/textures/planet.png'),
     geometry = new THREE.SphereGeometry(1000, 128, 128),
     materials = {},
     atmosphereGeometry = geometry.clone(),
