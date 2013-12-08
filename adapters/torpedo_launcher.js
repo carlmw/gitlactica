@@ -17,7 +17,7 @@ module.exports = function (scene) {
   }
 
   function add (colourHex) {
-    if (i > PARTICLE_COUNT) {
+    if (i >= PARTICLE_COUNT) {
       i = 0;
     }
     var position = geo.vertices[i],
