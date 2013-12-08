@@ -19,7 +19,14 @@ module.exports = function scene () {
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
 
-  skyBox(world, '/textures/stars.jpg');
+  skyBox(world, [
+    '/textures/skyboxpx.png',
+    '/textures/skyboxnx.png',
+    '/textures/skyboxpy.png',
+    '/textures/skyboxny.png',
+    '/textures/skyboxpz.png',
+    '/textures/skyboxnz.png'
+  ]);
   star(world, 6000, 6000, -6000);
 
   return {
