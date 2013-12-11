@@ -13,16 +13,17 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
 everyauth.github
   .appId(process.env.GITHUB_CLIENT_ID)
   .appSecret(process.env.GITHUB_CLIENT_SECRET)
-  .findOrCreateUser(function (session, accessToken, accessTokenExtra, ghUser) {
+  .findOrCreateUser(function (session, accessToken) {
     return session.accessToken = accessToken;
   })
   .redirectPath(function (req) {
-    var protocol = (req.headers.host.match(/^localhost/)) ? 'http' : 'https';
-    return protocol + '://' + req.headers.host + '/repos';
+    return whichProtocol(req) + '://' + req.headers.host + '/repos';
   });
 
 module.exports = function (mode) {
   var app = connect()
+    .use(redirect())
+    .use(redirectToHttps)
     .use(rewrite([
       '^/repos(/[^/]+/[^/]+)?(/days/[\\d]+)? /'
     ]))
@@ -32,14 +33,7 @@ module.exports = function (mode) {
     .use(connect.json())
     .use(connect.cookieParser('e5f1143'))
     .use(connect.session())
-    .use(redirect())
-    .use('/api', function (req, res, next) {
-      // Add our OAuth access token to the subsequent proxied request
-      if (req.session.accessToken) {
-        req.headers.authorization = 'token ' + req.session.accessToken;
-      }
-      next();
-    })
+    .use('/api', addAccessToken)
     .use('/api', proxy(url.parse('https://api.github.com')));
 
   if ('test' === mode) {
@@ -54,3 +48,22 @@ module.exports = function (mode) {
 
   return app;
 };
+
+function addAccessToken (req, res, next) {
+  // Add our OAuth access token to the subsequent proxied request
+  if (req.session.accessToken) {
+    req.headers.authorization = 'token ' + req.session.accessToken;
+  }
+  next();
+}
+
+function redirectToHttps (req, res, next) {
+  // Redirect to https 
+  var reqType = req.headers["x-forwarded-proto"];
+  if (!reqType || reqType === 'https') next();
+  else res.redirect("https://" + req.headers.host + req.url);
+}
+
+function whichProtocol (req) {
+  return (req.headers.host.match(/^localhost/)) ? 'http' : 'https';
+}

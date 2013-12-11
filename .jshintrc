@@ -1,5 +1,5 @@
 {
-  "curly": true,
+  "curly": false,
   "eqeqeq": true,
   "immed": true,
   "latedef": false,
@@ -11,6 +11,7 @@
   "eqnull": true,
   "node": true,
   "es5": true,
+  "node": true,
   "globals": {
     "mockery": true, "sinon": true, "it": true, "describe": true, "expect": true,
     "before": true, "beforeEach": true, "after": true, "afterEach": true,
