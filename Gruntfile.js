@@ -31,7 +31,6 @@ module.exports = function (grunt) {
         dest: './dist/libs.js',
         options: {
           alias: [
-            'three:three',
             './vendor/collada_loader:collada_loader'
           ],
           aliasMappings: {

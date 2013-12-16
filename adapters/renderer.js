@@ -1,9 +1,9 @@
-var scene = require('./scene'),
-    shipYard = require('./ship_yard'),
-    torpedoLauncher = require('./torpedo_launcher'),
-    beam = require('./beam'),
-    system = require('./system'),
-    camera = require('./camera'),
+var scene = require('./webgl/scene'),
+    shipYard = require('./webgl/ship_yard'),
+    torpedoLauncher = require('./webgl/torpedo_launcher'),
+    beam = require('./webgl/beam'),
+    system = require('./webgl/system'),
+    camera = require('./webgl/camera'),
     _ = require('lodash');
 
 module.exports = function Renderer (config) {

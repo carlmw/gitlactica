@@ -1,7 +1,7 @@
 var skyBox = require('./sky_box'),
     star = require('./star'),
     TWEEN = require('tween.js'),
-    global = require('../lib/util').global(),
+    global = require('../../lib/util').global(),
     raf = require('raf-component'),
     THREE = require('three');
 
