@@ -221,6 +221,26 @@ a:link, a:visited {
   opacity: 1;
 }
 
+/* Current commit */
+.current-commit {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
+
+.commit img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 80px;
+  box-shadow: 0 0 10px #000;
+}
+
+.commit {
+  padding-left: 100px;
+}
+
 /* Animation */
 @-webkit-keyframes bobble {
   0%   { -webkit-transform: rotate(5deg) translate3d(0, -5px, 0); }

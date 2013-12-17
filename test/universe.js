@@ -8,6 +8,7 @@ var universe = require('../lib/universe'),
     },
     SubspaceChannel = require('../lib/subspace_channel');
 
+// TODO Make these tests more granular
 describe("universe", function () {
   var subspace;
   beforeEach(function () {
@@ -39,23 +40,17 @@ describe("universe", function () {
       effectsMock.expects('push').withArgs('addShip', 'carlmw');
       effectsMock.expects('push').withArgs('followShip', 'carlmw');
       effectsMock.expects('push').withArgs('orbitShip', 'carlmw', 0, 0, 0);
+      effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Add stuff', '/carlmw_avatar.jpg');
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0xffff00, 14, 4);
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 7, 8);
 
       subspace.emit('commit', {
-        committer: { login: 'carlmw' },
-        files: [{
-          filename: 'stuff.js',
-          additions: 14,
-          deletions: 4,
-          changes: 18,
-        },
-        {
-          filename: 'styles.css',
-          additions: 7,
-          deletions: 8,
-          changes: 15,
-        }]
+        committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
+        commit: { message: 'Add stuff' },
+        files: [
+          { filename: 'stuff.js', additions: 14, deletions: 4, changes: 18 },
+          { filename: 'styles.css', additions: 7, deletions: 8, changes: 15 }
+        ]
       });
 
       effectsMock.verify();
@@ -67,17 +62,20 @@ describe("universe", function () {
         colour.of.withArgs('.js').returns(0xffff00);
 
         subspace.emit('commit', {
-          committer: { login: 'carlmw' },
+          committer: { login: 'carlmw', avatar_url: '/carlmw_avatar2.jpg' },
+          commit: { message: 'Ignore me' },
           files: [{ filename: 'stuff.js', additions: 14, deletions: 4, changes: 18 }]
         });
 
         var effectsMock = sinon.mock(effectsQueue);
 
         effectsMock.expects('push').withArgs('followShip', 'carlmw');
+        effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Remove stuff', '/carlmw_avatar.jpg');
         effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0xffff00, 14, 4);
 
         subspace.emit('commit', {
-          committer: { login: 'carlmw' },
+          committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
+          commit: { message: 'Remove stuff' },
           files: [{ filename: 'more.js', additions: 14, deletions: 4, changes: 18 }]
         });
 

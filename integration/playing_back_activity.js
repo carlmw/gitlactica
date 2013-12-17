@@ -1,7 +1,7 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 33, function (test) {
+casper.test.begin('Playing back activity', 37, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
@@ -42,6 +42,12 @@ casper.test.begin('Playing back activity', 33, function (test) {
   expect('Ship carlmw orbiting 0, 0, 0');
   expect('Added weapons to carlmw');
   expect('Shown beam');
+
+  casper.then(function () {
+    test.assertExists('.commit img[src="/carlmw_avatar.jpg"]');
+    test.assertSelectorHasText('.commit .message', 'Update the codes');
+  });
+
   expect('Launched torpedo with colour 0xf15501');
   expect('Launched torpedo with colour 0xf15501');
   expect('Hidden beam');
@@ -50,6 +56,12 @@ casper.test.begin('Playing back activity', 33, function (test) {
   expect('Ship bobson orbiting 0, 0, 0');
   expect('Added weapons to bobson');
   expect('Shown beam');
+
+  casper.then(function () {
+    test.assertExists('.commit img[src="/bobson_avatar.jpg"]');
+    test.assertSelectorHasText('.commit .message', 'Revert the codes');
+  });
+
   expect('Launched torpedo with colour 0x3581ba');
   expect('Launched torpedo with colour 0x3581ba');
   expect('Hidden beam');
