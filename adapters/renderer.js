@@ -27,7 +27,8 @@ module.exports = function Renderer (config) {
     moveExtractedTorpedo: tractor.move,
     addWeapons: addWeapons,
     hideBeam: hideBeam,
-    showBeam: showBeam
+    showBeam: showBeam,
+    document: global.document
   });
 
   function addWeapons (name) {

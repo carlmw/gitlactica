@@ -1,4 +1,6 @@
-var TWEEN = require('tween.js');
+var TWEEN = require('tween.js'),
+    window = require('../lib/util').global(),
+    raf = require('raf-component');
 
 module.exports = {
   tween: function (from, to, duration, onUpdate, next) {
@@ -10,5 +12,10 @@ module.exports = {
 
     return tween;
   },
-  EASING: TWEEN.Easing
+  raf: function (fn) {
+    raf(fn);
+  },
+  wait: function (fn, millis) {
+    window.setTimeout(fn, millis);
+  }
 };
