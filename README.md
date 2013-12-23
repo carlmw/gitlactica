@@ -14,7 +14,6 @@ or use foreman
 
 ## Development
     grunt watch
-    grunt connect
 
 ## Run the tests
     grunt simplemocha
