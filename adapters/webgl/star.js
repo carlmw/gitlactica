@@ -19,18 +19,18 @@ module.exports = function Star (scene, x, y, z, tex1, tex2, tex3) {
 
     var lensFlare = new THREE.LensFlare(tex1, 700, 0.0, THREE.AdditiveBlending, flareColor);
 
-    lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending );
-    lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending );
-    lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending );
+    lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending);
+    lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending);
+    lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending);
 
-    lensFlare.add(tex3, 60, 0.6, THREE.AdditiveBlending );
-    lensFlare.add(tex3, 70, 0.7, THREE.AdditiveBlending );
-    lensFlare.add(tex3, 120, 0.9, THREE.AdditiveBlending );
-    lensFlare.add(tex3, 70, 1.0, THREE.AdditiveBlending );
+    lensFlare.add(tex3, 60, 0.6, THREE.AdditiveBlending);
+    lensFlare.add(tex3, 70, 0.7, THREE.AdditiveBlending);
+    lensFlare.add(tex3, 120, 0.9, THREE.AdditiveBlending);
+    lensFlare.add(tex3, 70, 1.0, THREE.AdditiveBlending);
 
     lensFlare.customUpdateCallback = update;
     lensFlare.position = pos;
-    scene.add( lensFlare );
+    scene.add(lensFlare);
   }
 
   function update (object) {
@@ -40,7 +40,7 @@ module.exports = function Star (scene, x, y, z, tex1, tex2, tex3) {
     var vecY = -object.positionScreen.y * 2;
 
     for(f = 0; f < fl; f++) {
-      flare = object.lensFlares[ f ];
+      flare = object.lensFlares[f];
 
       flare.x = object.positionScreen.x + vecX * flare.distance;
       flare.y = object.positionScreen.y + vecY * flare.distance;
@@ -49,6 +49,6 @@ module.exports = function Star (scene, x, y, z, tex1, tex2, tex3) {
     }
 
     object.lensFlares[2].y += 0.025;
-    object.lensFlares[3].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad( 45 );
+    object.lensFlares[3].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad(45);
   }
 };

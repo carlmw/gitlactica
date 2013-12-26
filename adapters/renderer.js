@@ -55,6 +55,6 @@ module.exports = function Renderer (channel) {
   }
 
   function fail () {
-    channel.emit('renderer:failed');
+    channel.emit('failure', 'Failed to load one or more textures');
   }
 };

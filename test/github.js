@@ -26,6 +26,18 @@ describe("github", function () {
 
       subspaceMock.verify();
     });
+
+    describe("when it fails", function () {
+      it("triggers the failure event", function () {
+        var subspaceMock = sinon.mock(subspace);
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+        
+        github(transport, subspace).repo('carlmw/gitlactica');
+
+        subspaceMock.verify();
+      });
+    });
   });
 
   describe("commits", function () {
@@ -34,6 +46,7 @@ describe("github", function () {
       transportMock.expects('xhr').withArgs({
         uri: '/api/repos/carlmw/gitlactica/commits?since=2013-11-04T00:00:00+00:00'
       });
+
       github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
 
       transportMock.verify();
@@ -42,10 +55,23 @@ describe("github", function () {
     it("triggers the commits event", function () {
       var subspaceMock = sinon.mock(subspace);
       subspaceMock.expects('emit').withArgs('commits', commitsData);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData), 'carlmw/gitlactica');
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData));
+
       github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
 
       subspaceMock.verify();
+    });
+
+    describe("when it fails", function () {
+      it("triggers the failure event", function () {
+        var subspaceMock = sinon.mock(subspace);
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+        
+        github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
+
+        subspaceMock.verify();
+      });
     });
   });
 
@@ -55,6 +81,7 @@ describe("github", function () {
       transportMock.expects('xhr').withArgs({
         uri: '/api/repos/carlmw/gitlactica/commits/d94709'
       });
+
       github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
 
       transportMock.verify();
@@ -67,6 +94,18 @@ describe("github", function () {
       github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
 
       subspaceMock.verify();
+    });
+
+    describe("when it fails", function () {
+      it("triggers the failure event", function () {
+        var subspaceMock = sinon.mock(subspace);
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+
+        github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
+
+        subspaceMock.verify();
+      });
     });
   });
 
@@ -88,6 +127,18 @@ describe("github", function () {
       github(transport, subspace).repos();
 
       subspaceMock.verify();
+    });
+
+    describe("when it fails", function () {
+      it("triggers the failure event", function () {
+        var subspaceMock = sinon.mock(subspace);
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+
+        github(transport, subspace).repos();
+
+        subspaceMock.verify();
+      });
     });
   });
 });
