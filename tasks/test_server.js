@@ -41,7 +41,7 @@ module.exports = function (grunt) {
           { filename: 'that.py', additions: 1, deletions: 1 }
         ]
       })
-      .get('/user/repos')
+      .get('/user/repos?sort=pushed')
       .reply(200, [{
         name: 'gitlactica',
         full_name: 'carlmw/gitlactica'

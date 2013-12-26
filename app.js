@@ -13,6 +13,7 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
 everyauth.github
   .appId(process.env.GITHUB_CLIENT_ID)
   .appSecret(process.env.GITHUB_CLIENT_SECRET)
+  .scope('repo')
   .findOrCreateUser(function (session, accessToken) {
     return session.accessToken = accessToken;
   })

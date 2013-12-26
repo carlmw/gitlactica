@@ -30,8 +30,8 @@ describe("github", function () {
     describe("when it fails", function () {
       it("triggers the failure event", function () {
         var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
         
         github(transport, subspace).repo('carlmw/gitlactica');
 
@@ -55,7 +55,7 @@ describe("github", function () {
     it("triggers the commits event", function () {
       var subspaceMock = sinon.mock(subspace);
       subspaceMock.expects('emit').withArgs('commits', commitsData);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData));
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData), 'carlmw/gitlactica');
 
       github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
 
@@ -65,8 +65,8 @@ describe("github", function () {
     describe("when it fails", function () {
       it("triggers the failure event", function () {
         var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
         
         github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
 
@@ -99,8 +99,8 @@ describe("github", function () {
     describe("when it fails", function () {
       it("triggers the failure event", function () {
         var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
 
         github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
 
@@ -113,7 +113,7 @@ describe("github", function () {
     it("fetches the commit", function () {
       var transportMock = sinon.mock(transport);
       transportMock.expects('xhr').withArgs({
-        uri: '/api/user/repos'
+        uri: '/api/user/repos?sort=pushed'
       });
       github(transport, subspace).repos();
 
@@ -132,8 +132,8 @@ describe("github", function () {
     describe("when it fails", function () {
       it("triggers the failure event", function () {
         var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub Error: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'fail', {}, JSON.stringify({ message: 'whoops' }));
+        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
+        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
 
         github(transport, subspace).repos();
 
