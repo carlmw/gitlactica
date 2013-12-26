@@ -3,7 +3,7 @@ var THREE = require('three'),
 
 module.exports = function camera (cam) {
   var cameraPosition = cam.position.clone(),
-      cameraLookAt = new THREE.Vector3(0, 20000, 0),
+      cameraLookAt = new THREE.Vector3(0, 40000, 0),
       lookAtSpeed = 1,
       positionSpeed = 1;
 
