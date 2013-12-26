@@ -1,12 +1,13 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 37, function (test) {
+casper.test.begin('Playing back activity', 41, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
+  expect('Rendered template loading');
   expect('Rendered template root');
 
   casper.thenClick('.github-auth');
@@ -15,6 +16,7 @@ casper.test.begin('Playing back activity', 37, function (test) {
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
+  expect('Rendered template loading');
   expect('Rendered template pick_repo');
 
   casper.thenClick(x('//a[span[text()="gitlactica"]]'));
@@ -23,6 +25,7 @@ casper.test.begin('Playing back activity', 37, function (test) {
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
+  expect('Rendered template loading');
   expect('Rendered template pick_interval');
 
   casper.thenClick(x('//a[text()="Last 7 days"]'));
@@ -31,6 +34,7 @@ casper.test.begin('Playing back activity', 37, function (test) {
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
+  expect('Rendered template loading');
   expect('Added planet carlmw/gitlactica with colour 0xf15501');
   expect('Moved planet carlmw/gitlactica to 0, 0, 0');
   expect('Revealed planet');
