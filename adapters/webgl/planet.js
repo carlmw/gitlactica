@@ -1,6 +1,5 @@
 var THREE = require('three'),
     shaders = require('./shaders'),
-    texture = THREE.ImageUtils.loadTexture('/textures/planet.png'),
     geometry = new THREE.SphereGeometry(1000, 128, 128),
     materials = {},
     atmosphereGeometry = geometry.clone(),
@@ -8,13 +7,13 @@ var THREE = require('three'),
 
 module.exports = Planet;
 
-function Planet(name, colour, camera) {
+function Planet(name, colour, camera, texture) {
   if (!atmosphereMaterial) {
     atmosphereMaterial = generateAtmosphereMaterial(camera);
   }
 
   var pivot = new THREE.Object3D(),
-      mesh = new THREE.Mesh(geometry, selectMaterial(colour)),
+      mesh = new THREE.Mesh(geometry, selectMaterial(colour, texture)),
       atmosphereMesh = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
 
   atmosphereMesh.scale.multiplyScalar(1.05);
@@ -26,15 +25,15 @@ function Planet(name, colour, camera) {
   this.pivot = pivot;
 }
 
-function selectMaterial(colour) {
+function selectMaterial(colour, texture) {
   if (materials[colour]) {
     return materials[colour];
   }
-  materials[colour] = generateMaterial(colour);
+  materials[colour] = generateMaterial(colour, texture);
   return materials[colour];
 }
 
-function generateMaterial(colour) {
+function generateMaterial(colour, texture) {
   var emissive = new THREE.Color(colour),
       matColour = new THREE.Color(),
       hsl = emissive.getHSL();

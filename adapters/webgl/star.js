@@ -1,9 +1,6 @@
-var THREE = require('three'),
-    tex0 = THREE.ImageUtils.loadTexture('/textures/flare0.png'),
-    tex2 = THREE.ImageUtils.loadTexture('/textures/flare2.png'),
-    tex3 = THREE.ImageUtils.loadTexture('/textures/flare3.png');
+var THREE = require('three');
 
-module.exports = function Star (scene, x, y, z) {
+module.exports = function Star (scene, x, y, z, tex1, tex2, tex3) {
   var pos = new THREE.Vector3(x, y, z);
 
   addLight(pos);
@@ -20,7 +17,7 @@ module.exports = function Star (scene, x, y, z) {
     var flareColor = new THREE.Color(0xffffff);
     flareColor.setHSL(h, s, l + 0.5);
 
-    var lensFlare = new THREE.LensFlare(tex0, 700, 0.0, THREE.AdditiveBlending, flareColor);
+    var lensFlare = new THREE.LensFlare(tex1, 700, 0.0, THREE.AdditiveBlending, flareColor);
 
     lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending );
     lensFlare.add(tex2, 512, 0.0, THREE.AdditiveBlending );

@@ -5,7 +5,7 @@ var skyBox = require('./sky_box'),
     raf = require('raf-component'),
     THREE = require('three');
 
-module.exports = function scene () {
+module.exports = function scene (skyboxCubeTexture, starTexture1, starTexture2, starTexture3) {
   var distance = 2000,
       camera,
       world,
@@ -19,15 +19,8 @@ module.exports = function scene () {
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
 
-  skyBox(world, [
-    '/textures/skyboxpx.png',
-    '/textures/skyboxnx.png',
-    '/textures/skyboxpy.png',
-    '/textures/skyboxny.png',
-    '/textures/skyboxpz.png',
-    '/textures/skyboxnz.png'
-  ]);
-  star(world, 6000, 6000, -6000);
+  skyBox(world, skyboxCubeTexture);
+  star(world, 6000, 6000, -6000, starTexture1, starTexture2, starTexture3);
 
   return {
     setSize: setSize,

@@ -3,8 +3,8 @@ var _ = require('lodash'),
     INF = Number.POSITIVE_INFINITY,
     PARTICLE_COUNT = 60;
 
-module.exports = function (scene) {
-  var system = generateSystem(),
+module.exports = function (scene, texture) {
+  var system = generateSystem(texture),
       geo = system.geometry,
       i = 0,
       projectiles = [];
@@ -32,9 +32,9 @@ module.exports = function (scene) {
   }
 };
 
-function generateSystem () {
+function generateSystem (texture) {
   var geo = new THREE.Geometry(),
-      material = generateMaterial();
+      material = generateMaterial(texture);
 
   // Generate a stack of torpedoes for use later
   _.times(PARTICLE_COUNT, function () {
@@ -46,10 +46,10 @@ function generateSystem () {
   return system;
 }
 
-function generateMaterial () {
+function generateMaterial (texture) {
   return new THREE.ParticleBasicMaterial({
     size: 250,
-    map: THREE.ImageUtils.loadTexture('/textures/torpedo.png'),
+    map: texture,
     transparent: true,
     blending: THREE.AdditiveBlending,
     vertexColors: true,

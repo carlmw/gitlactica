@@ -1,12 +1,9 @@
-var THREE = require('three'),
-    tex = THREE.ImageUtils.loadTexture("/textures/beam.png");
+var THREE = require('three');
 
-module.exports = beam;
-
-function beam () {
+module.exports = function beam (texture) {
   var mat = new THREE.MeshBasicMaterial({
         color: 0x00FFFC,
-        map: tex,
+        map: texture,
         blending: THREE.AdditiveBlending,
         transparent: true,
         opacity: 0.25
@@ -18,4 +15,4 @@ function beam () {
   mesh.translateY(2500);
 
   return mesh;
-}
+};
