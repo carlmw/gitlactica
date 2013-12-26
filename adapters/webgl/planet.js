@@ -35,11 +35,15 @@ function selectMaterial(colour) {
 }
 
 function generateMaterial(colour) {
-  colour = new THREE.Color(colour);
-  var hsl = colour.getHSL();
-  colour.setHSL(hsl.h, 1, hsl.l);
+  var emissive = new THREE.Color(colour),
+      matColour = new THREE.Color(),
+      hsl = emissive.getHSL();
+  matColour.setHSL(hsl.h, 1, 1);
+  emissive.setHSL(hsl.h, 1, hsl.l);
+
   return new THREE.MeshPhongMaterial({
-    color: colour,
+    color: matColour,
+    emissive: emissive,
     map: texture
   });
 }

@@ -10,7 +10,7 @@ module.exports = function Star (scene, x, y, z) {
   addFlare(0.55, 0.9, 0.5, pos);
 
   function addLight (pos) {
-    scene.add(new THREE.AmbientLight(0x222222));
+    scene.add(new THREE.AmbientLight(0x333333));
     var point = new THREE.PointLight(0xffffff, 1, 0);
     point.position = pos;
     scene.add(point);
