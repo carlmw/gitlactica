@@ -15,7 +15,7 @@ module.exports = {
   raf: function (fn) {
     raf(fn);
   },
-  wait: function (fn, millis) {
+  wait: function (millis, fn) {
     window.setTimeout(fn, millis);
   }
 };
