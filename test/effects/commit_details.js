@@ -1,20 +1,22 @@
 var commitDetails = require('../../lib/effects/commit_details'),
+    markup = '',
     renderer = {
-      document: {
-        getElementById: function () { return {}; }
+      html: function (selector, html) {
+        if (selector === '#current-commit') markup = html;
       }
     };
 
 describe('commitDetails', function () {
+  afterEach(function () {
+    markup = '';
+  });
+  
   it('renders commit details', function () {
-    var el = {};
-    sinon.stub(renderer.document, 'getElementById').withArgs('current-commit').returns(el);
-
     commitDetails({}, renderer, 'carlmw', 'Added stuff', '/avatar.png', function () {});
 
-    expect(el.innerHTML).to.contain('<p class="message">Added stuff</p>');
-    expect(el.innerHTML).to.contain('<img src="/avatar.png" alt="Avatar for carlmw" />');
-    expect(el.innerHTML).to.contain('<h2>carlmw</h2>');
+    expect(markup).to.contain('<p class="message">Added stuff</p>');
+    expect(markup).to.contain('<img src="/avatar.png" alt="Avatar for carlmw" />');
+    expect(markup).to.contain('<h2>carlmw</h2>');
   });
 
   it('calls next', function () {

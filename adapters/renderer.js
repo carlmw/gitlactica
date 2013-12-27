@@ -32,7 +32,14 @@ module.exports = function Renderer (channel) {
     addWeapons: addWeapons,
     hideBeam: hideBeam,
     showBeam: showBeam,
-    document: global.document
+    html: function (selector, html) {
+      // TODO move this into a DOM adapter
+      global.document.querySelector(selector).innerHTML = html;
+    },
+    addClass: function (selector, className) {
+      // TODO move this into a DOM adapter
+      global.document.querySelector(selector).className += ' ' + className;
+    }
   });
 
   function addWeapons (name) {
