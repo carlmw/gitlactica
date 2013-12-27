@@ -82,7 +82,10 @@ module.exports = function (grunt) {
       options: {
         engine: 'slimerjs'
       }
-    }
+    },
+    curl: { 'model.zip': 'https://dl.dropboxusercontent.com/s/qm2rzgmbg5hmkpj/corvette.zip' },
+    unzip: { 'dist': 'model.zip' },
+    clean: ['model.zip']
   });
 
   grunt.loadNpmTasks('grunt-browserify');
@@ -90,8 +93,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-curl');
+  grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadTasks('./tasks');
-  grunt.registerTask('default', ['languages', 'jshint', 'browserify', 'simplemocha', 'uglify']);
+  grunt.registerTask('default', ['languages', 'curl', 'unzip', 'clean', 'jshint', 'browserify', 'simplemocha', 'uglify']);
   grunt.registerTask('heroku:production', ['default']);
 
   try {

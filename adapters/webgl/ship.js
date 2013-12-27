@@ -30,7 +30,7 @@ Ship.prototype.worldPosition = function () {
 };
 
 function loadModel(next) {
-  new ColladaLoader().load('/assets/freighter/models/freighter.dae', function (obj) {
+  new ColladaLoader().load('/corvette/models/corvette.dae', function (obj) {
     model = obj.scene;
     next();
   });
