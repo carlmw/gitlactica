@@ -7,6 +7,7 @@ var scene = require('./webgl/scene'),
     beam = require('./webgl/beam'),
     system = require('./webgl/system'),
     camera = require('./webgl/camera'),
+    explosions = require('./webgl/explosions'),
     _ = require('lodash');
 
 module.exports = function Renderer (channel) {
@@ -17,6 +18,7 @@ module.exports = function Renderer (channel) {
       tractor = torpedoLauncher(stage.scene, textures.torpedo),
       particleBeam = beam(textures.beam),
       planets = system(stage.scene, stage.camera, textures.planet),
+      detonate = explosions(stage.scene),
       cam = camera(stage.camera);
 
   stage.scene.add(launcher.system);
@@ -29,6 +31,7 @@ module.exports = function Renderer (channel) {
     moveTorpedo: launcher.move,
     extractTorpedo: tractor.add,  
     moveExtractedTorpedo: tractor.move,
+    detonateExplosion: detonate,
     addWeapons: addWeapons,
     hideBeam: hideBeam,
     showBeam: showBeam,

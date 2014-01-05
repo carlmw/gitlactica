@@ -1,7 +1,7 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 41, function (test) {
+casper.test.begin('Playing back activity', 43, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
@@ -54,6 +54,7 @@ casper.test.begin('Playing back activity', 41, function (test) {
 
   expect('Launched torpedo with colour 0xf15501');
   expect('Launched torpedo with colour 0xf15501');
+  expect('Detonated torpedo');
   expect('Hidden beam');
   expect('Added ship bobson');
   expect('Following ship bobson');
@@ -68,6 +69,7 @@ casper.test.begin('Playing back activity', 41, function (test) {
 
   expect('Launched torpedo with colour 0x3581ba');
   expect('Launched torpedo with colour 0x3581ba');
+  expect('Detonated torpedo');
   expect('Hidden beam');
 
   casper.run(function () {
