@@ -19,6 +19,14 @@ describe('commitDetails', function () {
     expect(markup).to.contain('<h2>carlmw</h2>');
   });
 
+  describe('when the commit message is very long', function () {
+    it('is truncated to 200 characters', function () {
+      commitDetails({}, renderer, 'carlmw', new Array(300).join('a'), '/avatar/png', function () {});
+      
+      expect(markup).to.contain('<p class="message">' + new Array(201).join('a') + '...</p>');
+    });
+  });
+
   it('calls next', function () {
     var nextMock = sinon.mock();
 
