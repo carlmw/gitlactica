@@ -48,7 +48,7 @@ function generateSystem (texture) {
 
 function generateMaterial (texture) {
   return new THREE.ParticleBasicMaterial({
-    size: 250,
+    size: 150,
     map: texture,
     transparent: true,
     blending: THREE.AdditiveBlending,

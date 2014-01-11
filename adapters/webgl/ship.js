@@ -41,7 +41,7 @@ function fromMatrixWorld (objectName) {
 function loadModel(next) {
   new ColladaLoader().load('/corvette/models/corvette.dae', function (obj) {
     model = obj.scene;
-    model.position.set(0, -100, 0);
+    model.position.set(40, -125, 0);
     next();
   });
 }
