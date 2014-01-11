@@ -7,8 +7,13 @@ module.exports = function system(scene, camera, texture) {
     addPlanet: addPlanet,
     movePlanet: movePlanet,
     destroyPlanet: destroyPlanet,
-    scalePlanet: scalePlanet
+    scalePlanet: scalePlanet,
+    planetPosition: planetPosition
   };
+
+  function planetPosition (name) {
+    return planets[name].mesh.position;
+  }
 
   function addPlanet (name, colour) {
     var planet = planets[name] = new Planet(name, colour, camera, texture);

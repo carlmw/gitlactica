@@ -89,7 +89,7 @@ describe("github", function () {
 
     it("triggers the commit event", function () {
       var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('commit', commitData);
+      subspaceMock.expects('emit').withArgs('commit', commitData, 'carlmw/gitlactica');
       sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitData));
       github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
 

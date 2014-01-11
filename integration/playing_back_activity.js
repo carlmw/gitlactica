@@ -1,7 +1,7 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 43, function (test) {
+casper.test.begin('Playing back activity', 47, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
@@ -44,6 +44,8 @@ casper.test.begin('Playing back activity', 43, function (test) {
   expect('Added ship carlmw');
   expect('Following ship carlmw');
   expect('Ship carlmw orbiting 0, 0, 0');
+  expect('Chasing ship carlmw');
+  expect('Following planet carlmw/gitlactica');
   expect('Added weapons to carlmw');
   expect('Shown beam');
 
@@ -59,6 +61,8 @@ casper.test.begin('Playing back activity', 43, function (test) {
   expect('Added ship bobson');
   expect('Following ship bobson');
   expect('Ship bobson orbiting 0, 0, 0');
+  expect('Chasing ship bobson');
+  expect('Following planet carlmw/gitlactica');
   expect('Added weapons to bobson');
   expect('Shown beam');
 

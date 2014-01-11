@@ -7,6 +7,7 @@ module.exports = function shipYard (scene) {
     addShip: addShip,
     moveShip: moveShip,
     shipWorldPosition: shipWorldPosition,
+    shipChasePosition: shipChasePosition,
     shipPosition: shipPosition,
     destroyShip: destroyShip,
     rotateShip: rotateShip,
@@ -33,6 +34,10 @@ module.exports = function shipYard (scene) {
 
   function shipWorldPosition (name) {
     return ships[name].worldPosition();
+  }
+
+  function shipChasePosition (name) {
+    return ships[name].chasePosition();
   }
 
   function rotateShip (name, x, y, z) {
