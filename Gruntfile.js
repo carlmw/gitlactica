@@ -78,7 +78,7 @@ module.exports = function (grunt) {
       }
     },
     casperjs: {
-      files: ['integration/**/*.js'],
+      files: [__dirname + '/integration/**/*.js'],
       options: {
         engine: 'slimerjs'
       }
