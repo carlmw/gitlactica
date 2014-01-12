@@ -43,8 +43,8 @@ describe("universe", function () {
       effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Add stuff', '/carlmw_avatar.jpg');
       effectsMock.expects('push').withArgs('chase', 'carlmw');
       effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
-      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0xffff00, 14, 4);
-      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0x0000ff, 7, 8);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0xffff00, 14, 4);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0x0000ff, 7, 8);
 
       subspace.emit('commit', {
         committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
@@ -75,7 +75,7 @@ describe("universe", function () {
         effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Remove stuff', '/carlmw_avatar.jpg');
         effectsMock.expects('push').withArgs('chase', 'carlmw');
         effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
-        effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 0xffff00, 14, 4);
+        effectsMock.expects('push').withArgs('fireWeapons', 'carlmw','carlmw/gitlactica', 0xffff00, 14, 4);
 
         subspace.emit('commit', {
           committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
