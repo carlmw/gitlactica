@@ -26,7 +26,8 @@ module.exports = function (mode) {
     .use(redirect())
     .use(redirectToHttps)
     .use(rewrite([
-      '^/repos(/[^/]+/[^/]+)?(/days/[\\d]+)? /'
+      '^/repos(/[^/]+/[^/]+)?(/days/[\\d]+)? /',
+      '^/playback /'
     ]))
     .use(connect.static('dist'))
     .use(connect.urlencoded())

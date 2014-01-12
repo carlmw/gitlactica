@@ -141,4 +141,27 @@ describe("github", function () {
       });
     });
   });
+
+  describe('events', function () {
+    it('fetches recent events', function () {
+      var transportMock = sinon.mock(transport);
+      transportMock.expects('xhr').withArgs({
+        uri: '/api/events'
+      });
+      
+      github(transport, subspace).events();
+
+      transportMock.verify();
+    });
+
+    it('triggers the events event', function () {
+      var subspaceMock = sinon.mock(subspace);
+      subspaceMock.expects('emit').withArgs('events', ['eventData']);
+      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(['eventData']));
+      
+      github(transport, subspace).events();
+
+      subspaceMock.verify();
+    });
+  });
 });
