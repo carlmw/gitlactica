@@ -18,7 +18,7 @@ function Ship() {
   pivot.add(chase);
 
   mesh.position.x = 5000;
-  chase.position.x = 6250;
+  chase.position.x = 6750;
   chase.position.z = 500;
   mesh.rotation.y = Math.PI * 0.5;
   pivot.position.y = 25000;
