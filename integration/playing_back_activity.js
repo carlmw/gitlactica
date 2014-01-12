@@ -43,7 +43,7 @@ casper.test.begin('Playing back activity', 47, function (test) {
   expect('Moved camera away from planet');
   expect('Added ship carlmw');
   expect('Following ship carlmw');
-  expect('Ship carlmw orbiting 0, 0, 0');
+  expect('Ship carlmw orbiting carlmw/gitlactica');
   expect('Chasing ship carlmw');
   expect('Following planet carlmw/gitlactica');
   expect('Added weapons to carlmw');
@@ -60,7 +60,7 @@ casper.test.begin('Playing back activity', 47, function (test) {
   expect('Hidden beam');
   expect('Added ship bobson');
   expect('Following ship bobson');
-  expect('Ship bobson orbiting 0, 0, 0');
+  expect('Ship bobson orbiting carlmw/gitlactica');
   expect('Chasing ship bobson');
   expect('Following planet carlmw/gitlactica');
   expect('Added weapons to bobson');
