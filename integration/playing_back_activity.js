@@ -41,23 +41,7 @@ casper.test.begin('Playing back activity', 47, function (test) {
   expect('Rendered template playback');
   expect('Revealed repo name');
   expect('Moved camera away from planet');
-  expect('Added ship carlmw');
-  expect('Following ship carlmw');
-  expect('Ship carlmw orbiting carlmw/gitlactica');
-  expect('Chasing ship carlmw');
-  expect('Following planet carlmw/gitlactica');
-  expect('Added weapons to carlmw');
-  expect('Shown beam');
 
-  casper.then(function () {
-    test.assertExists('.commit img[src="/carlmw_avatar.jpg"]');
-    test.assertSelectorHasText('.commit .message', 'Update the codes');
-  });
-
-  expect('Launched torpedo with colour 0xf15501');
-  expect('Launched torpedo with colour 0xf15501');
-  expect('Detonated torpedo');
-  expect('Hidden beam');
   expect('Added ship bobson');
   expect('Following ship bobson');
   expect('Ship bobson orbiting carlmw/gitlactica');
@@ -75,6 +59,25 @@ casper.test.begin('Playing back activity', 47, function (test) {
   expect('Launched torpedo with colour 0x3581ba');
   expect('Detonated torpedo');
   expect('Hidden beam');
+
+  expect('Added ship carlmw');
+  expect('Following ship carlmw');
+  expect('Ship carlmw orbiting carlmw/gitlactica');
+  expect('Chasing ship carlmw');
+  expect('Following planet carlmw/gitlactica');
+  expect('Added weapons to carlmw');
+  expect('Shown beam');
+
+  casper.then(function () {
+    test.assertExists('.commit img[src="/carlmw_avatar.jpg"]');
+    test.assertSelectorHasText('.commit .message', 'Update the codes');
+  });
+
+  expect('Launched torpedo with colour 0xf15501');
+  expect('Launched torpedo with colour 0xf15501');
+
+  expect('Hidden beam');
+  expect('Detonated torpedo');
 
   casper.run(function () {
     test.done();

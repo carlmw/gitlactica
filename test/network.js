@@ -16,10 +16,10 @@ describe("network", function () {
 
   describe("when the commits event is triggered", function () {
     describe("every second", function () {
-      it("pops a commit and requests its details", function () {
+      it("pops a the oldest commit and requests its details", function () {
         var clock = sinon.useFakeTimers(),
             gitMock = sinon.mock(git);
-        gitMock.expects('commit').withArgs('carlmw/gitlactica', 'd94709d1942c14fe4bd06e24e9639ed30232b58e');
+        gitMock.expects('commit').withArgs('carlmw/gitlactica', '8b07ccd197085a2c9aac1cc04aef93750aafd49d');
 
         network(subspace, git);
         subspace.emit('commits', [
@@ -27,7 +27,7 @@ describe("network", function () {
           { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }
         ], 'carlmw/gitlactica');
         clock.tick(5e3);
-        gitMock.expects('commit').withArgs('carlmw/gitlactica', '8b07ccd197085a2c9aac1cc04aef93750aafd49d');
+        gitMock.expects('commit').withArgs('carlmw/gitlactica', 'd94709d1942c14fe4bd06e24e9639ed30232b58e');
         clock.tick(5e3);
         gitMock.verify();
       });
