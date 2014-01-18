@@ -9,6 +9,16 @@ describe('github', function () {
       },
       '/api/repos/carlmw/gitlactica'
     ));
+
+    it('caches the response', function () {
+      var gh = github(transport), i = 0;
+      sinon.stub(transport, 'xhr', function () { return i++; });
+
+      var a = gh.repo('carlmw/gitlactica');
+      var b = gh.repo('carlmw/gitlactica');
+
+      expect(a).to.equal(b);
+    });
   });
 
   describe('commits', function () {
