@@ -1,167 +1,64 @@
-var commitsData = [{ sha: 'd94709' }],
-    commitData = { url: "https://api.github.com/repos/carlmw/gitlactica/commits/d94709" },
-    repoData = { language: "JavaScript" },
-    github = require('../lib/github'),
-    subspace = { emit: function () {} },
-    transport = { xhr: function () {} },
-    reposList = [{ full_name: 'carlmw/gitlactica' }];
+var github = require('../lib/github'),
+    transport = { xhr: function () {} };
 
-describe("github", function () {
-  describe("repo", function () {
-    it("fetches the repo details", function () {
-      var transportMock = sinon.mock(transport);
-      transportMock.expects('xhr').withArgs({
-        uri: '/api/repos/carlmw/gitlactica'
-      });
-      github(transport, subspace).repo('carlmw/gitlactica');
-
-      transportMock.verify();
-    });
-
-    it("triggers the repo event", function () {
-      var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('repo', repoData);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(repoData));
-      github(transport, subspace).repo('carlmw/gitlactica');
-
-      subspaceMock.verify();
-    });
-
-    describe("when it fails", function () {
-      it("triggers the failure event", function () {
-        var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
-        
-        github(transport, subspace).repo('carlmw/gitlactica');
-
-        subspaceMock.verify();
-      });
-    });
+describe('github', function () {
+  describe('repo', function () {
+    it('fetches the repo details', testEndpoint(
+      function () {
+        return github(transport).repo('carlmw/gitlactica');
+      },
+      '/api/repos/carlmw/gitlactica'
+    ));
   });
 
-  describe("commits", function () {
-    it("fetches a list of commits", function () {
-      var transportMock = sinon.mock(transport);
-      transportMock.expects('xhr').withArgs({
-        uri: '/api/repos/carlmw/gitlactica/commits?since=2013-11-04T00:00:00+00:00'
-      });
-
-      github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
-
-      transportMock.verify();
-    });
-
-    it("triggers the commits event", function () {
-      var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('commits', commitsData);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitsData), 'carlmw/gitlactica');
-
-      github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
-
-      subspaceMock.verify();
-    });
-
-    describe("when it fails", function () {
-      it("triggers the failure event", function () {
-        var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
-        
-        github(transport, subspace).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
-
-        subspaceMock.verify();
-      });
-    });
+  describe('commits', function () {
+    it('fetches a list of commits', testEndpoint(
+      function () {
+        return github(transport).commits('carlmw/gitlactica', '2013-11-04T00:00:00+00:00');
+      },
+      '/api/repos/carlmw/gitlactica/commits?since=2013-11-04T00:00:00+00:00'
+    ));
   });
 
-  describe("commit", function () {
-    it("fetches the commit", function () {
-      var transportMock = sinon.mock(transport);
-      transportMock.expects('xhr').withArgs({
-        uri: '/api/repos/carlmw/gitlactica/commits/d94709'
-      });
-
-      github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
-
-      transportMock.verify();
-    });
-
-    it("triggers the commit event", function () {
-      var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('commit', commitData, 'carlmw/gitlactica');
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(commitData));
-      github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
-
-      subspaceMock.verify();
-    });
-
-    describe("when it fails", function () {
-      it("triggers the failure event", function () {
-        var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
-
-        github(transport, subspace).commit('carlmw/gitlactica', 'd94709');
-
-        subspaceMock.verify();
-      });
-    });
+  describe('commit', function () {
+    it('fetches a commit', testEndpoint(
+      function () {
+        return github(transport).commit('carlmw/gitlactica', 'd94709');
+      },
+      '/api/repos/carlmw/gitlactica/commits/d94709'
+    ));
   });
 
-  describe("repos", function () {
-    it("fetches the commit", function () {
-      var transportMock = sinon.mock(transport);
-      transportMock.expects('xhr').withArgs({
-        uri: '/api/user/repos?sort=pushed'
-      });
-      github(transport, subspace).repos();
-
-      transportMock.verify();
-    });
-
-    it("triggers the repos event", function () {
-      var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('repos', reposList);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(reposList));
-      github(transport, subspace).repos();
-
-      subspaceMock.verify();
-    });
-
-    describe("when it fails", function () {
-      it("triggers the failure event", function () {
-        var subspaceMock = sinon.mock(subspace);
-        subspaceMock.expects('emit').withArgs('failure', 'GitHub: whoops');
-        sinon.stub(transport, 'xhr').callsArgWith(1, 'whoops');
-
-        github(transport, subspace).repos();
-
-        subspaceMock.verify();
-      });
-    });
+  describe('repos', function () {
+    it('fetches a list of repos', testEndpoint(
+      function () {
+        return github(transport).repos();
+      },
+      '/api/user/repos?sort=pushed'
+    ));
   });
 
   describe('events', function () {
-    it('fetches recent events', function () {
+    it('fetches a list of repos', testEndpoint(
+      function () {
+        return github(transport).events();
+      },
+      '/api/events'
+    ));
+  });
+
+  function testEndpoint(exercise, expectedUrl) {
+    return function () {
       var transportMock = sinon.mock(transport);
       transportMock.expects('xhr').withArgs({
-        uri: '/api/events'
-      });
-      
-      github(transport, subspace).events();
+        url: expectedUrl,
+        type: 'json'
+      }).returns('a promise');
+
+      var req = exercise();
 
       transportMock.verify();
-    });
-
-    it('triggers the events event', function () {
-      var subspaceMock = sinon.mock(subspace);
-      subspaceMock.expects('emit').withArgs('events', ['eventData']);
-      sinon.stub(transport, 'xhr').callsArgWith(1, null, {}, JSON.stringify(['eventData']));
-      
-      github(transport, subspace).events();
-
-      subspaceMock.verify();
-    });
-  });
+      expect(req).to.equal('a promise');
+    };
+  }
 });

@@ -1,1 +1,1 @@
-module.exports.xhr = require('xhr');
+module.exports.xhr = require('reqwest');
