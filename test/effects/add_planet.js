@@ -58,4 +58,27 @@ describe('addPlanet', function () {
     expect(move.args[11]).to.deep.equal(['strange/charm', 10000, 20000, 2500]);
     expect(move.args[12]).to.deep.equal(['bottom/top', 20000, 20000, 2500]);
   });
+
+  describe('when the planet already exists', function () {
+    beforeEach(function () {
+      sinon.stub(renderer, 'addPlanet');
+    });
+
+    it('does nothing', function () {
+      var add = addPlanet();
+      add(animation, renderer, 'carlmw/gitlactica', 0xfff, function () {});
+      add(animation, renderer, 'carlmw/gitlactica', 0xfff, function () {});
+
+      expect(renderer.addPlanet).to.have.been.calledOnce;
+    });
+
+    it('calls next', function () {
+      var add = addPlanet(),
+          next = sinon.spy();
+      add(animation, renderer, 'carlmw/gitlactica', 0xfff, next);
+      add(animation, renderer, 'carlmw/gitlactica', 0xfff, next);
+
+      expect(next).to.have.been.calledTwice;
+    });
+  });
 });

@@ -18,7 +18,7 @@ everyauth.github
     return session.accessToken = accessToken;
   })
   .redirectPath(function (req) {
-    return whichProtocol(req) + '://' + req.headers.host + '/repos';
+    return whichProtocol(req) + '://' + req.headers.host + '/playback';
   });
 
 module.exports = function (mode) {
@@ -26,7 +26,6 @@ module.exports = function (mode) {
     .use(redirect())
     .use(redirectToHttps)
     .use(rewrite([
-      '^/repos(/[^/]+/[^/]+)?(/days/[\\d]+)? /',
       '^/playback /'
     ]))
     .use(connect.static('dist'))
@@ -42,7 +41,7 @@ module.exports = function (mode) {
     // Skip OAuth for integration testing
     app.use('/auth/github', function (req, res) {
       req.session.accessToken = 'herpderp';
-      res.redirect('/repos');
+      res.redirect('/playback');
     });
   }
 

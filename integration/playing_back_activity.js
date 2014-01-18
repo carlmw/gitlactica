@@ -1,7 +1,7 @@
 /* global casper */
 var x = require('casper').selectXPath;
 casper.options.waitTimeout = 10000;
-casper.test.begin('Playing back activity', 47, function (test) {
+casper.test.begin('Playing back activity', 39, function (test) {
   var lastMessage;
   casper.start('http://localhost:8091');
 
@@ -12,35 +12,15 @@ casper.test.begin('Playing back activity', 47, function (test) {
 
   casper.thenClick('.github-auth');
 
-  casper.waitForUrl('/repos');
-
-  expect('Hidden beam');
-  expect('Set canvas size 400x300');
-  expect('Rendered template loading');
-  expect('Rendered template pick_repo');
-
-  casper.thenClick(x('//a[span[text()="gitlactica"]]'));
-
-  casper.waitForUrl('/repos/carlmw/gitlactica');
-
-  expect('Hidden beam');
-  expect('Set canvas size 400x300');
-  expect('Rendered template loading');
-  expect('Rendered template pick_interval');
-
-  casper.thenClick(x('//a[text()="Last 7 days"]'));
-
-  casper.waitForUrl('/repos/carlmw/gitlactica/days/7');
+  casper.waitForUrl('/playback');
 
   expect('Hidden beam');
   expect('Set canvas size 400x300');
   expect('Rendered template loading');
   expect('Added planet carlmw/gitlactica with colour 0xf15501');
   expect('Moved planet carlmw/gitlactica to 0, 0, 0');
-  expect('Revealed planet');
-  expect('Rendered template playback');
-  expect('Revealed repo name');
-  expect('Moved camera away from planet');
+  expect('Following planet carlmw/gitlactica');
+  expect('Rendered repo details for carlmw/gitlactica');
 
   expect('Added ship bobson');
   expect('Following ship bobson');
@@ -57,9 +37,11 @@ casper.test.begin('Playing back activity', 47, function (test) {
 
   expect('Launched torpedo with colour 0x3581ba');
   expect('Launched torpedo with colour 0x3581ba');
-  expect('Detonated torpedo');
   expect('Hidden beam');
+  expect('Detonated torpedo');
 
+  expect('Following planet carlmw/gitlactica');
+  expect('Rendered repo details for carlmw/gitlactica');
   expect('Added ship carlmw');
   expect('Following ship carlmw');
   expect('Ship carlmw orbiting carlmw/gitlactica');

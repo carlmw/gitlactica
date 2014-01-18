@@ -12,7 +12,7 @@ module.exports = function system(scene, camera, texture) {
   };
 
   function planetPosition (name) {
-    return planets[name].mesh.position;
+    return planets[name].pivot.position;
   }
 
   function addPlanet (name, colour) {

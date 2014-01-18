@@ -12,30 +12,21 @@ var universe = require('../lib/universe'),
 describe("universe", function () {
   var subspace;
   beforeEach(function () {
+    sinon.stub(colour, 'of');
+    colour.of.withArgs('JavaScript').returns(0x00ff00);
+    colour.of.withArgs('.js').returns(0xffff00);
+    colour.of.withArgs('.css').returns(0x0000ff);
     subspace = new SubspaceChannel();
     universe(subspace, colour, effectsQueue);
   });
-  describe("when the repo event is triggered", function () {
-    it("renders a planet", function () {
-      sinon.stub(colour, 'of').withArgs('JavaScript').returns(0xff0000);
-      var effectsMock = sinon.mock(effectsQueue);
-      effectsMock.expects('push').withArgs('addPlanet', 'carlmw/gitlactica', 0xff0000);
-      effectsMock.expects('push').withArgs('revealPlanet');
-
-      subspace.emit('repo', { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
-
-      effectsMock.verify();
-    });
-  });
 
   describe("when the commit event is triggered", function () {
-    it("pushes the ship animations onto the queue", function () {
-      sinon.stub(colour, 'of');
-      colour.of.withArgs('.js').returns(0xffff00);
-      colour.of.withArgs('.css').returns(0x0000ff);
-
+    it("pushes the animations onto the queue", function () {
       var effectsMock = sinon.mock(effectsQueue);
 
+      effectsMock.expects('push').withArgs('addPlanet', 'carlmw/gitlactica', 0x00ff00);
+      effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
+      effectsMock.expects('push').withArgs('repoDetails', 'carlmw/gitlactica');
       effectsMock.expects('push').withArgs('addShip', 'carlmw');
       effectsMock.expects('push').withArgs('follow', 'ship', 'carlmw');
       effectsMock.expects('push').withArgs('orbitShip', 'carlmw', 'carlmw/gitlactica');
@@ -52,16 +43,13 @@ describe("universe", function () {
           { filename: 'stuff.js', additions: 14, deletions: 4, changes: 18 },
           { filename: 'styles.css', additions: 7, deletions: 8, changes: 15 }
         ]
-      }, 'carlmw/gitlactica');
+      }, { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
 
       effectsMock.verify();
     });
 
     describe("and the ship already exists", function () {
       it("looks at the ship", function () {
-        sinon.stub(colour, 'of');
-        colour.of.withArgs('.js').returns(0xffff00);
-
         subspace.emit('commit', {
           committer: { login: 'carlmw', avatar_url: '/carlmw_avatar2.jpg' },
           commit: { message: 'Ignore me' },
@@ -70,6 +58,9 @@ describe("universe", function () {
 
         var effectsMock = sinon.mock(effectsQueue);
 
+        effectsMock.expects('push').withArgs('addPlanet', 'carlmw/gitlactica', 0x00ff00);
+        effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
+        effectsMock.expects('push').withArgs('repoDetails', 'carlmw/gitlactica');
         effectsMock.expects('push').withArgs('follow', 'ship', 'carlmw');
         effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Remove stuff', '/carlmw_avatar.jpg');
         effectsMock.expects('push').withArgs('chase', 'carlmw');
@@ -80,7 +71,7 @@ describe("universe", function () {
           committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
           commit: { message: 'Remove stuff' },
           files: [{ filename: 'more.js', additions: 14, deletions: 4, changes: 18 }]
-        }, 'carlmw/gitlactica');
+        }, { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
 
         effectsMock.verify();
       });

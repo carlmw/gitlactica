@@ -9,11 +9,18 @@ module.exports = function (grunt) {
     nock('https://api.github.com')
       .get('/repos/carlmw/gitlactica')
       .reply(200, { full_name: 'carlmw/gitlactica', language: 'JavaScript' })
-      .filteringPath(/since=[^&]*/g, 'since=XXX')
-      .get('/repos/carlmw/gitlactica/commits?since=XXX')
+      .get('/events')
       .reply(200, [
-        { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' },
-        { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }
+        { 
+          type: 'PushEvent',
+          repo: { name: 'carlmw/gitlactica' },
+          payload: {
+            commits: [
+              { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' },
+              { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }
+            ]
+          }
+        }
       ])
       .get('/repos/carlmw/gitlactica/commits/d94709d1942c14fe4bd06e24e9639ed30232b58e')
       .reply(200, {
