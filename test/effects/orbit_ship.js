@@ -35,7 +35,7 @@ describe('orbitShip', function () {
     var rendererMock = sinon.mock(renderer);
     rendererMock.expects('moveShip').withArgs('carlmw', 100, 15000, 300);
 
-    orbitShip(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+    orbitShip()(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
   });
 
   it('orbits the planet', function () {
@@ -47,6 +47,21 @@ describe('orbitShip', function () {
     var rendererMock = sinon.mock(renderer);
     rendererMock.expects('rotateShip').withArgs('carlmw', 0, 0, Math.PI);
 
-    orbitShip(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+    orbitShip()(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+  });
+
+  describe('when the ship is already orbiting a planet', function () {
+    describe('when the current planet is the same as the destination', function () {
+      it('just calls next', function () {
+        var next = sinon.mock(),
+            os = orbitShip();
+        os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+        animation.tween.reset();
+        os(animation, renderer, 'carlmw', 'carlmw/gitlactica', next);
+
+        expect(animation.tween).not.to.have.been.called;
+        next.verify();
+      });
+    });
   });
 });
