@@ -92,6 +92,9 @@ a:link, a:visited {
   -webkit-transition: 0.2s border-color;
   -moz-transition: 0.2s border-color;
   transition: 0.2s border-color;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .button:hover, .button:focus {
