@@ -62,7 +62,7 @@ describe('network', function () {
           it('pops the oldest commit and requests its details', function () {
             subspace.emit('fetch:events');
 
-            clock.tick(10e3);
+            clock.tick(5e3);
 
             expect(git.commit).to.have.been.calledTwice;
             expect(git.repo).to.have.been.calledTwice;
@@ -84,8 +84,6 @@ describe('network', function () {
                 done();
               });
               subspace.emit('fetch:events');
-
-              clock.tick(5e3);
             });
           });
         });
