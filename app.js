@@ -14,7 +14,8 @@ everyauth.github
   .appId(process.env.GITHUB_CLIENT_ID)
   .appSecret(process.env.GITHUB_CLIENT_SECRET)
   .scope('repo')
-  .findOrCreateUser(function (session, accessToken) {
+  .findOrCreateUser(function (session, accessToken, accessTokenExtra, userMetadata) {
+    session.login = userMetadata.login;
     return session.accessToken = accessToken;
   })
   .redirectPath(function (req) {
@@ -35,6 +36,7 @@ module.exports = function (mode) {
     .use(connect.cookieParser('e5f1143'))
     .use(connect.session())
     .use('/api', addAccessToken)
+    .use('/api/events', redirectToReceivedEvents)
     .use('/api', proxy(url.parse('https://api.github.com')));
 
   if ('test' === mode) {
@@ -67,4 +69,8 @@ function redirectToHttps (req, res, next) {
 
 function whichProtocol (req) {
   return (req.headers.host.match(/^localhost/)) ? 'http' : 'https';
+}
+
+function redirectToReceivedEvents (req, res) {
+  if (req.session.login) res.redirect('/api/users/' + req.session.login + '/received_events');
 }
