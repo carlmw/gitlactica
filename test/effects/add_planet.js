@@ -45,18 +45,18 @@ describe('addPlanet', function () {
     subject(animation, renderer, 'bottom/top', 0xfff, noop);
 
     expect(move.args[0]).to.deep.equal(['carlmw/gitlactica', 0, 0, 0]);
-    expect(move.args[1]).to.deep.equal(['jquery/jquery', 0, 10000, 2500]);
-    expect(move.args[2]).to.deep.equal(['joyent/node', 10000, 10000, 2500]);
-    expect(move.args[3]).to.deep.equal(['mrdoob/three.js', 10000, 0, 2500]);
-    expect(move.args[4]).to.deep.equal(['jashkenas/backbone', 10000, -10000, 2500]);
-    expect(move.args[5]).to.deep.equal(['herp/derp', 0, -10000, 2500]);
-    expect(move.args[6]).to.deep.equal(['flip/flop', -10000, -10000, 2500]);
-    expect(move.args[7]).to.deep.equal(['clip/clop', -10000, 0, 2500]);
-    expect(move.args[8]).to.deep.equal(['bing/bang', -10000, 10000, 2500]);
-    expect(move.args[9]).to.deep.equal(['this/that', -10000, 20000, 2500]);
-    expect(move.args[10]).to.deep.equal(['up/down', 0, 20000, 2500]);
-    expect(move.args[11]).to.deep.equal(['strange/charm', 10000, 20000, 2500]);
-    expect(move.args[12]).to.deep.equal(['bottom/top', 20000, 20000, 2500]);
+    expect(move.args[1]).to.deep.equal(['jquery/jquery', 0, 20000, 5000]);
+    expect(move.args[2]).to.deep.equal(['joyent/node', 20000, 20000, 5000]);
+    expect(move.args[3]).to.deep.equal(['mrdoob/three.js', 20000, 0, 5000]);
+    expect(move.args[4]).to.deep.equal(['jashkenas/backbone', 20000, -20000, 5000]);
+    expect(move.args[5]).to.deep.equal(['herp/derp', 0, -20000, 5000]);
+    expect(move.args[6]).to.deep.equal(['flip/flop', -20000, -20000, 5000]);
+    expect(move.args[7]).to.deep.equal(['clip/clop', -20000, 0, 5000]);
+    expect(move.args[8]).to.deep.equal(['bing/bang', -20000, 20000, 5000]);
+    expect(move.args[9]).to.deep.equal(['this/that', -20000, 40000, 5000]);
+    expect(move.args[10]).to.deep.equal(['up/down', 0, 40000, 5000]);
+    expect(move.args[11]).to.deep.equal(['strange/charm', 20000, 40000, 5000]);
+    expect(move.args[12]).to.deep.equal(['bottom/top', 40000, 40000, 5000]);
   });
 
   describe('when the planet already exists', function () {
