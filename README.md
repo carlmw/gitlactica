@@ -4,7 +4,9 @@
     npm install grunt-cli -g
     npm install
     grunt
-
+    export GITHUB_CLIENT_ID=<YOUR GITHUB APPLICATION CLIENT ID>
+    export GITHUB_CLIENT_SECRET=<YOUR GITHUB APPLICATION CLIENT SECRET>
+    
 ### Run the app
     node web.js
 
