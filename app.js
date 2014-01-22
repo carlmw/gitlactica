@@ -2,6 +2,7 @@ var connect = require('connect'),
     rewrite = require('connect-modrewrite'),
     redirect = require('connect-redirection'),
     everyauth = require('everyauth'),
+    _ = require('lodash'),
     url = require('url'),
     proxy = require('proxy-middleware'),
     fs = require('fs');
@@ -19,7 +20,7 @@ everyauth.github
     return session.accessToken = accessToken;
   })
   .redirectPath(function (req) {
-    return whichProtocol(req) + '://' + req.headers.host + '/playback';
+    return whichProtocol(req) + '://' + req.headers.host + '/authenticated';
   });
 
 module.exports = function (mode) {
@@ -27,7 +28,7 @@ module.exports = function (mode) {
     .use(redirect())
     .use(redirectToHttps)
     .use(rewrite([
-      '^/playback /'
+      '^/playback/[^/]+$ /'
     ]))
     .use(connect.static('dist'))
     .use(connect.urlencoded())
@@ -35,15 +36,16 @@ module.exports = function (mode) {
     .use(connect.json())
     .use(connect.cookieParser('e5f1143'))
     .use(connect.session())
+    .use('/authenticated', redirectToUserPlayback)
     .use('/api', addAccessToken)
-    .use('/api/events', redirectToReceivedEvents)
     .use('/api', proxy(url.parse('https://api.github.com')));
 
   if ('test' === mode) {
     // Skip OAuth for integration testing
     app.use('/auth/github', function (req, res) {
       req.session.accessToken = 'herpderp';
-      res.redirect('/playback');
+      req.session.login = 'carlmw';
+      res.redirect('/authenticated');
     });
   }
 
@@ -71,6 +73,7 @@ function whichProtocol (req) {
   return (req.headers.host.match(/^localhost/)) ? 'http' : 'https';
 }
 
-function redirectToReceivedEvents (req, res) {
-  if (req.session.login) res.redirect('/api/users/' + req.session.login + '/received_events');
+function redirectToUserPlayback (req, res) {
+  if (req.session.login) res.redirect('/playback/' + req.session.login);
+  else res.redirect('/');
 }

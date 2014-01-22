@@ -1,5 +1,9 @@
 var github = require('../lib/github'),
-    transport = { xhr: function () {} };
+    when = require('when'),
+    transport = { xhr: function () {} },
+    oldestEvent = { created_at: "2014-01-05T17:26:27Z", id: "12344" },
+    oldEvent = { created_at: "2014-01-06T17:26:27Z", id: "12345" },
+    newEvent = { created_at: "2014-01-06T17:27:27Z", id: "23456" };
 
 describe('github', function () {
   describe('repo', function () {
@@ -49,12 +53,35 @@ describe('github', function () {
   });
 
   describe('events', function () {
-    it('fetches a list of repos', testEndpoint(
-      function () {
-        return github(transport).events();
-      },
-      '/api/events'
-    ));
+    it('fetches both public and own events', function () {
+      var transportMock = sinon.mock(transport);
+      transportMock.expects('xhr').withArgs({
+        url: '/api/users/carlmw/events',
+        type: 'json'
+      });
+      transportMock.expects('xhr').withArgs({
+        url: '/api/users/carlmw/received_events',
+        type: 'json'
+      });
+
+      github(transport).events('carlmw');
+
+      transportMock.verify();
+    });
+
+    it('merges both requests and orders them by date created', function (done) {
+      var result;
+      sinon.stub(transport, 'xhr')
+        .withArgs({ url: '/api/users/carlmw/events', type: 'json' }).returns(when([oldestEvent, newEvent]))
+        .withArgs({ url: '/api/users/carlmw/received_events', type: 'json' }).returns(when([oldEvent]));
+
+      github(transport).events('carlmw').done(function (events) {
+        expect(events.length).to.equal(3);
+        expect(events).to.deep.equal([oldestEvent, oldEvent, newEvent]);
+
+        done();
+      });
+    });
   });
 
   function testEndpoint(exercise, expectedUrl) {

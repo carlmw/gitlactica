@@ -25,9 +25,9 @@ describe('network', function () {
   describe('when the fetch:events event is triggered', function () {
     it('requests the most recent events', function () {
       var gitMock = sinon.mock(git);
-      gitMock.expects('events').returns(then([]));
+      gitMock.expects('events').withArgs('carlmw').returns(then([]));
       network(subspace, git);
-      subspace.emit('fetch:events');
+      subspace.emit('fetch:events', 'carlmw');
 
       gitMock.verify();
     });
