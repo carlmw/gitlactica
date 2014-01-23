@@ -17,12 +17,14 @@ module.exports = function explosions (scene) {
 
   update();
 
-  return function detonate (x, y, z) {
+  return function detonate (sx, sy, sz, dx, dy, dz) {
+    var s = new THREE.Vector3(sx, sy, sz),
+        d = new THREE.Vector3(dx, dy, dz);
     if (i >= EXPLOSION_COUNT) {
       i = 0;
     }
     lights[i].intensity = 1;
-    lights[i].position.set(x, y, z);
+    lights[i].position = s.lerp(d, 0.75);
     i++;
     log('Detonated torpedo');
   };
