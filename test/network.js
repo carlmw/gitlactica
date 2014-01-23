@@ -47,8 +47,8 @@ describe('network', function () {
                 repo: { name: 'carlmw/gitlactica' },
                 payload: {
                   commits: [
-                    { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' },
-                    { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }
+                    { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' },
+                    { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' }
                   ]
                 }
               },
