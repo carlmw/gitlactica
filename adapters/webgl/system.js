@@ -16,6 +16,7 @@ module.exports = function system(scene, camera, texture) {
   }
 
   function addPlanet (name, colour) {
+    if (planets[name]) return;
     var planet = planets[name] = new Planet(name, colour, camera, texture);
     scene.add(planet.pivot);
     log('Added planet ' + name + ' with colour 0x' + colour.toString(16));
