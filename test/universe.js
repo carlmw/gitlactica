@@ -35,6 +35,7 @@ describe("universe", function () {
       effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0xffff00, 14, 4);
       effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0x0000ff, 7, 8);
+      effectsMock.expects('push').withArgs('nextCommit');
 
       subspace.emit('commit', {
         committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
