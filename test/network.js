@@ -43,7 +43,8 @@ describe('network', function () {
             payload: {
               commits: [
                 { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' },
-                { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' }
+                { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' },
+                { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' }
               ]
             }
           },
@@ -87,6 +88,32 @@ describe('network', function () {
           expect(git.repo).to.have.been.calledTwice;
           expect(git.commit.args[1]).to.deep.equal(['carlmw/gitlactica', 'd94709d1942c14fe4bd06e24e9639ed30232b58e']);
           expect(git.repo.args[1]).to.deep.equal(['carlmw/gitlactica']);
+        });
+
+        describe('and the commit has already been played', function () {
+          beforeEach(function () {
+            git.events.returns(then([
+              {
+                type: 'PushEvent',
+                repo: { name: 'carlmw/gitlactica' },
+                payload: {
+                  commits: [
+                    { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' },
+                    { sha: '8b07ccd197085a2c9aac1cc04aef93750aafd49d' },
+                    { sha: 'd94709d1942c14fe4bd06e24e9639ed30232b58e' }
+                  ]
+                }
+              }
+            ]));
+          });
+
+          it('pops the next commit', function () {
+            subspace.emit('fetch:events');
+            subspace.emit('nextCommit');
+
+            expect(git.commit.args[1]).to.deep.equal(['carlmw/gitlactica', 'd94709d1942c14fe4bd06e24e9639ed30232b58e']);
+            expect(git.repo.args[1]).to.deep.equal(['carlmw/gitlactica']);
+          });
         });
       });
     });
