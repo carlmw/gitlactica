@@ -5,7 +5,7 @@ describe('effectsQueue', function () {
   var queue;
 
   beforeEach(function () {
-    queue = effectsQueue(effects, 'animation', 'renderer');
+    queue = effectsQueue(effects, 'animation', 'renderer')();
   });
 
   it("effects receive animation and renderer", function () {

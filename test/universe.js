@@ -1,10 +1,13 @@
 var universe = require('../lib/universe'),
     moment = require('moment'),
-    effectsQueue = {
+    effectsQueue = function () {
+      return q;
+    },
+    q = {
       push: function () {}
     },
     colour = {
-      of: function (identifier) {}
+      of: function () {}
     },
     SubspaceChannel = require('../lib/subspace_channel');
 
@@ -22,7 +25,7 @@ describe("universe", function () {
 
   describe("when the commit event is triggered", function () {
     it("pushes the animations onto the queue", function () {
-      var effectsMock = sinon.mock(effectsQueue);
+      var effectsMock = sinon.mock(q);
 
       effectsMock.expects('push').withArgs('addPlanet', 'carlmw/gitlactica', 0x00ff00);
       effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
