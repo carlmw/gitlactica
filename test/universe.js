@@ -36,20 +36,37 @@ describe("universe", function () {
       effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Add stuff', '/carlmw_avatar.jpg');
       effectsMock.expects('push').withArgs('chase', 'carlmw');
       effectsMock.expects('push').withArgs('follow', 'planet', 'carlmw/gitlactica');
-      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0xffff00, 14, 4);
-      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0x0000ff, 7, 8);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0xffff00, 5, 4);
+      effectsMock.expects('push').withArgs('fireWeapons', 'carlmw', 'carlmw/gitlactica', 0x0000ff, 4, 3);
       effectsMock.expects('push').withArgs('nextCommit');
 
       subspace.emit('commit', {
         committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
         commit: { message: 'Add stuff' },
         files: [
-          { filename: 'stuff.js', additions: 14, deletions: 4, changes: 18 },
-          { filename: 'styles.css', additions: 7, deletions: 8, changes: 15 }
+          { filename: 'stuff.js', additions: 5, deletions: 4, changes: 9 },
+          { filename: 'styles.css', additions: 4, deletions: 3, changes: 7 }
         ]
       }, { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
 
       effectsMock.verify();
+    });
+
+    describe("when there are a lot of changes in a commit", function () {
+      it("fires a change bomb", function () {
+        sinon.spy(q, 'push');
+
+        subspace.emit('commit', {
+          committer: { login: 'carlmw', avatar_url: '/carlmw_avatar.jpg' },
+          commit: { message: 'Change bomb' },
+          files: [
+            { filename: 'stuff.js', changes: 11 },
+          ]
+        }, { full_name: 'carlmw/gitlactica', language: 'JavaScript' });
+
+        expect(q.push).to.have.been.calledWith('fireChangeBomb', 'carlmw', 'carlmw/gitlactica', 0xffff00);
+        expect(q.push).not.to.have.been.calledWith('fireWeapons');
+      });
     });
   });
 });
