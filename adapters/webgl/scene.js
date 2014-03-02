@@ -21,7 +21,7 @@ module.exports = function scene (skyboxCubeTexture, starTexture1, starTexture2, 
   renderer = new THREE.WebGLRenderer({ antialias: true });
 
   skyBox(world, skyboxCubeTexture);
-  star(world, 6000, 6000, -6000, starTexture1, starTexture2, starTexture3);
+  star(world, 12000, 12000, -6000, starTexture1, starTexture2, starTexture3);
 
   return {
     setSize: setSize,
