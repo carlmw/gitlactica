@@ -8,7 +8,8 @@ module.exports = function system(scene, camera, texture) {
     movePlanet: movePlanet,
     destroyPlanet: destroyPlanet,
     scalePlanet: scalePlanet,
-    planetPosition: planetPosition
+    planetPosition: planetPosition,
+    planetMesh: planetMesh
   };
 
   function planetPosition (name) {
@@ -35,5 +36,9 @@ module.exports = function system(scene, camera, texture) {
 
   function scalePlanet (name, factor) {
     planets[name].pivot.scale(factor);
+  }
+
+  function planetMesh (name) {
+    return planets[name].mesh;
   }
 };
