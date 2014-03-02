@@ -15,6 +15,7 @@ module.exports = function scene (skyboxCubeTexture, starTexture1, starTexture2, 
   camera.up = new THREE.Vector3(0, 0, 1);
   camera.useQuaternion = true;
   camera.position.z = 3000;
+  camera.position.x = 8000;
   world = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
