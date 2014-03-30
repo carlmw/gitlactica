@@ -18,7 +18,9 @@ describe('orbitShip', function () {
 
   afterEach(playAnimation.cleanUp);
 
-  it('resets the ships rotation');
+  it('resets the ships rotation', function () {
+    expect(renderer.rotateShip).to.have.been.calledWith('carlmw', 0, 0, 0);
+  });
 
   it('moves the ship toward the planet', function () {
     playAnimation(6000, 10);
