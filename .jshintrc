@@ -10,11 +10,10 @@
   "boss": true,
   "eqnull": true,
   "node": true,
-  "es5": true,
   "globals": {
     "mockery": true, "sinon": true, "it": true, "describe": true, "expect": true,
     "before": true, "beforeEach": true, "after": true, "afterEach": true,
     "Uint8Array": true,
-    "log": true
+    "log": true, "playAnimation": true
   }
 }

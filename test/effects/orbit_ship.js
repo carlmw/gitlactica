@@ -1,83 +1,73 @@
 var orbitShip = require('../../lib/effects/orbit_ship'),
-    tween = {
-      chain: function () { return tween; },
-      start: function () { return tween; },
-      repeat: function () { return tween; },
-      stop: function () { return tween; }
-    },
-    animation = {
-      tween: function () {
-        return tween;
-      },
-      wait: function () {}
-    },
+    animation = require('../../adapters/animation'),
     renderer = {
       moveShip: function () {},
       rotateShip: function () {},
       planetPosition: function () {}
     };
 
-global.log = function () {};
-
 describe('orbitShip', function () {
+  var next;
   beforeEach(function () {
-    sinon.stub(renderer, 'planetPosition')
-      .returns({ x: 0, y: 0, z: 0 });
-    sinon.stub(animation, 'tween').returns(tween);
+    sinon.stub(renderer, 'planetPosition').returns({ x: 0, y: 0, z: 0 });
+    sinon.stub(renderer, 'moveShip');
+    sinon.stub(renderer, 'rotateShip');
+    next = sinon.stub();
+    orbitShip()(animation, renderer, 'carlmw', 'carlmw/gitlactica', next);
   });
+
+  afterEach(playAnimation.cleanUp);
+
+  it('resets the ships rotation');
 
   it('moves the ship toward the planet', function () {
-    renderer.planetPosition
-      .withArgs('carlmw/gitlactica')
-      .returns({ x: 100, y: 200, z: 300 });
-    animation.tween
-      .withArgs({ x: 100, y: 25200, z: 300 }, { x: 100, y: 200, z: 300 }, 6e3)
-      .callsArgOn(3, { x: 100, y: 15000, z: 300 })
-      .returns(tween);
+    playAnimation(6000, 10);
 
-    var rendererMock = sinon.mock(renderer);
-    rendererMock.expects('moveShip').withArgs('carlmw', 100, 15000, 300);
-
-    orbitShip()(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+    expect(renderer.moveShip.firstCall.args).to.eql(['carlmw', 0, 25000, 0]);
+    expect(renderer.moveShip.callCount).to.equal(61);
+    expect(renderer.moveShip.lastCall.args).to.eql(['carlmw', 0, 0, 0]);
   });
 
-  it('orbits the planet', function () {
-    animation.tween
-      .withArgs({ z: 0 }, { z: -Math.PI * 2 }, 64e3)
-      .callsArgOn(3, { z: Math.PI })
-      .returns(tween);
+  describe('when the ship reaches the planet', function () {
+    it('orbits the planet', function () {
+      renderer.rotateShip.reset();
+      playAnimation(64e3 + 6e3, 10);
+      expect(renderer.rotateShip.callCount).to.equal(641);
+      expect(renderer.rotateShip.firstCall.args).to.eql(['carlmw', 0, 0, 0]);
+      expect(renderer.rotateShip.lastCall.args).to.eql(['carlmw', 0, 0, -Math.PI * 2]);
+    });
 
-    var rendererMock = sinon.mock(renderer);
-    rendererMock.expects('rotateShip').withArgs('carlmw', 0, 0, Math.PI);
-
-    orbitShip()(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+    it('calls next', function () {
+      playAnimation(6e3, 10);
+      sinon.clock.tick(5e3);
+      expect(next).to.have.been.called;
+    });
   });
 
   describe('when the ship is already orbiting a planet', function () {
     describe('when the current planet is the same as the destination', function () {
-      it('just calls next', function () {
+      it('calls next', function () {
         var next = sinon.mock(),
             os = orbitShip();
         os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
-        animation.tween.reset();
         os(animation, renderer, 'carlmw', 'carlmw/gitlactica', next);
 
-        expect(animation.tween).not.to.have.been.called;
         next.verify();
+      });
+
+      it('doesnt animate', function () {
+        var os = orbitShip();
+        os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+        playAnimation.cleanUp();
+        os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
+        playAnimation(6e3, 10);
+
+        expect(renderer.moveShip).not.to.have.been.called;
       });
     });
 
     describe('when the current planet is not the same as the destination', function () {
-      it('leaves orbit', function () {
-        var tweenMock = sinon.mock(tween),
-            os = orbitShip();
-        tweenMock.expects('stop');
-
-        os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
-        os(animation, renderer, 'carlmw', 'carlmw/SolariBoard', function () {});
-
-        tweenMock.verify();
-      });
+      it('leaves orbit');
     });
   });
 });
