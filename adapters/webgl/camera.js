@@ -3,6 +3,8 @@ var THREE = require('three'),
 
 module.exports = function camera (cam) {
   var cameraPosition = cam.position.clone(),
+      targetMat = new THREE.Matrix4(),
+      targetQuat = new THREE.Quaternion(),
       cameraLookAt = new THREE.Vector3(0, 40000, 0),
       lookAtSpeed = 1,
       positionSpeed = 1;
@@ -24,9 +26,7 @@ module.exports = function camera (cam) {
     raf(update);
 
     cam.position.lerp(cameraPosition, positionSpeed);
-    var targetMat = new THREE.Matrix4();
     targetMat.lookAt(cam.position, cameraLookAt, cam.up);
-    var targetQuat = new THREE.Quaternion();
     targetQuat.setFromRotationMatrix(targetMat);
 
     cam.quaternion.slerp(targetQuat, lookAtSpeed);
