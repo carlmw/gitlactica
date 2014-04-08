@@ -19,7 +19,7 @@ describe('follow', function () {
 				.returns({ x: 100, y: 200, z: 300 });
 
 			var rendererMock = sinon.mock(renderer);
-			rendererMock.expects('lookTo').withArgs(100, 200, 300, 0.07);
+			rendererMock.expects('lookTo').withArgs(100, 200, 300, 0.14);
 
 			followEffect()(animation, renderer, 'ship', 'carlmw', function () {});
 
@@ -34,7 +34,7 @@ describe('follow', function () {
 				.returns({ x: 200, y: 300, z: 400 });
 
 			var rendererMock = sinon.mock(renderer);
-			rendererMock.expects('lookTo').withArgs(200, 300, 400, 0.07);
+			rendererMock.expects('lookTo').withArgs(200, 300, 400, 0.14);
 
 			followEffect()(animation, renderer, 'planet', 'klendathu', function () {});
 

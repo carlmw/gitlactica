@@ -23,24 +23,24 @@ describe('orbitShip', function () {
   });
 
   it('moves the ship toward the planet', function () {
-    playAnimation(6000, 10);
+    playAnimation(2e3, 10);
 
     expect(renderer.moveShip.firstCall.args).to.eql(['carlmw', 0, 25000, 0]);
-    expect(renderer.moveShip.callCount).to.equal(61);
+    expect(renderer.moveShip.callCount).to.equal(21);
     expect(renderer.moveShip.lastCall.args).to.eql(['carlmw', 0, 0, 0]);
   });
 
   describe('when the ship reaches the planet', function () {
     it('orbits the planet', function () {
       renderer.rotateShip.reset();
-      playAnimation(64e3 + 6e3, 10);
+      playAnimation(64e3 + 2e3, 10);
       expect(renderer.rotateShip.callCount).to.equal(641);
       expect(renderer.rotateShip.firstCall.args).to.eql(['carlmw', 0, 0, 0]);
       expect(renderer.rotateShip.lastCall.args).to.eql(['carlmw', 0, 0, -Math.PI * 2]);
     });
 
     it('calls next', function () {
-      playAnimation(6e3, 10);
+      playAnimation(2e3, 10);
       sinon.clock.tick(5e3);
       expect(next).to.have.been.called;
     });
@@ -62,7 +62,7 @@ describe('orbitShip', function () {
         os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
         playAnimation.cleanUp();
         os(animation, renderer, 'carlmw', 'carlmw/gitlactica', function () {});
-        playAnimation(6e3, 10);
+        playAnimation(2e3, 10);
 
         expect(renderer.moveShip).not.to.have.been.called;
       });
