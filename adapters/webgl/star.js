@@ -7,7 +7,7 @@ module.exports = function Star (scene, x, y, z, tex1, tex2, tex3) {
   addFlare(0.55, 0.9, 0.5, pos);
 
   function addLight (pos) {
-    var point = new THREE.PointLight(0xffffff, 3, 0);
+    var point = new THREE.PointLight(0xffffff, 1, 0);
     point.position = pos;
     scene.add(point);
   }
