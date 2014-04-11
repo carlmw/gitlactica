@@ -1,6 +1,5 @@
 var THREE = require('three'),
     _ = require('lodash'),
-    ColladaLoader = require('collada_loader'),
     model,
     queue = require('queue-async'),
     modelQueue = queue(1);
@@ -20,7 +19,8 @@ function Ship() {
   mesh.position.x = 5000;
   chase.position.x = 6750;
   chase.position.z = 500;
-  mesh.rotation.y = Math.PI * 0.5;
+  mesh.rotation.x = -Math.PI * 0.5;
+  mesh.rotation.z = Math.PI;
   pivot.position.y = 25000;
 
   this.mesh = mesh;
@@ -39,8 +39,9 @@ function fromMatrixWorld (objectName) {
 }
 
 function loadModel(next) {
-  new ColladaLoader().load('/corvette/models/corvette.dae', function (obj) {
-    model = obj.scene;
+  new THREE.JSONLoader().load('/desolator.js', function (geo, materials) {
+    model = new THREE.Mesh(geo, new THREE.MeshFaceMaterial(materials));
+    model.scale.multiplyScalar(20);
     model.position.set(40, -125, 0);
     next();
   });

@@ -27,12 +27,9 @@ module.exports = function (grunt) {
     },
     browserify: {
       libs: {
-        src: ['three', './adapters/*.js', './vendor/collada_loader'],
+        src: ['three', './adapters/*.js'],
         dest: './dist/libs.js',
         options: {
-          alias: [
-            './vendor/collada_loader:collada_loader'
-          ],
           aliasMappings: {
             src: ['./adapters/*.js'],
             dest: 'adapters/',
@@ -45,7 +42,6 @@ module.exports = function (grunt) {
         options: {
           external: [
             'three',
-            'collada_loader',
             'adapters/renderer',
             'adapters/transport',
             'adapters/clock',
@@ -83,9 +79,7 @@ module.exports = function (grunt) {
         engine: 'slimerjs'
       }
     },
-    curl: { 'model.zip': 'https://dl.dropboxusercontent.com/s/qm2rzgmbg5hmkpj/corvette.zip' },
-    unzip: { 'dist': 'model.zip' },
-    clean: ['model.zip']
+    curl: { 'dist/desolator.js': 'https://dl.dropboxusercontent.com/s/hqaz3qkryae7j92/desolator.js' },
   });
 
   grunt.loadNpmTasks('grunt-browserify');
@@ -94,10 +88,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-curl');
-  grunt.loadNpmTasks('grunt-zip');
-  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadTasks('./tasks');
-  grunt.registerTask('default', ['languages', 'curl', 'unzip', 'clean', 'jshint', 'browserify', 'simplemocha', 'uglify']);
+  grunt.registerTask('default', ['languages', 'curl', 'jshint', 'browserify', 'simplemocha', 'uglify']);
   grunt.registerTask('heroku:production', ['default']);
 
   try {
