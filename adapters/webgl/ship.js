@@ -42,7 +42,7 @@ function loadModel(next) {
   new THREE.JSONLoader().load('/desolator.js', function (geo, materials) {
     model = new THREE.Mesh(geo, new THREE.MeshFaceMaterial(materials));
     model.scale.multiplyScalar(20);
-    model.position.set(40, -125, 0);
+    model.position.set(-70, -60, 0);
     next();
   });
 }

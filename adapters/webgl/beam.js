@@ -12,7 +12,7 @@ module.exports = function beam (texture) {
       mesh = new THREE.Mesh(geo, mat);
   mesh.doubleSided = true;
   mesh.rotation.z = Math.PI * 1.5;
-  mesh.translateY(2575);
+  mesh.translateY(2540);
 
   return mesh;
 };
