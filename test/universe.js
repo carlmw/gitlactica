@@ -32,6 +32,7 @@ describe("universe", function () {
       effectsMock.expects('push').withArgs('repoDetails', 'carlmw/gitlactica');
       effectsMock.expects('push').withArgs('addShip', 'carlmw');
       effectsMock.expects('push').withArgs('follow', 'ship', 'carlmw');
+      effectsMock.expects('push').withArgs('hyperJump', 'carlmw', 'carlmw/gitlactica');
       effectsMock.expects('push').withArgs('orbitShip', 'carlmw', 'carlmw/gitlactica');
       effectsMock.expects('push').withArgs('commitDetails', 'carlmw', 'Add stuff', '/carlmw_avatar.jpg');
       effectsMock.expects('push').withArgs('chase', 'carlmw');

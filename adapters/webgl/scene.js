@@ -1,8 +1,6 @@
 var skyBox = require('./sky_box'),
     star = require('./star'),
-    TWEEN = require('tween.js'),
     global = require('../../lib/util').global(),
-    raf = require('raf-component'),
     THREE = require('three');
 
 module.exports = function scene (skyboxCubeTexture, starTexture1, starTexture2, starTexture3) {
@@ -25,7 +23,7 @@ module.exports = function scene (skyboxCubeTexture, starTexture1, starTexture2, 
 
   return {
     setSize: setSize,
-    render: render,
+    update: update,
     domCanvas: renderer.domElement,
     scene: world,
     camera: camera
@@ -37,9 +35,7 @@ module.exports = function scene (skyboxCubeTexture, starTexture1, starTexture2, 
     renderer.setSize(width, height);
   }
 
-  function render () {
-    raf(render);
-    TWEEN.update();
+  function update (ts) {
     renderer.render(world, camera);
   }
 };

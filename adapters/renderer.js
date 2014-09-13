@@ -19,7 +19,8 @@ module.exports = function Renderer (channel) {
       particleBeam = beam(textures.beam),
       planets = system(stage.scene, stage.camera, textures.planet),
       detonate = explosions(stage.scene),
-      cam = camera(stage.camera);
+      cam = camera(stage.camera),
+      start;
 
   stage.scene.add(launcher.system);
   tractor.system.add(particleBeam);
@@ -29,7 +30,7 @@ module.exports = function Renderer (channel) {
   return _.extend({}, stage, ships, planets, cam, {
     addTorpedo: launcher.add,
     moveTorpedo: launcher.move,
-    extractTorpedo: tractor.add,  
+    extractTorpedo: tractor.add,
     moveExtractedTorpedo: tractor.move,
     detonateExplosion: detonate,
     addWeapons: addWeapons,
@@ -42,8 +43,14 @@ module.exports = function Renderer (channel) {
     addClass: function (selector, className) {
       // TODO move this into a DOM adapter
       global.document.querySelector(selector).className += ' ' + className;
-    }
+    },
+    update: update
   });
+
+  function update (delta) {
+    cam.update(delta);
+    stage.update(delta);
+  }
 
   function addWeapons (name) {
     ships.addObjectToShip(name, tractor.system);
